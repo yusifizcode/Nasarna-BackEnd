@@ -1,0 +1,64 @@
+﻿@model List<Event>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Events Table</h4>
+                    <a asp-action="create" class="btn btn-outline-primary"> Create Event</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                Location
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                             <th>
+                                Image
+                            </th>
+                            <th class="text-right">
+                                Actions
+                            </th>
+                            </thead>
+                            <tbody>
+                                @foreach (var ev in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @ev.Title
+                                        </td>
+                                        <td>
+                                            @ev.Location
+                                        </td>
+                                        <td>
+                                            @ev.Date
+                                        </td>
+                                         <td>
+                                            <img src="~/uploads/events/@ev.Image" width="100">
+                                        </td>
+                                        <td class="text-right">
+                                            <a class="btn btn-outline-warning" asp-action="edit" asp-route-id="@ev.Id">Edit</a>
+                                            <a class="btn btn-outline-danger sweet-delete" asp-action="delete" asp-route-id="@ev.Id">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

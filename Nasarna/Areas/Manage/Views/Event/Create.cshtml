@@ -1,0 +1,51 @@
+﻿@model Event
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <form asp-action="create" method="post" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Title">Title</label>
+                            <input asp-for="Title" class="form-control" placeholder="Title">
+                            <span class="text-danger" asp-validation-for="Title"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Location">Location</label>
+                            <input asp-for="Location" class="form-control" placeholder="Location">
+                            <span class="text-danger" asp-validation-for="Location"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Desc">Description</label>
+                        <input asp-for="Desc" class="form-control" placeholder="Description">
+                        <span class="text-danger" asp-validation-for="Desc"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Schedule">Schedule</label>
+                        <input asp-for="Schedule" class="form-control" placeholder="Schedule">
+                        <span class="text-danger" asp-validation-for="Schedule"></span>
+                    </div>
+                    <div class="form-row align-items-center">
+                        <div class="form-group col-md-6">
+                            <label asp-for="ImageFile">ImageFile</label>
+                            <input asp-for="ImageFile" class="form-control" placeholder="ImageFile">
+                            <span class="text-danger" asp-validation-for="ImageFile"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Date">Date</label>
+                            <input asp-for="Date" class="form-control" placeholder="Date">
+                            <span class="text-danger" asp-validation-for="Date"></span>
+                        </div>
+
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
