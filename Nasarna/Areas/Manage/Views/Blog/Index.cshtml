@@ -1,0 +1,64 @@
+﻿@model List<Blog>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Blogs Table</h4>
+                    <a asp-action="create" class="btn btn-outline-primary"> Create Blog</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                Tags
+                            </th>
+                              <th>
+                                Images
+                            </th>
+                            <th class="text-right">
+                                Actions
+                            </th>
+                            </thead>
+                            <tbody>
+                                @foreach (var blog in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @blog.Title
+                                        </td>
+                                        <td>
+                                            @foreach(var blogTag in blog.BlogTags)
+                                            {
+                                                <span>@blogTag.Tag?.Name</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @foreach(var blogImgs in blog.BlogImages)
+                                            {
+                                                <img src="~/uploads/blogs/@blogImgs?.Name" width="100px" height="50px"/>
+                                            }
+                                        </td>
+                                        <td class="text-right">
+                                            <a class="btn btn-outline-warning" asp-action="edit" asp-route-id="@blog.Id">Edit</a>
+                                            <a class="btn btn-outline-danger sweet-delete" asp-action="delete" asp-route-id="@blog.Id">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

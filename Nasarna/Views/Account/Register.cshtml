@@ -1,4 +1,5 @@
-﻿
+﻿@using Nasarna.ViewModels
+@model MemberRegisterViewModel
 @{
     ViewData["Title"] = "Register";
     Layout = null;
@@ -78,32 +79,39 @@
                             <h2>Sign up</h2>
                             <p>Sign into your pages account</p>
                         </div>
-                        <form action="">
+                        <form asp-action="register" method="post">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group form-style">
-                                        <label for="" class="fw-bold mb-1">Full Name</label>
-                                        <input type="text">
+                                        <label asp-for="FullName" class="fw-bold mb-1">Full Name</label>
+                                        <input asp-for="FullName">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group form-style">
-                                        <label for="" class="fw-bold mb-1">Email</label>
-                                        <input type="text" placeholder="example@gmail.com">
+                                        <label asp-for="UserName" class="fw-bold mb-1">UserName</label>
+                                        <input asp-for="UserName">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group form-style">
+                                        <label asp-for="Email" class="fw-bold mb-1">Email</label>
+                                        <input asp-for="Email" placeholder="example@gmail.com">
                                     </div>
                                 </div>
                                 <div class="col-12 form-style">
                                     <div class="form-group">
-                                        <label for="" class="fw-bold mb-1">Password</label>
-                                        <input class="pwd6" type="password">
+                                        <label asp-for="Password" class="fw-bold mb-1">Password</label>
+                                        <input class="pwd6" asp-for="Password">
                                     </div>
                                 </div>
                                 <div class="col-12 form-style">
                                     <div class="form-group">
-                                        <label for="" class="fw-bold mb-1">Confirm Password</label>
-                                        <input class="pwd6" type="password">
+                                        <label asp-for="ConfirmPassword" class="fw-bold mb-1">Confirm Password</label>
+                                        <input class="pwd6" asp-for="ConfirmPassword">
                                     </div>
                                 </div>
+                                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                                 <div class="col-12">
                                     <div class="d-flex justify-content-between align-items-center mb-5">
                                         <div class="checkbox-wrap d-flex align-items-center">

@@ -1,4 +1,5 @@
-﻿
+﻿@using Nasarna.ViewModels
+@model MemberLoginViewModel
 @{
     ViewData["Title"] = "Login";
     Layout = null;
@@ -79,18 +80,18 @@
                             <h2>Login</h2>
                             <p>Sign into your pages account</p>
                         </div>
-                        <form action="">
+                        <form asp-action="login" method="post">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group form-style">
-                                        <label for="" class="fw-bold mb-1">Email</label>
-                                        <input type="text" placeholder="example@gmail.com">
+                                        <label asp-for="UserName" class="fw-bold mb-1">Username</label>
+                                        <input asp-for="UserName">
                                     </div>
                                 </div>
                                 <div class="col-12 form-style">
                                     <div class="form-group">
-                                        <label for="" class="fw-bold mb-1">Password</label>
-                                        <input class="pwd6" type="password">
+                                        <label asp-for="Password" class="fw-bold mb-1">Password</label>
+                                        <input class="pwd6" asp-for="Password">
                                     </div>
                                     <span class="input-group-btn">
                                         <button class="btn btn-default reveal6" type="button"><i
@@ -106,6 +107,7 @@
                                         <a href="" class="btn border-0 text-warning">Forgot Password?</a>
                                     </div>
                                 </div>
+                                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                                 <div class="col-12">
                                     <button type="submit"
                                         class="btn btn-warning text-white rounded-0 w-100 p-2">Login</button>

@@ -84,7 +84,7 @@ namespace Nasarna.Areas.Manage.Controllers
         {
             Event existEvent = _context.Events.FirstOrDefault(e => e.Id == ev.Id);
 
-            if (ev == null)
+            if (existEvent == null)
                 return RedirectToAction("error", "dashboard");
 
             if (ev.ImageFile != null)

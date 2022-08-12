@@ -1,0 +1,137 @@
+﻿@model Cause
+@{
+    ViewData["Title"] = "Create";
+}
+
+<main>
+    <!-- Start of Breadcrumb -->
+    <section class="breadcrumb section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <h2>Yusif Osmanov</h2>
+                        <ul class="breadcrumb-list">
+                            <li class="breadcrumb-list-item">
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li class="breadcrumb-list-item">
+                                <a href="cause.html">My Profile</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- End of Breadcrumb -->
+    <!-- Start Create a Post -->
+    <section id="create-post" class="py-5 section-padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10 col-sm-12 text-center">
+                    <div class="donation-details donate p-4">
+                        <h2 class="fs-3 ">Create a Post for Charity</h2>
+                        <div class="donation-details tab-donation">
+                            <form asp-action="create" method="post" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                                        <input asp-for="Title" class="form-control" placeholder="Title">
+                                        <span class="text-danger" asp-validation-for="Title"></span>
+                                    </div>
+                                     <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                                        <input asp-for="SubTitle" class="form-control" placeholder="SubTitle">
+                                        <span class="text-danger" asp-validation-for="SubTitle"></span>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                                        <input asp-for="NeedAmount" type="number" class="form-control" placeholder="Amount Needed">
+                                        <span class="text-danger" asp-validation-for="NeedAmount"></span>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-warning dropdown-toggle w-100 text-white"
+                                                            type="button" id="dropdownMenuButton1"
+                                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <label asp-for="TagIds">Tag</label>
+                                                        <select asp-for="TagIds" class="form-control" asp-items="new SelectList((List<Tag>)ViewBag.Tags,nameof(Tag.Id),nameof(Tag.Name))">
+                                                        </select>
+                                                        <span class="text-danger" asp-validation-for="TagIds"></span>
+                                                    </button>
+                                                    @*                                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                                        <li>
+                                                        <a class="dropdown-item" href="#">Another action</a>
+                                                        </li>
+                                                        <li>
+                                                        <a class="dropdown-item" href="#">
+                                                        Something else
+                                                        here
+                                                        </a>
+                                                        </li>
+                                                        </ul>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-warning dropdown-toggle w-100 text-white"
+                                                            type="button" id="dropdownMenuButton1"
+                                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <label asp-for="CategoryId">Category</label>
+                                                        <select asp-for="CategoryId" class="form-control" asp-items="new SelectList((List<Category>)ViewBag.Categories,nameof(Category.Id),nameof(Category.Name))">
+                                                        </select>
+                                                        <span class="text-danger" asp-validation-for="CategoryId"></span>
+                                                    </button>
+                                                 @*   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#">Another action</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#">
+                                                                Something else
+                                                                here
+                                                            </a>
+                                                        </li>
+                                                    </ul>*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                                        <input asp-for="Address" class="form-control" name="Adress" id="Adress"
+                                               placeholder="Adress">
+                                        <span class="text-danger" asp-validation-for="Address"></span>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 form-group">
+                                        <input asp-for="ImageFiles" class="form-control border-0" multiple
+                                               placeholder="File">
+                                        <span class="text-danger" asp-validation-for="ImageFiles"></span>
+                                    </div>
+                                    <div class="col-lg-12 col-12 form-group">
+                                        <textarea class="form-control" asp-for="Desc" placeholder="Description"
+                                                  rows="6"></textarea>
+                                        <span class="text-danger" asp-validation-for="Desc"></span>
+                                    </div>
+                                    <div class="col-lg-12 col-12 form-group">
+                                        <textarea class="form-control" asp-for="SubDesc" placeholder="Description"
+                                                  rows="6"></textarea>
+                                        <span class="text-danger" asp-validation-for="SubDesc"></span>
+                                    </div>
+                                    <div class="form-btn">
+                                        <button type="submit">Publish</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Create a Post -->
+
+</main>
+

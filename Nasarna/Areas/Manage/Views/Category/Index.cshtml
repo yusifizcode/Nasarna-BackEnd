@@ -1,0 +1,48 @@
+﻿@model List<Category>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Tags Table</h4>
+                    <a asp-action="create" class="btn btn-outline-primary"> Create Tag</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                            <th>
+                                Name
+                            </th>
+   
+   
+                            <th class="text-right">
+                                Actions
+                            </th>
+                            </thead>
+                            <tbody>
+                                @foreach (var cat in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @cat.Name
+                                        </td>
+
+                                        <td class="text-right">
+                                            <a class="btn btn-outline-warning" asp-action="edit" asp-route-id="@cat.Id">Edit</a>
+                                            <a class="btn btn-outline-danger sweet-delete" asp-action="delete" asp-route-id="@cat.Id">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

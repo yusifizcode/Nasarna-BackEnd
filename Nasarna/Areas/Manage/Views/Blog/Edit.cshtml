@@ -1,0 +1,42 @@
+﻿@model Blog
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <form asp-action="edit" method="post" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Title">Title</label>
+                            <input asp-for="Title" class="form-control" placeholder="Title">
+                            <span class="text-danger" asp-validation-for="Title"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="TagIds">Tag</label>
+                            <select asp-for="TagIds" class="form-control" asp-items="new SelectList((List<Tag>)ViewBag.Tags,nameof(Tag.Id),nameof(Tag.Name))">
+                            </select>
+                            <span class="text-danger" asp-validation-for="TagIds"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Desc">Description</label>
+                        <input asp-for="Desc" class="form-control" placeholder="Description">
+                        <span class="text-danger" asp-validation-for="Desc"></span>
+                    </div>
+                    <div class="form-row align-items-center">
+                        <div class="form-group col-md-12">
+                            <label asp-for="ImageFiles">ImageFiles</label>
+                            <input asp-for="ImageFiles" class="form-control" placeholder="ImageFiles">
+                            <span class="text-danger" asp-validation-for="ImageFiles"></span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
