@@ -34,7 +34,7 @@ using Nasarna.ViewModels;
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"0e1ca06153371a734e0bc4b7f6bb99092eaecab6", @"/Views/Account/Index.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"39475c36ee405729c03bb7bc61d2ea602040a435", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"9f9efff88c1ddb38ff49097064eb02f3c77e4c8d", @"/Views/_ViewImports.cshtml")]
     #nullable restore
     public class Views_Account_Index : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     #nullable disable

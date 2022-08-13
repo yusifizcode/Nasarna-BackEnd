@@ -79,10 +79,10 @@
                     </div>
                     <div class="col-md-6 col-sm-7 col-12 d-md-flex justify-content-end">
                         <div class="d-flex align-items-center justify-content-center">
-                            <a href=""
+                            <a asp-action="login" asp-controller="account"
                                 class="top-login-register text-decoration-none p-3 border-end text-secondary">Login</a>
-                            <a href="" class="top-login-register text-decoration-none p-3 text-secondary">Register</a>
-                            <a href="" class="btn btn-warning">Donate Now</a>
+                            <a asp-action="register" asp-controller="account" class="top-login-register text-decoration-none p-3 text-secondary">Register</a>
+                            <a asp-action="index" asp-controller="cause" class="btn btn-warning">Donate Now</a>
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
 
         <nav class="navigation navbar navbar-expand-lg navbar-light bg-white">
             <div class="container">
-                <a class="navbar-brand p-md-3 mt-1" href="#">
+                <a class="navbar-brand p-md-3 mt-1" asp-action="index" asp-controller="home">
                     <img src="~/assets/images/logo-2.png" alt="">
                 </a>
                 <button class="navbar-toggler" type="button">
@@ -100,25 +100,25 @@
                 <div class="collapse justify-content-end navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#">Home</a>
+                            <a class="nav-link" aria-current="page" asp-action="index" asp-controller="home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
+                            <a class="nav-link" asp-action="about" asp-controller="home">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Causes</a>
+                            <a class="nav-link" asp-action="index" asp-controller="cause">Causes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Event</a>
+                            <a class="nav-link" asp-action="index" asp-controller="event">Event</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Volunteer</a>
+                            <a class="nav-link" asp-action="volunteer" asp-controller="home">Volunteer</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Blog</a>
+                            <a class="nav-link" asp-action="index" asp-controller="blog">Blog</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link me-5" href="#">Contact</a>
+                            <a class="nav-link me-5" asp-action="contact" asp-controller="home">Contact</a>
                         </li>
                     </ul>
 
@@ -143,25 +143,25 @@
                 </div>
                 <ul class="small-nav">
                     <li class="small-nav-item">
-                        <a class="small-nav-link" aria-current="page" href="#">Home</a>
+                        <a class="small-nav-link" aria-current="page" asp-action="index" asp-controller="home">Home</a>
                     </li>
                     <li class="small-nav-item">
-                        <a class="small-nav-link" href="#">About</a>
+                        <a class="small-nav-link" asp-action="about" asp-controller="home">About</a>
                     </li>
                     <li class="small-nav-item">
-                        <a class="small-nav-link" href="#">Causes</a>
+                        <a class="small-nav-link" asp-action="index" asp-controller="cause">Causes</a>
                     </li>
                     <li class="small-nav-item">
-                        <a class="small-nav-link" href="#">Event</a>
+                        <a class="small-nav-link" asp-action="index" asp-controller="event">Event</a>
                     </li>
                     <li class="small-nav-item">
-                        <a class="small-nav-link" href="#">Volunteer</a>
+                        <a class="small-nav-link" asp-action="volunteer" asp-controller="home">Volunteer</a>
                     </li>
                     <li class="small-nav-item">
-                        <a class="small-nav-link" href="#">Blog</a>
+                        <a class="small-nav-link" asp-action="index" asp-controller="blog">Blog</a>
                     </li>
                     <li class="small-nav-item">
-                        <a class="small-nav-link" href="#">Contact</a>
+                        <a class="small-nav-link" asp-action="contact" asp-controller="home">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -269,19 +269,19 @@
 
                                 <ul class="widget-list">
                                     <li class="widget-list-item mb-2">
-                                        <a href="#">About Us</a>
+                                        <a asp-action="about" asp-controller="home">About Us</a>
                                     </li>
                                     <li class="widget-list-item mb-2">
-                                        <a href="#">Our Causes</a>
+                                        <a asp-action="index" asp-controller="cause">Our Causes</a>
                                     </li>
                                     <li class="widget-list-item mb-2">
-                                        <a href="#">Our Mission</a>
+                                        <a asp-action="volunteer" asp-controller="home">Our Mission</a>
                                     </li>
                                     <li class="widget-list-item mb-2">
-                                        <a href="#">Contact Us</a>
+                                        <a asp-action="contact" asp-controller="home">Contact Us</a>
                                     </li>
                                     <li class="widget-list-item mb-2">
-                                        <a href="#">Our Event</a>
+                                        <a asp-action="index" asp-controller="event">Our Event</a>
                                     </li>
                                 </ul>
                             </div>
