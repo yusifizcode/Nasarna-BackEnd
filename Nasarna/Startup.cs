@@ -73,9 +73,20 @@ namespace Nasarna
                    name: "areas",
                    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 
+
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "user",
+                    pattern: "{controller=Home}/{action=Index}/{username?}");
+
+
+                endpoints.MapControllerRoute(
+                    name: "userEdit",
+                    pattern: "{controller=Cause}/{action=Edit}/{username?}/{id?}");
             });
         }
     }

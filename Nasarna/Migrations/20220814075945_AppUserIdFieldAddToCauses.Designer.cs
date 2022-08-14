@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nasarna.DAL;
 
 namespace Nasarna.Migrations
 {
     [DbContext(typeof(NasarnaDbContext))]
-    partial class NasarnaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220814075945_AppUserIdFieldAddToCauses")]
+    partial class AppUserIdFieldAddToCauses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -370,9 +372,6 @@ namespace Nasarna.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
-
-                    b.Property<decimal>("AmountPercent")
-                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");

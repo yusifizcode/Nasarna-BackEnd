@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Nasarna.DAL;
@@ -13,11 +15,13 @@ namespace Nasarna.Controllers
     {
         private readonly NasarnaDbContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly UserManager<AppUser> _userManager;
 
-        public CauseController(NasarnaDbContext context, IWebHostEnvironment env)
+        public CauseController(NasarnaDbContext context, IWebHostEnvironment env, UserManager<AppUser> userManager)
         {
             _context = context;
             _env = env;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -26,17 +30,24 @@ namespace Nasarna.Controllers
         }
 
         public IActionResult Detail(int id)
+        
         {
             ViewBag.Categories = _context.Categories.Where(x=>x.Causes.Any());
             ViewBag.Tags = _context.Tags.Where(x => x.CauseTags.Any());
 
             CauseDetailViewModel detailVM = new CauseDetailViewModel
             {
-                Cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.Donations).FirstOrDefault(x => x.Id == id),
+                Cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.Donations).Include(x=>x.AppUser).FirstOrDefault(x => x.Id == id),
                 Donation = _context.Donations.Include(x=>x.Cause).FirstOrDefault(x=>x.CauseId == id),
-            }; 
+            };
+
+            if (detailVM.Cause.NeedAmount > 0)
+            {
+                detailVM.Cause.AmountPercent = (detailVM.Cause.CurrentAmount / detailVM.Cause.NeedAmount) * 100;
+            }
             return View(detailVM);
         }
+        [Authorize(Roles = "Member")]
 
         public IActionResult Create()
         {
@@ -45,9 +56,12 @@ namespace Nasarna.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Member")]
+
         [HttpPost]
         public IActionResult Create(Cause cause)
         {
+
             if (!_context.Categories.Any(x => x.Id == cause.CategoryId))
                 ModelState.AddModelError("CategoryId", "Category not found!");
 
@@ -118,12 +132,13 @@ namespace Nasarna.Controllers
         }
 
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(string username,int id)
+        
         {
             var cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).FirstOrDefault(x => x.Id == id);
 
-            if (cause == null)
-                return RedirectToAction("error", "dashboard");
+            if (cause == null && cause?.AppUser.UserName != username)
+                return RedirectToAction("error", "home");
 
             ViewBag.Categories = _context.Categories.ToList();
             ViewBag.Tags = _context.Tags.ToList();
@@ -134,12 +149,12 @@ namespace Nasarna.Controllers
 
 
         [HttpPost]
-        public IActionResult Edit(Cause cause)
+        public IActionResult Edit(string username, Cause cause)
         {
             var existCause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).FirstOrDefault(x=>x.Id == cause.Id);
 
-            if (existCause == null)
-                return RedirectToAction("error", "dashboard");
+            if (existCause == null && existCause.AppUser.UserName != username)
+                return RedirectToAction("error", "home");
 
 
             if (cause.ImageFiles != null)

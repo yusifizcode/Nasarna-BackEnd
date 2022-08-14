@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Nasarna.DAL;
 using Nasarna.Models;
 using Nasarna.ViewModels;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Nasarna.Controllers
@@ -13,16 +15,19 @@ namespace Nasarna.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly NasarnaDbContext _context;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,RoleManager<IdentityRole> roleManager,NasarnaDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(string username)
         {
-            return View();
+            var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.AppUser).Where(x=>x.AppUser.UserName == username).ToList();
+            return View(causes);
         }
 
         public IActionResult CreatePost()

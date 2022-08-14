@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Nasarna.Areas.Manage.Controllers
 {
     [Area("manage")]
+    [Authorize(Roles = "SuperAdmin")]
     public class DashboardController : Controller
     {
-        [Authorize(Roles = "SuperAdmin")]
         public IActionResult Index()
         {
             return View();
