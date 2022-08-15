@@ -10,8 +10,8 @@ using Nasarna.DAL;
 namespace Nasarna.Migrations
 {
     [DbContext(typeof(NasarnaDbContext))]
-    [Migration("20220812123534_CardNumberSizeChanged")]
-    partial class CardNumberSizeChanged
+    [Migration("20220815095840_TablesCreated")]
+    partial class TablesCreated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -373,8 +373,11 @@ namespace Nasarna.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("AmountPercent")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -405,6 +408,8 @@ namespace Nasarna.Migrations
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -699,6 +704,10 @@ namespace Nasarna.Migrations
 
             modelBuilder.Entity("Nasarna.Models.Cause", b =>
                 {
+                    b.HasOne("Nasarna.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
                     b.HasOne("Nasarna.Models.Category", "Category")
                         .WithMany("Causes")
                         .HasForeignKey("CategoryId")

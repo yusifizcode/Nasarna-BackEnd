@@ -93,7 +93,7 @@
                         <div class="d-flex align-items-center justify-content-center">
                             @if(member != null)
                             {
-                                <a class="fw-bold text-secondary" asp-route-username="@User.Identity.Name" asp-action="index" asp-controller="account">@User.Identity.Name</a>
+                                <a class="fw-bold text-secondary" asp-route-id="@member.Id" asp-action="index" asp-controller="account">@User.Identity.Name</a>
                                 <a asp-action="signout" asp-controller="account" class="top-login-register text-decoration-none p-3 text-secondary">Sign Out</a>
 
                             }
@@ -417,7 +417,6 @@
             }
         })
     </script>
-
     <!-- Odometer JS -->
     <script src="~/assets/js/odometer.js"></script>
 
@@ -429,6 +428,9 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/assets/js/main.js"></script>
     <!-- Script JS -->
     <script src="~/assets/js/script.js"></script>
 

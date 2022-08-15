@@ -25,7 +25,16 @@ namespace Nasarna.Controllers
         }
         public IActionResult Index()
         {
-            var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).ToList() ;
+            var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.AppUser).ToList() ;
+
+            foreach (var cause in causes)
+            {
+                if (cause.NeedAmount > 0)
+                {
+                    cause.AmountPercent = (cause.CurrentAmount / cause.NeedAmount) * 100;
+                }
+            }
+
             return View(causes);
         }
 
@@ -61,6 +70,15 @@ namespace Nasarna.Controllers
         [HttpPost]
         public IActionResult Create(Cause cause)
         {
+
+
+            AppUser loggedUser = null;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
+                cause.AppUserId = loggedUser.Id;
+            }
 
             if (!_context.Categories.Any(x => x.Id == cause.CategoryId))
                 ModelState.AddModelError("CategoryId", "Category not found!");
@@ -131,13 +149,21 @@ namespace Nasarna.Controllers
             return RedirectToAction("index");
         }
 
+        [Authorize(Roles = "Member")]
 
-        public IActionResult Edit(string username,int id)
+        public IActionResult Edit(int id)
         
-        {
+       {
             var cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).FirstOrDefault(x => x.Id == id);
 
-            if (cause == null && cause?.AppUser.UserName != username)
+            AppUser loggedUser = null;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
+            }
+
+            if (cause == null || cause?.AppUserId != loggedUser?.Id)
                 return RedirectToAction("error", "home");
 
             ViewBag.Categories = _context.Categories.ToList();
@@ -146,14 +172,22 @@ namespace Nasarna.Controllers
             cause.TagIds = cause.CauseTags.Select(x => x.TagId).ToList();
             return View(cause);
         }
+        [Authorize(Roles = "Member")]
 
 
         [HttpPost]
-        public IActionResult Edit(string username, Cause cause)
+        public IActionResult Edit(Cause cause)
         {
             var existCause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).FirstOrDefault(x=>x.Id == cause.Id);
 
-            if (existCause == null && existCause.AppUser.UserName != username)
+            AppUser loggedUser = null;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
+            }
+
+            if (existCause == null && existCause.AppUserId != loggedUser.Id)
                 return RedirectToAction("error", "home");
 
 
@@ -237,6 +271,32 @@ namespace Nasarna.Controllers
         }
 
 
+        public IActionResult Delete(int id)
+        {
+            var cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.Donations).FirstOrDefault(x => x.Id == id);
+
+            AppUser loggedUser = null;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
+            }
+
+            if (cause == null || cause.CurrentAmount < cause.NeedAmount || cause.AmountPercent != 100 || cause?.AppUserId != loggedUser.Id)
+                   return NotFound();
+
+            foreach (var file in cause.CauseImages)
+            {
+                FileManager.Delete(_env.WebRootPath, "uploads/causes", file.Name);
+            }
+
+            _context.Causes.Remove(cause);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+
+
         [HttpPost]
         public IActionResult Donate(CauseDetailViewModel detailVM)
         {
@@ -247,7 +307,7 @@ namespace Nasarna.Controllers
 
             detailVM.Donation.CauseId = donatedCause.Id;
 
-            if(detailVM.Donation.Amount > detailVM.Cause.NeedAmount)
+            if((detailVM.Donation.Amount > detailVM.Cause.NeedAmount) || (detailVM.Cause.CurrentAmount >= detailVM.Cause.NeedAmount))
             {
                 ModelState.AddModelError("Amount", "Your amount more than need amount!");
                 return RedirectToAction("detail", new { detailVM.Cause.Id });
@@ -262,7 +322,7 @@ namespace Nasarna.Controllers
 
             _context.Donations.Add(detailVM.Donation);
             _context.SaveChanges();
-            return RedirectToAction("index","home");
+            return RedirectToAction("detail", new { detailVM.Cause.Id });
         }
 
     }

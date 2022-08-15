@@ -374,10 +374,7 @@ namespace Nasarna.Migrations
                     b.Property<decimal>("AmountPercent")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AppUserId1")
+                    b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CategoryId")
@@ -410,7 +407,7 @@ namespace Nasarna.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId1");
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -707,7 +704,7 @@ namespace Nasarna.Migrations
                 {
                     b.HasOne("Nasarna.Models.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId1");
+                        .HasForeignKey("AppUserId");
 
                     b.HasOne("Nasarna.Models.Category", "Category")
                         .WithMany("Causes")

@@ -11,10 +11,9 @@ namespace Nasarna.DAL
         {
 
         }
-
+        public DbSet<AppUser> Users { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<AppUser> Users { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<BlogTag> BlogTags { get; set; }

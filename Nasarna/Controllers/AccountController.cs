@@ -24,9 +24,17 @@ namespace Nasarna.Controllers
             _roleManager = roleManager;
             _context = context;
         }
-        public IActionResult Index(string username)
+        public IActionResult Index(string id)
         {
-            var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.AppUser).Where(x=>x.AppUser.UserName == username).ToList();
+            var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.AppUser).Where(x=>x.AppUserId == id).ToList();
+
+            foreach (var cause in causes)
+            {
+                if (cause.NeedAmount > 0)
+                {
+                    cause.AmountPercent = (cause.CurrentAmount / cause.NeedAmount) * 100;
+                }
+            }
             return View(causes);
         }
 
@@ -108,7 +116,7 @@ namespace Nasarna.Controllers
                         string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         var url = Url.Action("ConfirmEmail", "Account", new { email = user.Email, token = token }, Request.Scheme);*/
 
-            await _roleManager.CreateAsync(new IdentityRole("Member"));
+/*            await _roleManager.CreateAsync(new IdentityRole("Member"));*/
 
             await _userManager.AddToRoleAsync(user, "Member");
 

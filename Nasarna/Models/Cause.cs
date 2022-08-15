@@ -9,7 +9,7 @@ namespace Nasarna.Models
     public class Cause
     {
         public int Id { get; set; }
-        public int AppUserId { get; set; }
+        public string AppUserId { get; set; }
         public int CategoryId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         [Required]
@@ -18,7 +18,7 @@ namespace Nasarna.Models
         [MaxLength(100)]
         public string SubTitle { get; set; }
         [Required]
-        public string Desc { get; set; }
+        public string Desc { get; set; }    
         public string SubDesc { get; set; }
         [MaxLength(100)]
         public string Address { get; set; }

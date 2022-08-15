@@ -35,7 +35,6 @@
                         <h2 class="fs-3 ">Create a Post for Charity</h2>
                         <div class="donation-details tab-donation">
                             <form asp-action="create" method="post" enctype="multipart/form-data">
-                                <input asp-for="AppUser.UserName" value="@User.Identity.Name" />
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                                         <input asp-for="Title" class="form-control" placeholder="Title">

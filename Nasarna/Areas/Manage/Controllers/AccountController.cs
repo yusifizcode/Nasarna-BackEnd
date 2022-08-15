@@ -27,8 +27,8 @@ namespace Nasarna.Areas.Manage.Controllers
             return View(users);
         }
 
-/*        CREATE DEFAULT SUPER ADMIN
-*/
+        /*        CREATE DEFAULT SUPER ADMIN
+        */
 /*        public async Task<IActionResult> CreateAdmin()
         {
             AppUser admin = new AppUser
@@ -58,9 +58,9 @@ namespace Nasarna.Areas.Manage.Controllers
 
             return View();
         }
-
-
 */
+
+
         public IActionResult Login()
         {
             return View();
