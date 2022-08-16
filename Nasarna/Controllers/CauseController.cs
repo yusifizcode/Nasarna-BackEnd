@@ -8,6 +8,8 @@ using Nasarna.Models;
 using Nasarna.ViewModels;
 using Pustok.Helpers;
 using System.Linq;
+using System.Threading.Tasks;
+using WebApplication1.Models;
 
 namespace Nasarna.Controllers
 {
@@ -46,8 +48,8 @@ namespace Nasarna.Controllers
 
             CauseDetailViewModel detailVM = new CauseDetailViewModel
             {
-                Cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.Donations).Include(x=>x.AppUser).FirstOrDefault(x => x.Id == id),
-                Donation = _context.Donations.Include(x=>x.Cause).FirstOrDefault(x=>x.CauseId == id),
+                Cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.AppUser).FirstOrDefault(x => x.Id == id),
+                Payment = _context.Payments.Include(x=>x.Cause).FirstOrDefault(x=>x.CauseId == id),
             };
 
             if (detailVM.Cause.NeedAmount > 0)
@@ -273,7 +275,7 @@ namespace Nasarna.Controllers
 
         public IActionResult Delete(int id)
         {
-            var cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.Donations).FirstOrDefault(x => x.Id == id);
+            var cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).FirstOrDefault(x => x.Id == id);
 
             AppUser loggedUser = null;
 
@@ -296,34 +298,72 @@ namespace Nasarna.Controllers
         }
 
 
+        /*
+                [HttpPost]
+                public IActionResult Donate(CauseDetailViewModel detailVM)
+                {
+                    var donatedCause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.Donations).FirstOrDefault(x=>x.Id == detailVM.Cause.Id);
 
-        [HttpPost]
-        public IActionResult Donate(CauseDetailViewModel detailVM)
+                    if (donatedCause == null)
+                        return RedirectToAction("error", "home");
+
+                    detailVM.Donation.CauseId = donatedCause.Id;
+
+                    if((detailVM.Donation.Amount > detailVM.Cause.NeedAmount) || (detailVM.Cause.CurrentAmount >= detailVM.Cause.NeedAmount))
+                    {
+                        ModelState.AddModelError("Amount", "Your amount more than need amount!");
+                        return RedirectToAction("detail", new { detailVM.Cause.Id });
+                    }
+                    else
+                    {
+                        donatedCause.CurrentAmount += detailVM.Donation.Amount;
+                    }
+
+                    if (!ModelState.IsValid)
+                        return RedirectToAction("detail", new { detailVM.Cause.Id });
+
+                    _context.Donations.Add(detailVM.Donation);
+                    _context.SaveChanges();
+                    return RedirectToAction("detail", new { detailVM.Cause.Id });
+                }
+
+        */
+
+        public IActionResult Payment(CauseDetailViewModel detailVM)
         {
-            var donatedCause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.Donations).FirstOrDefault(x=>x.Id == detailVM.Cause.Id);
 
-            if (donatedCause == null)
+            var donatedCause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.Payments).FirstOrDefault(x => x.Id == detailVM.Cause.Id);
+
+
+            if (detailVM.Payment == null)
                 return RedirectToAction("error", "home");
 
-            detailVM.Donation.CauseId = donatedCause.Id;
 
-            if((detailVM.Donation.Amount > detailVM.Cause.NeedAmount) || (detailVM.Cause.CurrentAmount >= detailVM.Cause.NeedAmount))
+            if ((detailVM.Payment.Value > detailVM.Cause.NeedAmount) || (detailVM.Cause.CurrentAmount >= detailVM.Cause.NeedAmount))
             {
                 ModelState.AddModelError("Amount", "Your amount more than need amount!");
                 return RedirectToAction("detail", new { detailVM.Cause.Id });
             }
             else
             {
-                donatedCause.CurrentAmount += detailVM.Donation.Amount;
+                donatedCause.CurrentAmount += detailVM.Payment.Value;
             }
+
 
             if (!ModelState.IsValid)
                 return RedirectToAction("detail", new { detailVM.Cause.Id });
 
-            _context.Donations.Add(detailVM.Donation);
+            detailVM.Payment.CauseId = detailVM.Cause.Id;
+
+            _context.Payments.Add(detailVM.Payment);
             _context.SaveChanges();
-            return RedirectToAction("detail", new { detailVM.Cause.Id });
+            return RedirectToAction("Pay",detailVM.Payment);
         }
 
+        [Route("pay")]
+        public async Task<dynamic> Pay(Models.Payment pm)
+        {
+            return await MakePayment.PayAsync(pm.CardNumber, pm.Month, pm.Year, pm.Cvc, pm.Value);
+        }
     }
 }

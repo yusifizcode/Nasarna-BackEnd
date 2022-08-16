@@ -6,6 +6,6 @@ namespace Nasarna.ViewModels
     public class CauseDetailViewModel
     {
         public Cause Cause { get; set; }
-        public Donation Donation { get; set; }
+        public Payment Payment { get; set; }
     }
 }

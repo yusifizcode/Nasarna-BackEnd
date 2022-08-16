@@ -31,4 +31,8 @@
             }
         })
     })
+
+    $(".pay-btn").click(function (e) {
+
+    })
 })

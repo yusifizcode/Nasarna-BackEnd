@@ -36,6 +36,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.28",
           "Microsoft.EntityFrameworkCore.Tools": "3.1.28",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "3.1.5",
+          "Stripe.net": "27.1.2",
           "Microsoft.AspNetCore.Antiforgery": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Cookies": "3.1.0.0",
@@ -1329,6 +1330,21 @@
           }
         }
       },
+      "Stripe.net/27.1.2": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2",
+          "System.Configuration.ConfigurationManager": "4.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Stripe.net.dll": {
+            "assemblyVersion": "27.1.2.0",
+            "fileVersion": "27.1.2.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Stripe.net.dll": {}
+        }
+      },
       "System.AppContext/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.0"
@@ -1561,6 +1577,9 @@
             "assemblyVersion": "4.0.1.0",
             "fileVersion": "4.6.26515.6"
           }
+        },
+        "compile": {
+          "ref/netstandard2.0/System.Configuration.ConfigurationManager.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -4414,6 +4433,13 @@
       "sha512": "sha512-YhEdSQUsTx+C8m8Bw7ar5/VesXvCFMItyZF7G1AUY+OM0VPZUOeAVpJ4Wl6fydBGUYZxojTDR3I6Bj/+BPkJNA==",
       "path": "runtime.win-x86.runtime.native.system.data.sqlclient.sni/4.4.0",
       "hashPath": "runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512"
+    },
+    "Stripe.net/27.1.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GrMTQIAy1xllr8CUb0emmcXCYDkFVYsUO7qcp0v6iRCASOEpAVrXI87sG+f/RbSZ8K7Pp9ei3zBmNRyhdnrlOQ==",
+      "path": "stripe.net/27.1.2",
+      "hashPath": "stripe.net.27.1.2.nupkg.sha512"
     },
     "System.AppContext/4.3.0": {
       "type": "package",

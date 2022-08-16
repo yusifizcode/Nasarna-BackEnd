@@ -54,6 +54,7 @@ C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\bin\Debug\netcoreap
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\bin\Debug\netcoreapp3.1\NuGet.Frameworks.dll
+C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\bin\Debug\netcoreapp3.1\Stripe.net.dll
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\bin\Debug\netcoreapp3.1\System.Collections.Immutable.dll
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\bin\Debug\netcoreapp3.1\System.Composition.AttributedModel.dll
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\bin\Debug\netcoreapp3.1\System.Composition.Convention.dll

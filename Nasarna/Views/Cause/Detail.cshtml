@@ -143,16 +143,16 @@
                                     </div>
                                     <div id="Donations" class="tab-pane donate">
 
-                                        <form asp-action="donate" method="post">
+                                        <form asp-action="payment" asp-controller="cause" method="post">
                                             <input asp-for="Cause.Id" readonly>
                                             <input asp-for="Cause.Title" readonly>
                                             <input asp-for="Cause.Desc" readonly>
                                             <input asp-for="Cause.NeedAmount" readonly>
                                             <div class="donation-amount tab-donation border-0 form-group">
                                                 <h2>Your Donation</h2>
-                                                <input asp-for="Donation.Amount" type="number" class="form-control"
+                                                <input asp-for="Payment.Value" type="number" class="form-control"
                                                     placeholder="Enter Donation Amount">
-                                                <span class="text-danger" asp-validation-for="Donation.Amount"></span>
+                                                <span class="text-danger" asp-validation-for="Payment.Value"></span>
 
                                             </div>
 
@@ -187,31 +187,38 @@
                                                 <div class="payment-area">
                                                     <div class="payment-by-card">
                                                         <div class="row">
-                                                            <div
+                                             @*               <div
                                                                 class="col-lg-6 col-md-12 col-12 mb-3 d-flex flex-column form-group">
-                                                                <label asp-for="Donation.Card" class="mb-2 fw-bold">Card holder Name</label>
+                                                                <label asp-for="Payment.Card" class="mb-2 fw-bold">Card holder Name</label>
                                                                 <input asp-for="Donation.Card" placeholder="" />
                                                                 <span class="text-danger" asp-validation-for="Donation.Card"></span>
-                                                            </div>
+                                                            </div>*@
                                                             <div
                                                                 class="col-lg-6 col-md-12 col-12 mb-3 d-flex flex-column form-group">
-                                                                <label asp-for="Donation.CardNumber" class="mb-2 fw-bold">Card Number</label>
-                                                                <input asp-for="Donation.CardNumber" placeholder="">
-                                                                <span class="text-danger" asp-validation-for="Donation.CardNumber"></span>
+                                                                <label asp-for="Payment.CardNumber" class="mb-2 fw-bold">Card Number</label>
+                                                                <input asp-for="Payment.CardNumber" placeholder="">
+                                                                <span class="text-danger" asp-validation-for="Payment.CardNumber"></span>
 
                                                             </div>
                                                             <div
                                                                 class="col-lg-6 col-md-12 col-12 mb-3 d-flex flex-column form-group">
-                                                                <label asp-for="Donation.CVV" class="mb-2 fw-bold">CVV</label>
-                                                                <input asp-for="Donation.CVV" placeholder="">
-                                                                <span class="text-danger" asp-validation-for="Donation.CVV"></span>
+                                                                <label asp-for="Payment.Cvc" class="mb-2 fw-bold">CVV</label>
+                                                                <input asp-for="Payment.Cvc" placeholder="">
+                                                                <span class="text-danger" asp-validation-for="Payment.Cvc"></span>
 
                                                             </div>
                                                             <div
                                                                 class="col-lg-6 col-md-12 col-12 mb-3 d-flex flex-column form-group">
-                                                                <label asp-for="Donation.ExpireDate" class="mb-2 fw-bold">Expire Date</labeL>
-                                                                <input asp-for="Donation.ExpireDate" placeholder="">
-                                                                <span class="text-danger" asp-validation-for="Donation.ExpireDate"></span>
+                                                                <label asp-for="Payment.Month" class="mb-2 fw-bold">Expire Month</labeL>
+                                                                <input asp-for="Payment.Month" type="number" placeholder="">
+                                                                <span class="text-danger" asp-validation-for="Payment.Month"></span>
+
+                                                            </div>
+                                                             <div
+                                                                class="col-lg-6 col-md-12 col-12 mb-3 d-flex flex-column form-group">
+                                                                <label asp-for="Payment.Year" class="mb-2 fw-bold">Expire Year</labeL>
+                                                                <input asp-for="Payment.Year" type="number" placeholder="">
+                                                                <span class="text-danger" asp-validation-for="Payment.Year"></span>
 
                                                             </div>
 @*                                                            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
@@ -219,7 +226,7 @@
                                                     </div>
                                                 </div>
                                                  <div class="form-btn mt-3 text-white">
-                                                    <button type="submit" href="" class="btn btn-warning">Submit</button>
+                                                    <button type="submit" href="" class="btn btn-warning pay-btn">Submit</button>
                                                  </div>
                                             </div>
 

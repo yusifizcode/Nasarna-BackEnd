@@ -24,15 +24,16 @@ namespace Nasarna.Models
         public string Address { get; set; }
 
         [Column(TypeName = "decimal(18, 6)")]
-        public decimal NeedAmount { get; set; }
+        public double NeedAmount { get; set; }
         [Column(TypeName = "decimal(18, 6)")]
-        public decimal CurrentAmount { get; set; } = 0;
+        public double CurrentAmount { get; set; } = 0;
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal AmountPercent { get; set; } = 0;
+        public double AmountPercent { get; set; } = 0;
         public List<CauseImage> CauseImages { get; set; } = new List<CauseImage>();
         public List<CauseTag> CauseTags { get; set; } = new List<CauseTag>();
-        public List<Donation> Donations { get; set; } = new List<Donation>();
-        public Category Category { get; set; }
+        public List<Payment> Payments { get; set; } = new List<Payment>();
+/*        public List<Donation> Donations { get; set; } = new List<Donation>();
+*/        public Category Category { get; set; }
         public AppUser AppUser { get; set; }
         [NotMapped]
         public List<IFormFile> ImageFiles { get; set; }

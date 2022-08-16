@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nasarna.DAL;
 
 namespace Nasarna.Migrations
 {
     [DbContext(typeof(NasarnaDbContext))]
-    partial class NasarnaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220816092039_PaymentsTableCreated")]
+    partial class PaymentsTableCreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -738,7 +740,7 @@ namespace Nasarna.Migrations
             modelBuilder.Entity("Nasarna.Models.Payment", b =>
                 {
                     b.HasOne("Nasarna.Models.Cause", "Cause")
-                        .WithMany("Payments")
+                        .WithMany()
                         .HasForeignKey("CauseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
