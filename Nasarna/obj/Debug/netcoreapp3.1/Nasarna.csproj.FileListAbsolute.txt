@@ -173,6 +173,7 @@ C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreap
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\Error.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\Volunteer.cshtml.g.cs
+C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_CauseCommentFormPartialView.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs

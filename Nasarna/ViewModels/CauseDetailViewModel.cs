@@ -7,5 +7,7 @@ namespace Nasarna.ViewModels
     {
         public Cause Cause { get; set; }
         public Payment Payment { get; set; }
+        public List<Cause> RelatedCauses { get; set; }
+        public CauseCommentPostViewModel CauseComment { get; set; }
     }
 }

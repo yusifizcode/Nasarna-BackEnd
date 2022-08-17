@@ -1,0 +1,11 @@
+﻿@model CauseCommentPostViewModel
+
+<div class="comment-respond">
+    <h3>Leave a Comment</h3>
+    <form asp-action="comment" asp-controller="cause" method="post" class="comment-form">
+        <input type="hidden" asp-for="CauseId" />
+        <textarea asp-for="Text" placeholder="Write Your Comments..." rows="6"></textarea>
+        <span class="text-danger" asp-validation-for="Text"></span>
+        <button type="submit" class="">Send</button>
+    </form>
+</div>

@@ -7,6 +7,7 @@ using Nasarna.DAL;
 using Nasarna.Models;
 using Nasarna.ViewModels;
 using Pustok.Helpers;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Models;
@@ -27,7 +28,11 @@ namespace Nasarna.Controllers
         }
         public IActionResult Index()
         {
-            var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.AppUser).ToList() ;
+            var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag)
+                                        .Include(x => x.Category)
+                                        .Include(x => x.CauseImages)
+                                        .Include(x=>x.AppUser)
+                                        .ToList() ;
 
             foreach (var cause in causes)
             {
@@ -46,11 +51,11 @@ namespace Nasarna.Controllers
             ViewBag.Categories = _context.Categories.Where(x=>x.Causes.Any());
             ViewBag.Tags = _context.Tags.Where(x => x.CauseTags.Any());
 
-            CauseDetailViewModel detailVM = new CauseDetailViewModel
-            {
-                Cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.AppUser).FirstOrDefault(x => x.Id == id),
-                Payment = _context.Payments.Include(x=>x.Cause).FirstOrDefault(x=>x.CauseId == id),
-            };
+            CauseDetailViewModel detailVM = GetCauseDetailVM(id);
+
+            if (detailVM == null)
+                return RedirectToAction("error", "home");
+
 
             if (detailVM.Cause.NeedAmount > 0)
             {
@@ -58,6 +63,72 @@ namespace Nasarna.Controllers
             }
             return View(detailVM);
         }
+
+
+        private CauseDetailViewModel GetCauseDetailVM(int id)
+        {
+            Cause cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag)
+                                         .Include(x => x.Category)
+                                         .Include(x => x.CauseImages)
+                                         .Include(x => x.CauseComments)
+                                         .Include(x=>x.AppUser)
+                                         .FirstOrDefault(x => x.Id == id);
+
+            if (cause == null)
+                return null;
+
+            CauseDetailViewModel causeVM = new CauseDetailViewModel
+            {
+                Cause = cause,
+                RelatedCauses = _context.Causes.Include(x => x.CauseImages).Take(3).ToList(),
+                CauseComment = new CauseCommentPostViewModel { CauseId = id },
+                Payment = _context.Payments.Include(x => x.Cause).FirstOrDefault(x => x.CauseId == id),
+            };
+
+            return causeVM;
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Member")]
+        public async Task<IActionResult> Comment(CauseCommentPostViewModel commentVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                var model = GetCauseDetailVM(commentVM.CauseId);
+
+                if (model == null) return RedirectToAction("error", "home");
+                else
+                {
+                    model.CauseComment = commentVM;
+                    return View("Detail",model);
+                }
+            }
+
+            Cause cause = _context.Causes.Include(x=>x.CauseComments).FirstOrDefault(x=>x.Id == commentVM.CauseId);
+
+            if (cause == null)
+                return RedirectToAction("error", "home");
+
+            AppUser user = await _context.Users.FirstOrDefaultAsync(x => !x.IsAdmin && x.NormalizedUserName == User.Identity.Name.ToUpper());
+
+            CauseComment comment = new CauseComment
+            {
+                CauseId = commentVM.CauseId,
+                AppUserId = user.Id,
+                CreatedAt = DateTime.UtcNow.AddHours(4),
+                Text = commentVM.Text,
+            };
+
+            cause.CauseComments.Add(comment);
+
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction("detail", new { id = commentVM.CauseId });
+        }
+
+
         [Authorize(Roles = "Member")]
 
         public IActionResult Create()

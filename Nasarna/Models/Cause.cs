@@ -27,7 +27,7 @@ namespace Nasarna.Models
         public double NeedAmount { get; set; }
         [Column(TypeName = "decimal(18, 6)")]
         public double CurrentAmount { get; set; } = 0;
-        [Column(TypeName = "decimal(18, 2)")]
+        [Column(TypeName = "decimal(18, 6)")]
         public double AmountPercent { get; set; } = 0;
         public List<CauseImage> CauseImages { get; set; } = new List<CauseImage>();
         public List<CauseTag> CauseTags { get; set; } = new List<CauseTag>();
@@ -39,5 +39,6 @@ namespace Nasarna.Models
         public List<IFormFile> ImageFiles { get; set; }
         [NotMapped]
         public List<int> TagIds { get; set; } = new List<int>();
+        public List<CauseComment> CauseComments { get; set; } = new List<CauseComment>();
     }
 }

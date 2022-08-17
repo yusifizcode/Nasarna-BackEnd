@@ -7,7 +7,7 @@ namespace Nasarna.Models
     {
         public int Id { get; set; }
         public int CauseId { get; set; }
-        public int AppUserId { get; set; }
+        public string AppUserId { get; set; }
         [Required]
         [MaxLength(250)]
         public string Text { get; set; }

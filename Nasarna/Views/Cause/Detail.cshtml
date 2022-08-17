@@ -96,7 +96,7 @@
                                                         <div class="progress mt-5 mb-4">
                                                             <div class="progress-bar bg-warning" role="progressbar"
                                                                 style="width: @Model.Cause.AmountPercent%;" aria-valuenow="@Model.Cause.AmountPercent" aria-valuemin="0"
-                                                                aria-valuemax="100">@Model.Cause.AmountPercent%</div>
+                                                                aria-valuemax="100">@((int)Model.Cause.AmountPercent)%</div>
                                                         </div>
                                                         <div class="raise-goal d-flex justify-content-between">
                                                             <div class="raise">
@@ -234,9 +234,13 @@
                                         </form>
                                     </div>
                                     <div id="Comments" class="tab-pane">
-                                        <div class="comments">
+                                         <div class="comments">
+                                    @if (Model.Cause.CauseComments.Count > 0)
+                                    {
                                             <h3 class="comments-title mt-3">Comments</h3>
                                             <ol class="comment-list">
+                                            @foreach(var comment in Model.Cause.CauseComments)
+                                            {
                                                 <li class="comment d-flex mb-3">
                                                     <div class="comment-img">
                                                         <img src="~/assets/images/blog-details/comments-author/img-1.jpg"
@@ -244,71 +248,29 @@
                                                     </div>
                                                     <div class="comment-wrap">
                                                         <div class="comment-header">
-                                                            <h4>John Abraham
-                                                                <span class="comment-date">Octobor 28,2018 At
-                                                                    9.00am</span>
+                                                            <h4>@comment.AppUser.FullName
+                                                                <span class="comment-date">@comment.CreatedAt.ToString("MMM d, yyyy - h:mm")</span>
                                                             </h4>
                                                         </div>
                                                         <div class="comment-content">
-                                                            <p>I will give you a complete account of the system, and
-                                                                expound the actual teachings of the great explorer of
-                                                                the truth,</p>
+                                                            <p>@comment.Text</p>
                                                         </div>
                                                     </div>
                                                 </li>
-                                                <li class="comment d-flex mb-3">
-                                                    <div class="comment-img">
-                                                        <img src="~/assets/images/blog-details/comments-author/img-1.jpg"
-                                                            alt="">
-                                                    </div>
-                                                    <div class="comment-wrap">
-                                                        <div class="comment-header">
-                                                            <h4>John Abraham
-                                                                <span class="comment-date">Octobor 28,2018 At
-                                                                    9.00am</span>
-                                                            </h4>
-                                                        </div>
-                                                        <div class="comment-content">
-                                                            <p>I will give you a complete account of the system, and
-                                                                expound the actual teachings of the great explorer of
-                                                                the truth,</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="comment d-flex mb-3">
-                                                    <div class="comment-img">
-                                                        <img src="~/assets/images/blog-details/comments-author/img-1.jpg"
-                                                            alt="">
-                                                    </div>
-                                                    <div class="comment-wrap">
-                                                        <div class="comment-header">
-                                                            <h4>John Abraham
-                                                                <span class="comment-date">Octobor 28,2018 At
-                                                                    9.00am</span>
-                                                            </h4>
-                                                        </div>
-                                                        <div class="comment-content">
-                                                            <p>I will give you a complete account of the system, and
-                                                                expound the actual teachings of the great explorer of
-                                                                the truth,</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ol>
-                                            <div class="comment-respond">
-                                                <h3>Leave a Comment</h3>
-                                                <form action="" method="post" class="comment-form">
-                                                    <textarea placeholder="Write Your Comments..." rows="6"></textarea>
-                                                    <button type="submit" class="">Send</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            }
+                                        </ol>
+                                    }
+                                           @await Html.PartialAsync("_CauseCommentFormPartialView",Model.CauseComment)
+                                      </div>
+                                </div>
 
                                 </div>
                             </div>
                         </div>
 
+                    @if (Model.Cause.CauseTags.Count > 0)
+                    {
+                        
                         <div class="tag-share shadow p-4 mt-5">
                             <div class="d-flex flex-wrap">
                             @foreach(var causeTag in @Model.Cause.CauseTags)
@@ -318,6 +280,7 @@
                             }
                         </div>
                         </div>
+                    }
 
                     </div>
                     <div class="col-md-4">
@@ -343,47 +306,25 @@
                             </ul>
                             </div>
                             <div class="sidebar-item sidebar-recents">
-                                <h3>Recent Posts</h3>
+                                <h3>Related Posts</h3>
                                 <div class="recent-posts">
-                                    <div class="recent-post">
+                                @foreach(var relatedPost in Model.RelatedCauses)
+                                {
+                                     <div class="recent-post mt-3">
                                         <div class="recent-post-img">
-                                            <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
+                                            <img src="~/uploads/causes/@relatedPost.CauseImages[0]?.Name" alt="">
                                         </div>
                                         <div class="recent-post-detail">
                                             <h4>
-                                                <a href="">Many Children are suffering a lot for food.</a>
+                                                <a href="">@relatedPost.Title</a>
                                             </h4>
                                             <span class="date">
-                                                22 Sep 2020
+                                                @relatedPost.CreatedAt
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="recent-post mt-3">
-                                        <div class="recent-post-img">
-                                            <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
-                                        </div>
-                                        <div class="recent-post-detail">
-                                            <h4>
-                                                <a href="">Many Children are suffering a lot for food.</a>
-                                            </h4>
-                                            <span class="date">
-                                                22 Sep 2020
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="recent-post mt-3">
-                                        <div class="recent-post-img">
-                                            <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
-                                        </div>
-                                        <div class="recent-post-detail">
-                                            <h4>
-                                                <a href="">Many Children are suffering a lot for food.</a>
-                                            </h4>
-                                            <span class="date">
-                                                22 Sep 2020
-                                            </span>
-                                        </div>
-                                    </div>
+                                }
+
                                 </div>
                             </div>
                             <div class="sidebar-item sidebar-tags">
