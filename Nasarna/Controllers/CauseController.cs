@@ -410,9 +410,13 @@ namespace Nasarna.Controllers
                 return RedirectToAction("error", "home");
 
 
+            if (!ModelState.IsValid)
+                return RedirectToAction("detail", new { detailVM.Cause.Id });
+
+
             if ((detailVM.Payment.Value > detailVM.Cause.NeedAmount) || (detailVM.Cause.CurrentAmount >= detailVM.Cause.NeedAmount))
             {
-                ModelState.AddModelError("Amount", "Your amount more than need amount!");
+                ModelState.AddModelError("", "Your amount more than need amount!");
                 return RedirectToAction("detail", new { detailVM.Cause.Id });
             }
             else
@@ -421,8 +425,6 @@ namespace Nasarna.Controllers
             }
 
 
-            if (!ModelState.IsValid)
-                return RedirectToAction("detail", new { detailVM.Cause.Id });
 
             detailVM.Payment.CauseId = detailVM.Cause.Id;
 
