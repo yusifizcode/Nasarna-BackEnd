@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model List<Cause>
+@model AccountViewModel
 @inject UserManager<AppUser> _userManager
 @{
     ViewData["Title"] = "Index";
@@ -8,7 +8,6 @@
     {
         member = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
     }
-
 
 }
 
@@ -19,7 +18,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="breadcrumb-wrap">
-                        <h2>@User.Identity.Name</h2>
+                        <h2>@Model.User.UserName</h2>
                         <ul class="breadcrumb-list">
                             <li class="breadcrumb-list-item">
                                 <a href="index.html">Home</a>
@@ -38,11 +37,11 @@
     <!-- Start My Posts -->
     <section id="my-posts" class="mb-5 section-padding">
         <div class="container">
-            <div class="row donate justify-content-center">
-                <h2 class="fs-3 mb-4 d-flex align-items-center flex-column">@User.Identity.Name Posts
-                    <a asp-action="create" asp-controller="cause" class="mt-3 border border-3 border-secondary p-1 px-2 rounded-3"><i class="fa-solid fa-plus text-warning"></i></a>
+            <div class="row donate">
+                <h2 class="fs-3 mb-4 d-flex justify-content-between mb-5">@(Model.User.UserName + "'s") Posts
+                    <a asp-action="create" asp-controller="cause" class="text-decoration-none fs-4 text-warning">Add +</a>
                 </h2>
-                @foreach (var cause in Model)
+                @foreach (var cause in Model.Causes)
                 {
                     @if (cause != null)
                     {
@@ -52,7 +51,7 @@
                                     @foreach (var causeImg in cause.CauseImages)
                                     {
                                         <div class="item">
-                                            <div class="post-img">
+                                            <div class="post-img h-50">
                                                 <a asp-action="detail" asp-controller="cause" asp-route-id="@cause.Id"><img src="~/uploads/causes/@causeImg.Name" alt=""></a>
                                             </div>
                                         </div>
@@ -75,7 +74,7 @@
                                                 </div>
                                             </div>
                                             <div class="post-date ms-3 d-flex align-items-center justify-content-between">
-                                                <span><i class="fa-solid fa-calendar-days me-1"></i> @cause.CreatedAt.ToString("MMM d, yyyy")</span>
+                                                <span><i class="fa-solid fa-calendar-days me-1"></i> @cause.CreatedAt.ToString("MMM d, yyyy")</span>    
                                             </div>
                                         </div>
                                         @if (member != null && member?.Id == cause.AppUserId)
@@ -85,7 +84,7 @@
                                                 {
                                                     <a asp-action="edit" asp-controller="cause" asp-route-id="@cause.Id"><i class="fa-solid fa-pen text-warning me-3"></i></a>
                                                 }
-                                                @if (cause.CurrentAmount == cause.NeedAmount || cause.AmountPercent >= 100)
+                                                @if (cause.CurrentAmount == 0 || cause.CurrentAmount == cause.NeedAmount || cause.AmountPercent >= 100)
                                                 {
                                                     <a asp-action="delete" asp-controller="cause" asp-route-id="@cause.Id" class="sweet-delete"><i class="fa-solid fa-trash-can text-danger"></i></a>
                                                 }
@@ -111,15 +110,15 @@
                                 </div>
                             </div>
                         </div>
-                                            }
-                    else
-                    {
-                        <p class="text-center font-weight-bold ">
-                            No posts yet..
-                        </p>
+
+
                     }
+                            
                 }
-                        <div class="pagination-wrapper mb-3">
+                       
+                @if(Model.Causes.Count != 0)
+                {
+                         <div class="pagination-wrapper mb-3">
                             <ul class="pg-pagination">
                                 <li>
                                     <a href=""><i class="fa-solid fa-angle-left"></i></a>
@@ -141,7 +140,7 @@
                                 </li>
                             </ul>
                         </div>
-
+                }
             </div>
         </div>
     </section>

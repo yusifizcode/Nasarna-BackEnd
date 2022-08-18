@@ -145,11 +145,11 @@
 
                                         <form asp-action="payment" asp-controller="cause" method="post">
                                             <input asp-for="Cause.Id" readonly>
-                                            <input asp-for="Cause.Title" readonly>
-                                            <input asp-for="Cause.Desc" readonly>
-                                            <input asp-for="Cause.NeedAmount" readonly>
+                                            @*<input asp-for="Cause.Title" readonly>
+                                            <input asp-for="Cause.Desc" readonly>*@
+                                  @*          <input asp-for="Cause.NeedAmount" readonly>
                                             <input asp-for="Cause.CurrentAmount" readonly>
-                                            <input asp-for="Cause.AmountPercent" readonly>
+                                            <input asp-for="Cause.AmountPercent" readonly>*@
                                             <div class="donation-amount tab-donation border-0 form-group">
                                                 <h2>Your Donation</h2>
                                                 <input asp-for="Payment.Value" type="number" class="form-control"
@@ -308,20 +308,20 @@
                             </ul>
                             </div>
                             <div class="sidebar-item sidebar-recents">
-                                <h3>Related Posts</h3>
+                                <h3>Recently Posts</h3>
                                 <div class="recent-posts">
-                                @foreach(var relatedPost in Model.RelatedCauses)
+                                @foreach(var recentlyPost in Model.RecentlyCauses)
                                 {
                                      <div class="recent-post mt-3">
                                         <div class="recent-post-img">
-                                            <img src="~/uploads/causes/@relatedPost.CauseImages[0]?.Name" alt="">
+                                            <img src="~/uploads/causes/@recentlyPost.CauseImages[0]?.Name" alt="">
                                         </div>
                                         <div class="recent-post-detail">
                                             <h4>
-                                                <a asp-action="detail" asp-controller="cause" asp-route-id="@relatedPost.Id">@relatedPost.Title</a>
+                                                <a asp-action="detail" asp-controller="cause" asp-route-id="@recentlyPost.Id">@recentlyPost.Title</a>
                                             </h4>
                                             <span class="date">
-                                                @relatedPost.CreatedAt
+                                                @recentlyPost.CreatedAt
                                             </span>
                                         </div>
                                     </div>

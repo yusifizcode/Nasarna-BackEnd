@@ -26,16 +26,21 @@ namespace Nasarna.Controllers
         }
         public IActionResult Index(string id)
         {
-            var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.AppUser).Where(x=>x.AppUserId == id).ToList();
 
-            foreach (var cause in causes)
+            AccountViewModel accountVM = new AccountViewModel
+            {
+                Causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.AppUser).Where(x => x.AppUserId == id).ToList(),
+                User = _context.Users.FirstOrDefault(x => x.Id == id),
+            };
+
+            foreach (var cause in accountVM.Causes)
             {
                 if (cause.NeedAmount > 0)
                 {
                     cause.AmountPercent = (cause.CurrentAmount / cause.NeedAmount) * 100;
                 }
             }
-            return View(causes);
+            return View(accountVM);
         }
 
         public IActionResult CreatePost()

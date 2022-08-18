@@ -34,13 +34,6 @@ namespace Nasarna.Controllers
                                         .Include(x=>x.AppUser)
                                         .ToList() ;
 
-            foreach (var cause in causes)
-            {
-                if (cause.NeedAmount > 0)
-                {
-                    cause.AmountPercent = (cause.CurrentAmount / cause.NeedAmount) * 100;
-                }
-            }
 
             return View(causes);
         }
@@ -56,11 +49,10 @@ namespace Nasarna.Controllers
             if (detailVM == null)
                 return RedirectToAction("error", "home");
 
+            if(!ModelState.IsValid)
+                return View();
 
-            if (detailVM.Cause.NeedAmount > 0)
-            {
-                detailVM.Cause.AmountPercent = (detailVM.Cause.CurrentAmount / detailVM.Cause.NeedAmount) * 100;
-            }
+
             return View(detailVM);
         }
 
@@ -80,7 +72,7 @@ namespace Nasarna.Controllers
             CauseDetailViewModel causeVM = new CauseDetailViewModel
             {
                 Cause = cause,
-                RelatedCauses = _context.Causes.Include(x => x.CauseImages).Take(3).ToList(),
+                RecentlyCauses = _context.Causes.Include(x => x.CauseImages).OrderByDescending(x=>x.Id).Take(3).ToList(),
                 CauseComment = new CauseCommentPostViewModel { CauseId = id },
                 Payment = _context.Payments.Include(x => x.Cause).FirstOrDefault(x => x.CauseId == id),
             };
@@ -236,7 +228,7 @@ namespace Nasarna.Controllers
                 loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
             }
 
-            if (cause == null || cause?.AppUserId != loggedUser?.Id)
+            if (cause == null || (cause.AmountPercent != 100 && cause.AmountPercent != 0) || cause?.AppUserId != loggedUser.Id)
                 return RedirectToAction("error", "home");
 
             ViewBag.Categories = _context.Categories.ToList();
@@ -260,7 +252,7 @@ namespace Nasarna.Controllers
                 loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
             }
 
-            if (existCause == null && existCause.AppUserId != loggedUser.Id)
+            if (existCause == null || (existCause.AmountPercent != 100 && existCause.AmountPercent != 0) || existCause?.AppUserId != loggedUser.Id)
                 return RedirectToAction("error", "home");
 
 
@@ -338,6 +330,7 @@ namespace Nasarna.Controllers
             existCause.Title = cause.Title;
             existCause.SubTitle = cause.SubTitle;
             existCause.CategoryId = cause.CategoryId;
+            existCause.NeedAmount = cause.NeedAmount;
 
             _context.SaveChanges();
             return RedirectToAction("index");
@@ -355,7 +348,7 @@ namespace Nasarna.Controllers
                 loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
             }
 
-            if (cause == null || cause.CurrentAmount < cause.NeedAmount || cause.AmountPercent != 100 || cause?.AppUserId != loggedUser.Id)
+            if (cause == null || (cause.AmountPercent != 100 && cause.AmountPercent != 0) || cause?.AppUserId != loggedUser.Id)
                    return NotFound();
 
             foreach (var file in cause.CauseImages)
@@ -406,27 +399,34 @@ namespace Nasarna.Controllers
             var donatedCause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.Payments).FirstOrDefault(x => x.Id == detailVM.Cause.Id);
 
 
-            if (detailVM.Payment == null)
+            if (detailVM.Payment == null || donatedCause == null)
                 return RedirectToAction("error", "home");
 
-
+/*
             if (!ModelState.IsValid)
-                return RedirectToAction("detail", new { detailVM.Cause.Id });
+                return RedirectToAction("detail", new { detailVM.Cause.Id });*/
 
 
-            if ((detailVM.Payment.Value > detailVM.Cause.NeedAmount) || (detailVM.Cause.CurrentAmount >= detailVM.Cause.NeedAmount))
+            if ((detailVM.Payment.Value > donatedCause.NeedAmount) || (donatedCause.CurrentAmount >= donatedCause.NeedAmount))
             {
-                ModelState.AddModelError("", "Your amount more than need amount!");
-                return RedirectToAction("detail", new { detailVM.Cause.Id });
+                /*ModelState.AddModelError("", "Your amount more than need amount!");
+                return RedirectToAction("detail", new { donatedCause.Id });*/
+
+                return RedirectToAction("error", "home");
             }
             else
             {
                 donatedCause.CurrentAmount += detailVM.Payment.Value;
+
+                if(donatedCause.NeedAmount > 0)
+                {
+                    donatedCause.AmountPercent = (int)((donatedCause.CurrentAmount / donatedCause.NeedAmount) * 100);
+                }
             }
 
 
 
-            detailVM.Payment.CauseId = detailVM.Cause.Id;
+            detailVM.Payment.CauseId = donatedCause.Id;
 
             _context.Payments.Add(detailVM.Payment);
             _context.SaveChanges();
