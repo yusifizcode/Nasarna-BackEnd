@@ -49,8 +49,8 @@ namespace Nasarna.Controllers
             if (detailVM == null)
                 return RedirectToAction("error", "home");
 
-            if(!ModelState.IsValid)
-                return View();
+            if(TempData["Error"] != null)
+                return View(detailVM);
 
 
             return View(detailVM);
@@ -393,50 +393,69 @@ namespace Nasarna.Controllers
 
         */
 
-        public IActionResult Payment(CauseDetailViewModel detailVM)
+        public async Task<IActionResult> Payment(Payment payment)
         {
 
-            var donatedCause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.Payments).FirstOrDefault(x => x.Id == detailVM.Cause.Id);
+            var donatedCause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.Payments).FirstOrDefault(x => x.Id == payment.CauseId);
 
 
-            if (detailVM.Payment == null || donatedCause == null)
+            if (payment == null || donatedCause == null)
                 return RedirectToAction("error", "home");
 
-/*
-            if (!ModelState.IsValid)
-                return RedirectToAction("detail", new { detailVM.Cause.Id });*/
 
+            var result = await MakePayment.PayAsync(payment.CardNumber, payment.Month, payment.Year, payment.Cvc, payment.Value);
 
-            if ((detailVM.Payment.Value > donatedCause.NeedAmount) || (donatedCause.CurrentAmount >= donatedCause.NeedAmount))
+            if (result == "Success")
             {
-                /*ModelState.AddModelError("", "Your amount more than need amount!");
-                return RedirectToAction("detail", new { donatedCause.Id });*/
+                if ((payment.Value > donatedCause.NeedAmount) || (donatedCause.CurrentAmount >= donatedCause.NeedAmount))
+                {
+                    /*ModelState.AddModelError("", "Your amount more than need amount!");
+                    return RedirectToAction("detail", new { donatedCause.Id });*/
 
-                return RedirectToAction("error", "home");
+                    return RedirectToAction("error", "home");
+                }
+                else
+                {
+                    donatedCause.CurrentAmount += payment.Value;
+
+                    if (donatedCause.NeedAmount > 0)
+                    {
+                        donatedCause.AmountPercent = (int)((donatedCause.CurrentAmount / donatedCause.NeedAmount) * 100);
+                    }
+                }
+
+
+
+                payment.CauseId = donatedCause.Id;
+
+                _context.Payments.Add(payment);
+                _context.SaveChanges();
+
+                return RedirectToAction("detail", new { id = payment.CauseId });
             }
             else
             {
-                donatedCause.CurrentAmount += detailVM.Payment.Value;
-
-                if(donatedCause.NeedAmount > 0)
-                {
-                    donatedCause.AmountPercent = (int)((donatedCause.CurrentAmount / donatedCause.NeedAmount) * 100);
-                }
+                TempData["Error"] = result;
+                return RedirectToAction("detail", new { id = donatedCause.Id }) ;
             }
-
-
-
-            detailVM.Payment.CauseId = donatedCause.Id;
-
-            _context.Payments.Add(detailVM.Payment);
-            _context.SaveChanges();
-            return RedirectToAction("Pay",detailVM.Payment);
         }
 
-        [Route("pay")]
+/*        [Route("pay")]
         public async Task<dynamic> Pay(Models.Payment pm)
         {
-            return await MakePayment.PayAsync(pm.CardNumber, pm.Month, pm.Year, pm.Cvc, pm.Value);
-        }
+            var result = await MakePayment.PayAsync(pm.CardNumber, pm.Month, pm.Year, pm.Cvc, pm.Value);
+
+            if (result == "Success")
+            {
+                return RedirectToAction("detail", new { id = pm.CauseId });
+            }
+            else
+            {
+                return RedirectToAction("error", "home");
+            }
+
+            *//*            return await MakePayment.PayAsync(pm.CardNumber, pm.Month, pm.Year, pm.Cvc, pm.Value);
+            *//*
+        }*/
     }
 }

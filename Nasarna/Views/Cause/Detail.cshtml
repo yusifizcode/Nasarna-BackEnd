@@ -144,7 +144,7 @@
                                     <div id="Donations" class="tab-pane donate">
 
                                         <form asp-action="payment" asp-controller="cause" method="post">
-                                            <input asp-for="Cause.Id" readonly>
+                                            <input asp-for="Payment.CauseId" readonly>
                                             @*<input asp-for="Cause.Title" readonly>
                                             <input asp-for="Cause.Desc" readonly>*@
                                   @*          <input asp-for="Cause.NeedAmount" readonly>
@@ -223,7 +223,7 @@
                                                                 @*<span class="text-danger" asp-validation-for="Payment.Year"></span>*@
 
                                                             </div>
-                                                            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                                                            <span class="text-danger">@TempData["Error"]</span>
                                                         </div>
                                                     </div>
                                                 </div>
