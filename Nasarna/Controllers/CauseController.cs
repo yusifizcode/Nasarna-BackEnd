@@ -32,6 +32,7 @@ namespace Nasarna.Controllers
                                         .Include(x => x.Category)
                                         .Include(x => x.CauseImages)
                                         .Include(x=>x.AppUser)
+                                        .Where(x=>x.IsActive == true)
                                         .ToList() ;
 
 
@@ -63,7 +64,9 @@ namespace Nasarna.Controllers
                                          .Include(x => x.Category)
                                          .Include(x => x.CauseImages)
                                          .Include(x => x.CauseComments)
+                                         .Include(x => x.Payments).ThenInclude(u=>u.AppUser)
                                          .Include(x=>x.AppUser)
+                                         .Where(x=>x.IsActive == true)
                                          .FirstOrDefault(x => x.Id == id);
 
             if (cause == null)
@@ -393,13 +396,22 @@ namespace Nasarna.Controllers
 
         */
 
+
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> Payment(Payment payment)
         {
 
-            var donatedCause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.Payments).FirstOrDefault(x => x.Id == payment.CauseId);
+            var donatedCause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x=>x.AppUser).Include(x => x.Payments).FirstOrDefault(x => x.Id == payment.CauseId);
 
+            AppUser loggedUser = null;
 
-            if (payment == null || donatedCause == null)
+            if (User.Identity.IsAuthenticated)
+            {
+                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
+                payment.AppUserId = loggedUser.Id;
+            }
+
+            if (payment == null || donatedCause == null || donatedCause.AppUserId == payment.AppUserId)
                 return RedirectToAction("error", "home");
 
 

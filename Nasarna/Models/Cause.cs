@@ -22,7 +22,7 @@ namespace Nasarna.Models
         public string SubDesc { get; set; }
         [MaxLength(100)]
         public string Address { get; set; }
-
+        public bool? IsActive { get; set; }
         [Column(TypeName = "decimal(18, 6)")]
         public double NeedAmount { get; set; }
         [Column(TypeName = "decimal(18, 6)")]

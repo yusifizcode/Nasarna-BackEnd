@@ -1,0 +1,50 @@
+﻿@model Cause
+@{
+    ViewData["Title"] = "Detail";
+}
+
+    <div class="content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-6">
+                <div class="card">
+                    <img src="~/uploads/causes/@Model.CauseImages[0]?.Name" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <span class="me-3">Category: @Model.Category?.Name</span>
+                        <p>Tags:
+                       @foreach(var tag in Model.CauseTags)
+                        {
+                            <span class=""> @tag.Tag?.Name</span>
+                        }
+                        </p>
+
+                        <h3 class="card-title">@Model.Title</h3>
+                        <p class="card-text">@Model.Desc</p>
+                        <h5 class="cad-title">@Model.SubTitle</h5>
+                        <p class="card-text">@Model.SubDesc</p>
+                        
+                        <p>Created At: @Model.CreatedAt</p>
+                        <p>Need Amount: @Model.NeedAmount</p>
+                        <p> Status:
+                        @if (@Model.IsActive == true)
+                        {
+                            <span class="text-primary">Active</span>
+                        }
+                        else if(@Model.IsActive == null)
+                        {
+                            <span class="text-secondary">Pending</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Deactive</span>
+                        }
+                        </p>
+                        <a class="btn btn-outline-success" asp-action="ActivateCause" asp-controller="cause" asp-route-id="@Model.Id" asp-route-isActive="@true">Active</a>
+                        <a class="btn btn-outline-danger" asp-action="ActivateCause" asp-controller="cause" asp-route-id="@Model.Id" asp-route-isActive="@false">Deactive</a>
+
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>

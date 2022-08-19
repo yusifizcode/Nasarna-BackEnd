@@ -1,6 +1,14 @@
-﻿@model CauseDetailViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@model CauseDetailViewModel
+@inject UserManager<AppUser> _userManager
 @{
     ViewData["Title"] = "Detail";
+    AppUser loggedUser = null;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
+    }
 }
 
     <main>
@@ -143,8 +151,10 @@
                                     </div>
                                     <div id="Donations" class="tab-pane donate">
 
+                                    @if(loggedUser?.Id != Model.Cause.AppUserId)
+                                    {
                                         <form asp-action="payment" asp-controller="cause" method="post">
-                                            <input asp-for="Payment.CauseId" readonly>
+                                            <input asp-for="Payment.CauseId" value="@Model.Cause.Id" readonly>
                                             @*<input asp-for="Cause.Title" readonly>
                                             <input asp-for="Cause.Desc" readonly>*@
                                   @*          <input asp-for="Cause.NeedAmount" readonly>
@@ -234,6 +244,34 @@
 
                                            
                                         </form>
+                                    }
+                                    else
+                                    {
+                                        <div class="container mt-3">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">Username</th>
+                                                            <th scope="col">Donate</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach(var userDonate in Model.Cause.Payments)
+                                                            {
+                                                                 <tr>
+                                                                    <th>@userDonate.AppUser?.UserName</th>
+                                                                    <td>@userDonate?.Value</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
                                     </div>
                                     <div id="Comments" class="tab-pane">
                                          <div class="comments">

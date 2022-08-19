@@ -1,0 +1,80 @@
+﻿@model List<Cause>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Causes Table</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                            <th>User</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Images</th>
+                            <th>Need Amount</th>
+                            <th>Status</th>
+                            <th class="text-right">Action</th>
+                            </thead>
+                            <tbody>
+                                @foreach (var cause in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @cause.AppUser.UserName
+                                        </td>
+                                        <td>
+                                            @cause.Title
+                                        </td>
+                                        <td>
+                                            @cause.Category.Name
+                                        </td>
+                                        <td>
+                                            @foreach(var causeImg in cause.CauseImages)
+                                            {
+                                                <img src="~/uploads/causes/@causeImg?.Name" width="100px" height="50px"/>
+                                            }
+                                        </td>
+                                         <td>@cause.NeedAmount</td>
+                                        
+                                        @if (@cause.IsActive == true)
+                                        {
+                                            <td>
+                                                <span class="text-primary">Active</span>
+                                            </td>
+                                        }
+                                        else if(@cause.IsActive == null)
+                                        {
+                                            <td>
+                                                <span class="text-secondary">Pending</span>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <span class="text-danger">Deactive</span>
+                                            </td>
+                                        }
+
+
+                                        <td class="text-right">
+                                             <a asp-action="detail" asp-controller="cause" asp-route-id="@cause.Id" class="btn btn-outline-success">Detail</a>                             
+                                        </td>
+                                        
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
