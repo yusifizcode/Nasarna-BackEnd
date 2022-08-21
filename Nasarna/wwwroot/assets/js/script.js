@@ -61,9 +61,9 @@
     var element = $('.floating-chat');
     var myStorage = localStorage;
 
-    if (!myStorage.getItem('chatID')) {
+/*    if (!myStorage.getItem('chatID')) {
         myStorage.setItem('chatID', createUUID());
-    }
+    }*/
 
     setTimeout(function () {
         element.addClass('enter');

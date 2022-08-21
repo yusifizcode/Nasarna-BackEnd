@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Nasarna.DAL;
+using Nasarna.Hubs;
 using Nasarna.Models;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace Nasarna
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
 
+            services.AddSignalR();
 
             services.AddIdentity<AppUser, IdentityRole>(opt =>
             {
@@ -78,6 +80,8 @@ namespace Nasarna
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHub<NasarnaHub>("/nasarnaHub");
             });
         }
     }

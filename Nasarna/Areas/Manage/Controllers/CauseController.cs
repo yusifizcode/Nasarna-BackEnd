@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Nasarna.DAL;
+using Nasarna.Hubs;
 using Nasarna.Models;
 using System.Linq;
 
@@ -10,10 +13,14 @@ namespace Nasarna.Areas.Manage.Controllers
     public class CauseController : Controller
     {
         private readonly NasarnaDbContext _context;
+        private readonly IHubContext<NasarnaHub> _hubContext;
+        private readonly UserManager<AppUser> _userManager;
 
-        public CauseController(NasarnaDbContext context)
+        public CauseController(NasarnaDbContext context, IHubContext<NasarnaHub> hubContext,UserManager<AppUser> userManager)
         {
             _context = context;
+            _hubContext = hubContext;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -60,6 +67,25 @@ namespace Nasarna.Areas.Manage.Controllers
             cause.IsActive = isActive;
 
             _context.SaveChanges();
+
+            if(cause.AppUserId != null)
+            {
+                AppUser user = _userManager.FindByIdAsync(cause.AppUserId).Result;
+
+                if (user.ConnectionId != null)
+                {
+                    if(cause.IsActive == true)
+                    {
+                        _hubContext.Clients.Client(user.ConnectionId).SendAsync("causeAccepted");
+                    }
+                    else if(cause.IsActive == false)
+                    {
+                        _hubContext.Clients.Client(user.ConnectionId).SendAsync("causeRejected");
+                    }
+                }
+            }
+
+
             return RedirectToAction("index");
         }
     }

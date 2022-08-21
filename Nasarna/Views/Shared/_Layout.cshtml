@@ -38,6 +38,8 @@
         integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Jquery Fancybox -->
     <link href="~/assets/css/jquery.fancybox.css" rel="stylesheet">
 
@@ -144,6 +146,7 @@
                     </ul>
 
                     <div class="header-search-form-wrapper">
+                        <a asp-action="chat" asp-controller="home" class="me-3 text-secondary"><i class="fa-solid fa-comment-dots"></i></a>
                         <button class="search-toggle-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
                         <div class="header-search-form">
                             <form>
@@ -434,7 +437,61 @@
     <!-- Script JS -->
     <script src="~/assets/js/script.js"></script>
 
+    <script src="~/lib/dist/browser/signalr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@*    <script src="~/assets/js/chat.js"></script>*@
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/nasarnaHub").build();
 
+        connection.start();
+
+        connection.on("showAsOnline",function(id){
+            let elem = document.getElementById(id);
+            console.log(elem);
+            elem.style.setProperty('border-color','green','important')
+        })
+
+         connection.on("showAsOffline",function(id){
+            let elem = document.getElementById(id);
+            elem.style.setProperty('border-color','red','important')
+        })
+
+        connection.on("causeAccepted",function(){
+            console.log("salamaaa")
+            toastr["success"]("Your cause post is accepted!");
+        })
+
+        connection.on("causeRejected",function(){
+            console.log("salamaaa")
+            toastr["error"]("Your cause post is rejected!");
+        })
+
+       $("#sendMessage").click(function(){
+            console.log("salam");
+            let id = $("#chatIdInput").val();
+            let message = $("#messageInput").val();
+
+            connection.invoke("SendPrivateMessage",id,message);
+        })
+
+        connection.on("recievePrivateMessage",function(id,name,message){
+            $messageLi = `<li class="self"><span>${name}</span>${message}</li>`
+            $(".messages").append($messageLi)
+            console.log(`Sender: ${name}`)
+            console.log(`message: ${message}`)
+        })
+
+         connection.on("sendPrivateMessage",function(id,name,message){
+            $messageLi = `<li class="other"><span>${name}</span>${message}</li>`
+            $(".messages").append($messageLi)
+            console.log(`Sender: ${name}`)
+            console.log(`message: ${message}`)
+        })
+
+        //function sendMessageToHub(message){
+        //    connection.invoke('sendMessage',message)
+        //}
+    </script>
 </body>
 
 </html>

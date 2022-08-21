@@ -71,10 +71,13 @@
                                         <span><i class="fa-solid fa-calendar-days me-1"></i> @Model.Cause.CreatedAt.ToString("d, MMM")</span>
                                     </div>
                                 </div>
-                                <!-- <div class="chat-icon fs-5  js-chatbox-toggle chatbox__header-cta-btn">
-                                    <i class="fa-solid fa-comment-dots"></i>
-                                </div> -->
-                            </div>
+                            @if(loggedUser?.Id != Model.Cause.AppUserId)
+                            {
+                                <div class="chat-icon fs-5">
+                                    <a asp-action="chat" asp-controller="home" class="text-secondary"><i class="fa-solid fa-comment-dots"></i></a>
+                                </div>
+                            }
+                        </div>
 
                             <div class="cause-tab">
                                 <ul class="nav nav-tabs">
@@ -392,19 +395,21 @@
                     <i class="fa fa-comments" aria-hidden="true"></i>
                     <div class="chat">
                         <div class="header">
+                            <span id="@Model.Cause.AppUserId" class="rounded-circle border border-5 @(@Model.Cause.AppUser.ConnectionId==null?"border-danger":"border-success")"></span>
                             <span class="title">
-                                Yusif Osmanov
+                                @Model.Cause.AppUser.UserName
                             </span>
                             <button>
                                 <i class="fa fa-times" aria-hidden="true" style="font-size: 16px;"></i>
                             </button>
                         </div>
                         <ul class="messages">
-                            <li class="other"><span>Y</span>Salam</li>
-                            <li class="self"><span>A</span>Salam</li>
+@*                            <li class="other"><span>Y</span>Salam</li>
+                            <li class="self"><span>A</span>Salam</li>*@
                         </ul>
                         <div class="footer">
-                            <div class="text-box" contenteditable="true" disabled="true" data-text="Write.."></div>
+                            <input type="hidden" name="Id" value="@Model.Cause.AppUserId" id="chatIdInput" />
+                            <input class="text-box" id="messageInput" placeholder="Write.." />
                             <button id="sendMessage">Send</button>
                         </div>
                     </div>
