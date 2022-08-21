@@ -408,7 +408,7 @@
                             <li class="self"><span>A</span>Salam</li>*@
                         </ul>
                         <div class="footer">
-                            <input type="hidden" name="Id" value="@Model.Cause.AppUserId" id="chatIdInput" />
+                            <input type="hidden" asp-for="@Model.Cause.AppUserId" value="@Model.Cause.AppUserId" id="chatIdInput" />
                             <input class="text-box" id="messageInput" placeholder="Write.." />
                             <button id="sendMessage">Send</button>
                         </div>
