@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nasarna.DAL;
 
 namespace Nasarna.Migrations
 {
     [DbContext(typeof(NasarnaDbContext))]
-    partial class NasarnaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220822095559_UsernameFieldRemovedMessages")]
+    partial class UsernameFieldRemovedMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -525,6 +527,30 @@ namespace Nasarna.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("Nasarna.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("Nasarna.Models.Payment", b =>
                 {
                     b.Property<int>("Id")
@@ -747,6 +773,13 @@ namespace Nasarna.Migrations
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Nasarna.Models.Message", b =>
+                {
+                    b.HasOne("Nasarna.Models.AppUser", "AppUser")
+                        .WithMany("Messages")
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("Nasarna.Models.Payment", b =>

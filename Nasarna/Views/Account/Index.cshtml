@@ -216,4 +216,34 @@
     </section>
     <!-- End My Posts -->
 
+
+            <!-- Start of Chat -->
+        <div class="container">
+            <div class="row">
+                <div class="floating-chat">
+                    <i class="fa fa-comments" aria-hidden="true"></i>
+                    <div class="chat">
+                        <div class="header">
+                            <span id="@Model.User.Id" class="rounded-circle border border-5 @(@Model.User.ConnectionId==null?"border-danger":"border-success")"></span>
+                            <span class="title">
+                                @Model.User.UserName
+                            </span>
+                            <button>
+                                <i class="fa fa-times" aria-hidden="true" style="font-size: 16px;"></i>
+                            </button>
+                        </div>
+                        <ul class="messages">
+@*                            <li class="other"><span>Y</span>Salam</li>
+                            <li class="self"><span>A</span>Salam</li>*@
+                        </ul>
+                        <div class="footer">
+                            <input type="hidden" value="@Model.User.Id" id="chatIdInput" />
+                            <input class="text-box" id="messageInput" placeholder="Write.." />
+                            <button id="sendMessage">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>           
+        </div>
+        <!-- End of Chat -->
 </main>

@@ -74,5 +74,15 @@ namespace Nasarna.Controllers
             return Ok();
         }*/
 
+
+/*        public async Task<IActionResult> CreateMessage(Message message)
+        {
+            if (!ModelState.IsValid)
+                return NotFound();
+
+            await _context.Messages.AddAsync(message);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }*/
     }
 }

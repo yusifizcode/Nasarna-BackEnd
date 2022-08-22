@@ -62,7 +62,7 @@ namespace Nasarna.Hubs
                         if (user.ConnectionId != null && sender.ConnectionId != null)
                         {
                             await Clients.Client(user.ConnectionId).SendAsync("recievePrivateMessage", sender.Id, sender.FullName, message);
-                            await Clients.Client(sender.ConnectionId).SendAsync("sendPrivateMessage", user.Id, user.FullName, message);
+                            await Clients.Client(sender.ConnectionId).SendAsync("sendPrivMessage", user.Id, user.FullName, message);
                         }
                     }
                 }

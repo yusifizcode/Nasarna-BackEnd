@@ -172,7 +172,6 @@ C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreap
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Event\Detail.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Event\Index.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\About.cshtml.g.cs
-C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\Chat.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\Contact.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\Error.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs

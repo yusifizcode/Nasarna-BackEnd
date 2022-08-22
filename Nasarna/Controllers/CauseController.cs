@@ -75,9 +75,10 @@ namespace Nasarna.Controllers
             CauseDetailViewModel causeVM = new CauseDetailViewModel
             {
                 Cause = cause,
-                RecentlyCauses = _context.Causes.Include(x => x.CauseImages).OrderByDescending(x=>x.Id).Take(3).ToList(),
+                RecentlyCauses = _context.Causes.Include(x => x.CauseImages).OrderByDescending(x => x.Id).Take(3).ToList(),
                 CauseComment = new CauseCommentPostViewModel { CauseId = id },
                 Payment = _context.Payments.Include(x => x.Cause).FirstOrDefault(x => x.CauseId == id),
+
             };
 
             return causeVM;

@@ -146,7 +146,9 @@
                     </ul>
 
                     <div class="header-search-form-wrapper">
-                        <a asp-action="chat" asp-controller="home" class="me-3 text-secondary"><i class="fa-solid fa-comment-dots"></i></a>
+                        <span class="me-3 text-secondary dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-comment-dots"></i></span>
+                        <ul class="dropdown-menu msg-dropdown" aria-labelledby="dropdownMenuButton1">
+                        </ul>
                         <button class="search-toggle-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
                         <div class="header-search-form">
                             <form>
@@ -476,12 +478,14 @@
 
         connection.on("recievePrivateMessage",function(id,name,message){
             $messageLi = `<li class="self"><span>${name}</span>${message}</li>`
+            $msgDropdownLi = `<li><a class="dropdown-item" href="/account/index/${id}">${name} | ${message}</a></li>`
+            $(".msg-dropdown").append($msgDropdownLi)
             $(".messages").append($messageLi)
             console.log(`Sender: ${name}`)
             console.log(`message: ${message}`)
         })
 
-         connection.on("sendPrivateMessage",function(id,name,message){
+         connection.on("sendPrivMessage",function(id,name,message){
             $messageLi = `<li class="other"><span>${name}</span>${message}</li>`
             $(".messages").append($messageLi)
             console.log(`Sender: ${name}`)

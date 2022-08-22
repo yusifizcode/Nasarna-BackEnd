@@ -71,12 +71,12 @@
                                         <span><i class="fa-solid fa-calendar-days me-1"></i> @Model.Cause.CreatedAt.ToString("d, MMM")</span>
                                     </div>
                                 </div>
-                            @if(loggedUser?.Id != Model.Cause.AppUserId)
+                           @* @if(loggedUser?.Id != Model.Cause.AppUserId)
                             {
                                 <div class="chat-icon fs-5">
                                     <a asp-action="chat" asp-controller="home" class="text-secondary"><i class="fa-solid fa-comment-dots"></i></a>
                                 </div>
-                            }
+                            }*@
                         </div>
 
                             <div class="cause-tab">
@@ -408,7 +408,7 @@
                             <li class="self"><span>A</span>Salam</li>*@
                         </ul>
                         <div class="footer">
-                            <input type="hidden" asp-for="@Model.Cause.AppUserId" value="@Model.Cause.AppUserId" id="chatIdInput" />
+                            <input type="hidden" value="@Model.Cause.AppUserId" id="chatIdInput" />
                             <input class="text-box" id="messageInput" placeholder="Write.." />
                             <button id="sendMessage">Send</button>
                         </div>
