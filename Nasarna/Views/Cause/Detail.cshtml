@@ -388,6 +388,8 @@
         </section>
 
 
+    @if(loggedUser != null && loggedUser.Id != Model.Cause.AppUserId)
+    {
         <!-- Start of Chat -->
         <div class="container">
             <div class="row">
@@ -417,5 +419,6 @@
             </div>           
         </div>
         <!-- End of Chat -->
+    }
 
     </main>
