@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Nasarna.DAL;
 using Nasarna.Models;
+using Nasarna.ViewModels;
 /*using Nasarna.Models;
 */
 using System;
@@ -27,7 +28,16 @@ namespace Nasarna.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            HomeViewModel homeVM = new HomeViewModel()
+            {
+                Causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag)
+                                        .Include(x => x.Category)
+                                        .Include(x => x.CauseImages)
+                                        .Include(x => x.AppUser)
+                                        .Where(x => x.IsActive == true).Take(5)
+                                        .ToList(),
+        };
+            return View(homeVM);
         }
 
         public IActionResult About()
@@ -49,40 +59,40 @@ namespace Nasarna.Controllers
         {
             return View();
         }
-/*
-        public async Task<IActionResult> Chat()
-        {
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewBag.CurrentUserName = currentUser.UserName;
-            }
-            var messages = await _context.Messages.ToListAsync();
-            return View(messages);
-        }
+        /*
+                public async Task<IActionResult> Chat()
+                {
+                    var currentUser = await _userManager.GetUserAsync(User);
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        ViewBag.CurrentUserName = currentUser.UserName;
+                    }
+                    var messages = await _context.Messages.ToListAsync();
+                    return View(messages);
+                }
+
+                public async Task<IActionResult> CreateMessage(Message message)
+                {
+                    if(!ModelState.IsValid)
+                        return NotFound();
+
+                    message.UserName = User.Identity.Name;
+                    var sender = await _userManager.GetUserAsync(User);
+                    message.AppUserId = sender.Id;
+                    await _context.Messages.AddAsync(message);
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }*/
+
 
         public async Task<IActionResult> CreateMessage(Message message)
-        {
-            if(!ModelState.IsValid)
-                return NotFound();
-
-            message.UserName = User.Identity.Name;
-            var sender = await _userManager.GetUserAsync(User);
-            message.AppUserId = sender.Id;
-            await _context.Messages.AddAsync(message);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }*/
-
-
-/*        public async Task<IActionResult> CreateMessage(Message message)
         {
             if (!ModelState.IsValid)
                 return NotFound();
 
             await _context.Messages.AddAsync(message);
             await _context.SaveChangesAsync();
-            return Ok();
-        }*/
+            return Ok(message);
+        }
     }
 }

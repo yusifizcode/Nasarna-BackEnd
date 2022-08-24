@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nasarna.DAL;
 
 namespace Nasarna.Migrations
 {
     [DbContext(typeof(NasarnaDbContext))]
-    partial class NasarnaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220823105746_MessagesTableCreatedAgain")]
+    partial class MessagesTableCreatedAgain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -532,7 +534,10 @@ namespace Nasarna.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AppUserId")
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AppUserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Text")
@@ -540,7 +545,7 @@ namespace Nasarna.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("AppUserId1");
 
                     b.ToTable("Messages");
                 });
@@ -773,7 +778,7 @@ namespace Nasarna.Migrations
                 {
                     b.HasOne("Nasarna.Models.AppUser", "AppUser")
                         .WithMany("Messages")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId1");
                 });
 
             modelBuilder.Entity("Nasarna.Models.Payment", b =>

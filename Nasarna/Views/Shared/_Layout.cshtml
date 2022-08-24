@@ -442,60 +442,7 @@
     <script src="~/lib/dist/browser/signalr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @*    <script src="~/assets/js/chat.js"></script>*@
-    <script>
-        var connection = new signalR.HubConnectionBuilder().withUrl("/nasarnaHub").build();
-
-        connection.start();
-
-        connection.on("showAsOnline",function(id){
-            let elem = document.getElementById(id);
-            console.log(elem);
-            elem.style.setProperty('border-color','green','important')
-        })
-
-         connection.on("showAsOffline",function(id){
-            let elem = document.getElementById(id);
-            elem.style.setProperty('border-color','red','important')
-        })
-
-        connection.on("causeAccepted",function(){
-            console.log("salamaaa")
-            toastr["success"]("Your cause post is accepted!");
-        })
-
-        connection.on("causeRejected",function(){
-            console.log("salamaaa")
-            toastr["error"]("Your cause post is rejected!");
-        })
-
-       $("#sendMessage").click(function(){
-            console.log("salam");
-            let id = $("#chatIdInput").val();
-            let message = $("#messageInput").val();
-
-            connection.invoke("SendPrivateMessage",id,message);
-        })
-
-        connection.on("recievePrivateMessage",function(id,name,message){
-            $messageLi = `<li class="self"><span>${name}</span>${message}</li>`
-            $msgDropdownLi = `<li><a class="dropdown-item" href="/account/index/${id}">${name} | ${message}</a></li>`
-            $(".msg-dropdown").append($msgDropdownLi)
-            $(".messages").append($messageLi)
-            console.log(`Sender: ${name}`)
-            console.log(`message: ${message}`)
-        })
-
-         connection.on("sendPrivMessage",function(id,name,message){
-            $messageLi = `<li class="other"><span>${name}</span>${message}</li>`
-            $(".messages").append($messageLi)
-            console.log(`Sender: ${name}`)
-            console.log(`message: ${message}`)
-        })
-
-        //function sendMessageToHub(message){
-        //    connection.invoke('sendMessage',message)
-        //}
-    </script>
+    <script src="~/assets/js/chat.js"></script>
 </body>
 
 </html>

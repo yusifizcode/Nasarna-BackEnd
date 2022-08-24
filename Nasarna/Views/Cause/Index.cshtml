@@ -127,107 +127,61 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="site-sidebar">
-                        <div class="sidebar-item sidebar-search">
-                            <h3>Search Here</h3>
-                            <form action="" class="sidebar-form position-relative">
-                                <input type="text" class="form-control" placeholder="Search Post..">
-                                <button type="submit">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </button>
-                            </form>
-                        </div>
-                        <div class="sidebar-item sidebar-categories">
-                            <h3>Categories</h3>
-                            <ul class="sidebar-category-list">
-                                <li class="sidebar-category-list-item">
-                                    <a href="">Helping Poor</a>
-                                </li>
-                                <li class="sidebar-category-list-item">
-                                    <a href="">Water Problem</a>
-                                </li>
-                                <li class="sidebar-category-list-item">
-                                    <a href="">Charity</a>
-                                </li>
-                                <li class="sidebar-category-list-item">
-                                    <a href="">Medical Compain</a>
-                                </li>
-                                <li class="sidebar-category-list-item">
-                                    <a href="">Free Food</a>
-                                </li>
+                        <div class="site-sidebar">
+                            <div class="sidebar-item sidebar-search">
+                                <h3>Search Here</h3>
+                                <form action="" class="sidebar-form position-relative">
+                                    <input type="text" class="form-control" placeholder="Search Post..">
+                                    <button type="submit">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="sidebar-item sidebar-categories">
+                                <h3>Categories</h3>
+                                <ul class="sidebar-category-list">
+                                @foreach(var category in ViewBag.Categories)
+                                {
+                                    <li class="sidebar-category-list-item">
+                                        <a href="">@category.Name</a>
+                                    </li>
+                                }
                             </ul>
-                        </div>
-                        <div class="sidebar-item sidebar-recents">
-                            <h3>Recent Posts</h3>
-                            <div class="recent-posts">
-                                <div class="recent-post">
-                                    <div class="recent-post-img">
-                                        <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
+                            </div>
+                            <div class="sidebar-item sidebar-recents">
+                                <h3>Recently Posts</h3>
+                                <div class="recent-posts">
+                                @foreach(var recentlyPost in ViewBag.RecentlyCauses)
+                                {
+                                     <div class="recent-post mt-3">
+                                        <div class="recent-post-img">
+                                            <img src="~/uploads/causes/@recentlyPost.CauseImages[0]?.Name" alt="">
+                                        </div>
+                                        <div class="recent-post-detail">
+                                            <h4>
+                                                <a asp-action="detail" asp-controller="cause" asp-route-id="@recentlyPost.Id">@recentlyPost.Title</a>
+                                            </h4>
+                                            <span class="date">
+                                                @recentlyPost.CreatedAt
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="recent-post-detail">
-                                        <h4>
-                                            <a href="">Many Children are suffering a lot for food.</a>
-                                        </h4>
-                                        <span class="date">
-                                            22 Sep 2020
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="recent-post mt-3">
-                                    <div class="recent-post-img">
-                                        <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
-                                    </div>
-                                    <div class="recent-post-detail">
-                                        <h4>
-                                            <a href="">Many Children are suffering a lot for food.</a>
-                                        </h4>
-                                        <span class="date">
-                                            22 Sep 2020
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="recent-post mt-3">
-                                    <div class="recent-post-img">
-                                        <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
-                                    </div>
-                                    <div class="recent-post-detail">
-                                        <h4>
-                                            <a href="">Many Children are suffering a lot for food.</a>
-                                        </h4>
-                                        <span class="date">
-                                            22 Sep 2020
-                                        </span>
-                                    </div>
+                                }
+
                                 </div>
                             </div>
-                        </div>
-                        <div class="sidebar-item sidebar-tags">
-                            <h3>Tags</h3>
-                            <ul class="sidebar-tag-list">
-                                <li class="sidebar-tag-list-item">
-                                    <a href="">Donations</a>
-                                </li>
-                                <li class="sidebar-tag-list-item">
-                                    <a href="">Charity</a>
-                                </li>
-                                <li class="sidebar-tag-list-item">
-                                    <a href="">Help</a>
-                                </li>
-                                <li class="sidebar-tag-list-item">
-                                    <a href="">Non Profit</a>
-                                </li>
-                                <li class="sidebar-tag-list-item">
-                                    <a href="">Poor People</a>
-                                </li>
-                                <li class="sidebar-tag-list-item">
-                                    <a href="">Helping Hand</a>
-                                </li>
-                                <li class="sidebar-tag-list-item">
-                                    <a href="">Video</a>
-                                </li>
+                            <div class="sidebar-item sidebar-tags">
+                                <h3>Tags</h3>
+                                <ul class="sidebar-tag-list">
+                                @foreach(var tag in ViewBag.Tags)
+                                {
+                                    <li class="sidebar-tag-list-item">
+                                        <a href="">@tag.Name</a>
+                                    </li>
+                                }
                             </ul>
+                            </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>

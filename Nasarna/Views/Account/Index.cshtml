@@ -39,7 +39,10 @@
         <div class="container">
             <div class="row donate">
                 <h2 class="fs-3 mb-4 d-flex justify-content-between mb-5">@(Model.User.UserName + "'s") Posts
-                    <a asp-action="create" asp-controller="cause" class="text-decoration-none fs-4 text-warning">Add +</a>
+                    @if(Model.User.Id == member.Id)
+                    {
+                        <a asp-action="create" asp-controller="cause" class="text-decoration-none fs-4 text-warning">Add +</a>
+                    }
                 </h2>
                 @foreach (var cause in Model.Causes)
                 {

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Nasarna.DAL;
 using Nasarna.Models;
 using Nasarna.ViewModels;
+using Pustok.Helpers;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,13 +18,15 @@ namespace Nasarna.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly NasarnaDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,RoleManager<IdentityRole> roleManager,NasarnaDbContext context)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,RoleManager<IdentityRole> roleManager,NasarnaDbContext context,IWebHostEnvironment env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _context = context;
+            _env = env;
         }
         public IActionResult Index(string id)
         {
@@ -94,13 +98,35 @@ namespace Nasarna.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(MemberRegisterViewModel member)
         {
-          
+
+            if (member == null)
+                return RedirectToAction("error", "dashboard");
+
+            if(member.ImageFile != null)
+            {
+                if (member.ImageFile.ContentType != "image/png" && member.ImageFile.ContentType != "image/jpeg")
+                {
+                    ModelState.AddModelError("ImageFiles", "File format must be image/png or image/jpeg");
+                }
+
+                if (member.ImageFile.Length > 2097152)
+                {
+                    ModelState.AddModelError("ImageFiles", "File size must be less than 2MB");
+                }
+            }
+
+            if (!ModelState.IsValid)
+                return View();
+
+            var newFileName = FileManager.Save(_env.WebRootPath, "uploads/users", member.ImageFile);
 
             AppUser user = new AppUser
             {
                 FullName = member.FullName,
                 Email = member.Email,
                 UserName = member.UserName,
+                ProfileImg = newFileName,
+                ImageFile = member.ImageFile,
                 IsAdmin = false
             };
 
@@ -115,13 +141,14 @@ namespace Nasarna.Controllers
                 return View();
             }
 
+
             if (!ModelState.IsValid)
                 return View();
             /*
                         string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         var url = Url.Action("ConfirmEmail", "Account", new { email = user.Email, token = token }, Request.Scheme);*/
 
-/*            await _roleManager.CreateAsync(new IdentityRole("Member"));*/
+            /*            await _roleManager.CreateAsync(new IdentityRole("Member"));*/
 
             await _userManager.AddToRoleAsync(user, "Member");
 

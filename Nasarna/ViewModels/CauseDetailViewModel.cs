@@ -9,5 +9,6 @@ namespace Nasarna.ViewModels
         public Payment Payment { get; set; }
         public List<Cause> RecentlyCauses { get; set; }
         public CauseCommentPostViewModel CauseComment { get; set; }
+        public Message Message { get; set; }
     }
 }

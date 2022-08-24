@@ -61,7 +61,7 @@
                                 <div class="d-flex">
                                     <div class="post-info-user d-flex">
                                         <div class="user-img">
-                                            <img src="~/assets/images/blog/admin.jpg" alt="">
+                                            <img src="~/uploads/users/@Model.Cause.AppUser?.ProfileImg" alt="">
                                         </div>
                                         <div class="user-name ms-2">
                                             <a href="">By @Model.Cause.AppUser.UserName</a>
@@ -388,8 +388,7 @@
         </section>
 
 
-    @if(loggedUser != null && loggedUser.Id != Model.Cause.AppUserId)
-    {
+
         <!-- Start of Chat -->
         <div class="container">
             <div class="row">
@@ -410,15 +409,17 @@
                             <li class="self"><span>A</span>Salam</li>*@
                         </ul>
                         <div class="footer">
-                            <input type="hidden" value="@Model.Cause.AppUserId" id="chatIdInput" />
-                            <input class="text-box" id="messageInput" placeholder="Write.." />
-                            <button id="sendMessage">Send</button>
+                           <form>
+                                <input type="hidden" asp-for="@Model.Message.AppUserId" value="@Model.Cause.AppUserId" id="chatIdInput" />
+                                <input class="text-box" asp-for="@Model.Message.Text" id="messageInput" placeholder="Write.." />
+                                <button id="sendMessage">Send</button>
+                           </form>
                         </div>
                     </div>
                 </div>
             </div>           
         </div>
         <!-- End of Chat -->
-    }
+    
 
     </main>

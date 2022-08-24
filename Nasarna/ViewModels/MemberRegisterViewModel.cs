@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Nasarna.ViewModels
 {
@@ -12,6 +13,7 @@ namespace Nasarna.ViewModels
         [MaxLength(25)]
         [MinLength(6)]
         public string FullName { get; set; }
+        public IFormFile ImageFile { get; set; }
         [Required]
         [MaxLength(100)]
         public string Email { get; set; }

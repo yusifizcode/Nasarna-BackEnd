@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Nasarna.Models
 {
@@ -12,5 +14,8 @@ namespace Nasarna.Models
         public string ProfileImg { get; set; }
         public string ConnectionId { get; set; }
         public DateTime ConnectedAt { get; set; }
+        public List<Message> Messages { get; set; }
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
     }
 }
