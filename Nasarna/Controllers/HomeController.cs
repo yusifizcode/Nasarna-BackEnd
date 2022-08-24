@@ -85,14 +85,17 @@ namespace Nasarna.Controllers
                 }*/
 
 
-        public async Task<IActionResult> CreateMessage(Message message)
+        public async Task<IActionResult> CreateMessage([FromBody] Message message)
         {
             if (!ModelState.IsValid)
                 return NotFound();
 
+            var fromUser = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            message.FromUserId = fromUser.Id;
+
             await _context.Messages.AddAsync(message);
             await _context.SaveChangesAsync();
-            return Ok(message);
+            return Ok();
         }
     }
 }

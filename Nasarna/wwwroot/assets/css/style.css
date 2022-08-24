@@ -2455,8 +2455,17 @@ form .form-btn button {
   left: -10px;
 }
 
+#dropdownMenuButton1{
+    cursor:pointer;
+}
+
+#dropdownMenuButton1::after {
+    visibility: hidden;
+}
+
+
 @-webkit-keyframes show-chat-even {
-  0% {
+    0% {
     margin-left: -480px;
   }
   100% {
@@ -2651,6 +2660,7 @@ form .form-btn button {
   .topbar {
     text-align: center;
     padding: 20px 0;
+    z-index:3 !important;
   }
   .topbar .intro-phone, .topbar .top-login-register {
     border: none !important;

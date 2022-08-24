@@ -146,16 +146,19 @@
                     </ul>
 
                     <div class="header-search-form-wrapper">
-                        <span class="me-3 text-secondary dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-comment-dots"></i></span>
-                        <ul class="dropdown-menu msg-dropdown" aria-labelledby="dropdownMenuButton1">
-                        </ul>
-                        <button class="search-toggle-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        @if(member != null)
+                        {
+                            <span class="me-3 text-secondary dropdown-toggle position-relative" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-comment-dots fs-5"></i></span>
+                            <ul class="dropdown-menu msg-dropdown" aria-labelledby="dropdownMenuButton1">
+                            </ul>
+                        }
+                        <button class="search-toggle-btn"><i class="fa-solid fa-magnifying-glass text-secondary"></i></button>
                         <div class="header-search-form">
                             <form>
                                 <div class="d-flex">
                                     <input type="text" class="form-control" placeholder="Search here...">
                                     <button class="search-toggle-btn" type="submit"><i
-                                            class="fa-solid fa-magnifying-glass"></i></button>
+                                            class="fa-solid fa-magnifying-glass text-secondary"></i></button>
                                 </div>
                             </form>
                         </div>

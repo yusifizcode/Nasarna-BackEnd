@@ -91,57 +91,33 @@ $(document).ready(function () {
     })
 
     $("#sendMessage").click(function (e) {
-        console.log($(this));
-        console.log("necesen");
-        class Message {
-            constructor(id, message) {
-                this.id = id;
-                this.message = message
-            }
-        }
-
-        
-
-        console.log(e);
-        let id = $("#chatIdInput").val();
-        let message = $("#messageInput").val();
-        let userMessage = new Message(id, message)
-        console.log(userMessage)
         e.preventDefault();
-        $createMessageUrl = `http://localhost:8296/Home/CreateMessage`
-        //fetch($createMessageUrl).then((result) => {
+        var url = $(this).attr("href");
+        var ToUserId = $("#chatIdInput").val();
+        var Text = $("#messageInput").val();
+        connection.invoke("SendPrivateMessage",ToUserId,Text)
 
-        //    console.log(result);
-        //    connection.invoke("SendPrivateMessage", id, message);
-
-            //})
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'   },
-            body: userMessage
-        };
-        fetch(`http://localhost:8296/Home/CreateMessage`, requestOptions)
-            .then(async response => {
-                
-
-                // check for error response
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify({ "ToUserId": ToUserId, "Text": Text}),
+            headers: {
+                'Content-type': 'application/json',
+            },
+        })
+            .then(response => {
                 if (!response.ok) {
-                    // get error message from body or default to response status
-                    alert("olmadi")
-                    return
+                    console.log(response)
+                    return;
                 }
-                alert("oldu")
-
-            })
-            .catch(error => {
-                element.parentElement.innerHTML = `Error: ${error}`;
-                console.error('There was an error!', error);
+                return response;
             });
     })
 
     connection.on("recievePrivateMessage", function (id, name, message) {
-        $messageLi = `<li class="self"><span>${name}</span>${message}</li>`
+        $messageLi = `<li class="self">${message}</li>`
         $msgDropdownLi = `<li><a class="dropdown-item" href="/account/index/${id}">${name} | ${message}</a></li>`
+        $notificationIcn = '<div class="rounded-circle border border-5 border-warning position-absolute" style="top:0px;right:7px"></div>'
+        $("#dropdownMenuButton1").append($notificationIcn)
         $(".msg-dropdown").append($msgDropdownLi)
         $(".messages").append($messageLi)
         console.log(`Sender: ${name}`)
@@ -149,7 +125,7 @@ $(document).ready(function () {
     })
 
     connection.on("sendPrivMessage", function (id, name, message) {
-        $messageLi = `<li class="other"><span>${name}</span>${message}</li>`
+        $messageLi = `<li class="other">${message}</li>`
         $(".messages").append($messageLi)
         console.log(`Sender: ${name}`)
         console.log(`message: ${message}`)

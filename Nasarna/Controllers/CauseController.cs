@@ -48,6 +48,7 @@ namespace Nasarna.Controllers
         {
             ViewBag.Categories = _context.Categories.Where(x=>x.Causes.Any());
             ViewBag.Tags = _context.Tags.Where(x => x.CauseTags.Any());
+            ViewBag.Messages = _context.Messages.Include(x => x.FromUser).Include(x => x.ToUser).ToList();
 
             CauseDetailViewModel detailVM = GetCauseDetailVM(id);
 
@@ -82,8 +83,8 @@ namespace Nasarna.Controllers
                 RecentlyCauses = _context.Causes.Include(x => x.CauseImages).OrderByDescending(x => x.Id).Take(3).ToList(),
                 CauseComment = new CauseCommentPostViewModel { CauseId = id },
                 Payment = _context.Payments.Include(x => x.Cause).FirstOrDefault(x => x.CauseId == id),
-                Message = _context.Messages.Include(x=>x.AppUser).FirstOrDefault(x=>x.AppUserId == cause.AppUserId),
-            };
+/*                Message = _context.Messages.Include(x=>x.AppUser).FirstOrDefault(x=>x.AppUserId == cause.AppUserId),
+*/            };
 
             return causeVM;
         }

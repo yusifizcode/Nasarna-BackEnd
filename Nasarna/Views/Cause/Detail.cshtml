@@ -407,13 +407,24 @@
                         <ul class="messages">
 @*                            <li class="other"><span>Y</span>Salam</li>
                             <li class="self"><span>A</span>Salam</li>*@
+
+                        @foreach(var msg in ViewBag.Messages)
+                        {
+                            if(loggedUser.Id == msg.FromUserId)
+                            {
+                                <li class="other">@msg.Text</li>
+                            }
+                            else
+                            {
+                                 <li class="self">@msg.Text</li>
+                            }
+                        }
+
                         </ul>
                         <div class="footer">
-                           <form>
-                                <input type="hidden" asp-for="@Model.Message.AppUserId" value="@Model.Cause.AppUserId" id="chatIdInput" />
+                                <input type="hidden" asp-for="@Model.Message.ToUserId" value="@Model.Cause.AppUserId" id="chatIdInput" />
                                 <input class="text-box" asp-for="@Model.Message.Text" id="messageInput" placeholder="Write.." />
-                                <button id="sendMessage">Send</button>
-                           </form>
+                                <a asp-action="CreateMessage" asp-controller="home" id="sendMessage">Send</a>
                         </div>
                     </div>
                 </div>
