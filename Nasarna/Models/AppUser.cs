@@ -11,6 +11,7 @@ namespace Nasarna.Models
         public string FullName { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsStatus { get; set; }
+        public bool IsVolunteer { get; set; }
         public string ProfileImg { get; set; }
         public string ConnectionId { get; set; }
         public DateTime ConnectedAt { get; set; }

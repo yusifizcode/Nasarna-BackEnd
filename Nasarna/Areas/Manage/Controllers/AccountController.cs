@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Nasarna.Areas.Manage.ViewModels;
+using Nasarna.DAL;
+using Nasarna.Hubs;
 using Nasarna.Models;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,21 +17,39 @@ namespace Nasarna.Areas.Manage.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly NasarnaDbContext _context;
+        private readonly IHubContext<NasarnaHub> _hubContext;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,RoleManager<IdentityRole> roleManager,NasarnaDbContext context, IHubContext<NasarnaHub> hubContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _context = context;
+            _hubContext = hubContext;
         }
         public IActionResult Index()
         {
-            var users = _userManager.Users.ToList();
+            var users = _userManager.Users.Where(x=>!x.IsAdmin).ToList();
             return View(users);
         }
 
-        /*        CREATE DEFAULT SUPER ADMIN
-        */
+        public IActionResult ActivateStatus(string id, bool isActive)
+        {
+
+            AppUser user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+
+
+            if (user == null)
+                return RedirectToAction("error", "dashboard");
+
+            user.IsStatus = isActive;
+
+            _context.SaveChanges();
+            return RedirectToAction("index");
+        }
+
+
 /*        public async Task<IActionResult> CreateAdmin()
         {
             AppUser admin = new AppUser
@@ -38,14 +59,10 @@ namespace Nasarna.Areas.Manage.Controllers
                 IsAdmin = true,
                 IsStatus = true,
             };
-
             var result = await _userManager.CreateAsync(admin, "Admin123");
-
             if (!result.Succeeded)
                 return Ok(result.Errors);
-
             var roleResult = await _roleManager.CreateAsync(new IdentityRole("SuperAdmin"));
-
             if (!roleResult.Succeeded)
             {
                 foreach (var item in result.Errors)
@@ -53,12 +70,9 @@ namespace Nasarna.Areas.Manage.Controllers
                     ModelState.AddModelError("Name", item.Description);
                 }
             }
-
             await _userManager.AddToRoleAsync(admin, "SuperAdmin");
-
             return View();
-        }
-*/
+        }*/
 
 
         public IActionResult Login()

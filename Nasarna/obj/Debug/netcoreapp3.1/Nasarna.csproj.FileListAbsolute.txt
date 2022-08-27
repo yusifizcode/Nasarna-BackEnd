@@ -160,9 +160,11 @@ C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreap
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Tag\Index.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\_ViewImports.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\_ViewStart.cshtml.g.cs
+C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Account\ForgotPassword.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Account\Index.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Account\Login.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.cshtml.g.cs
+C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Account\ResetPassword.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Blog\Detail.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Blog\Index.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Cause\Create.cshtml.g.cs
@@ -175,7 +177,6 @@ C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreap
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\Contact.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\Error.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
-C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Home\Volunteer.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_CauseCommentFormPartialView.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs
@@ -187,3 +188,4 @@ C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreap
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Nasarna.dll
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Nasarna.pdb
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Nasarna.genruntimeconfig.cache
+C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Views\Volunteer\Index.cshtml.g.cs

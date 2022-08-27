@@ -26,7 +26,6 @@ namespace Nasarna.DAL
         public DbSet<CauseTag> CauseTags { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Message> Messages { get; set; }
-        /*        public DbSet<Donation> Donations { get; set; }
-        */
+        public DbSet<Volunteer> Volunteers { get; set; }
     }
 }

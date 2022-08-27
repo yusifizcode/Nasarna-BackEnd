@@ -245,20 +245,21 @@
 
 
     /*------------------------------------------
-        = POST SLIDER
+        Toggle Password
     -------------------------------------------*/
-    // if($(".post-slider".length)) {
-    //     $(".post-slider").owlCarousel({
-    //         mouseDrag: false,
-    //         smartSpeed: 500,
-    //         margin: 30,
-    //         loop:true,
-    //         nav: true,
-    //         navText: ['<i class="fi ti-angle-left"></i>','<i class="fi ti-angle-right"></i>'],
-    //         dots: false,
-    //         items: 1
-    //     });
-    // }  
+    $(".toggle-password").click(function () {
+        $(this).toggleClass('fa-eye fa-eye-slash')
+        var dataTarget = $(this).parent().attr('data-target')
+        var dataId = $(this).parent().prev().attr('data-id')
+        if (dataId == dataTarget) {
+            if ($(this).parent().prev().attr("type") == "password") {
+                $(this).parent().prev().attr("type", "text")
+            }
+            else {
+                $(this).parent().prev().attr("type", "password")
+            }
+        }
+    })
 
 
     /*==========================================================================

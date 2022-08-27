@@ -17,13 +17,13 @@
                         <table class="table">
                             <thead class=" text-primary">
                             <th>
-                                Title
+                                Username
                             </th>
                             <th>
-                                Tags
+                                Fullname
                             </th>
-                              <th>
-                                Images
+                            <th>
+                                Status
                             </th>
                             <th class="text-right">
                                 Actions
@@ -34,12 +34,24 @@
                                 {
                                     <tr>
                                         <td>
+                                            @user.UserName
+                                        </td>
+                                        <td>
                                             @user.FullName
                                         </td>
-
+                                        <td>
+                                            @if (user.IsStatus)
+                                            {
+                                                <span class="text-success">Active</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger">Deactive</span>
+                                            }
+                                        </td>
                                         <td class="text-right">
-@*                                            <a class="btn btn-outline-warning" asp-action="edit" asp-route-id="@blog.Id">Edit</a>
-                                            <a class="btn btn-outline-danger sweet-delete" asp-action="delete" asp-route-id="@blog.Id">Delete</a>*@
+                                            <a class="btn btn-outline-success" asp-action="ActivateStatus" asp-controller="account" asp-route-id="@user.Id" asp-route-isActive="@true">Active</a>
+                                            <a class="btn btn-outline-danger" asp-action="ActivateStatus" asp-controller="account" asp-route-id="@user.Id" asp-route-isActive="@false">Deactive</a>
                                         </td>
                                     </tr>
                                 }

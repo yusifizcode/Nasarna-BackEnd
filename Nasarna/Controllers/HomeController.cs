@@ -36,6 +36,9 @@ namespace Nasarna.Controllers
                                         .Include(x => x.AppUser)
                                         .Where(x => x.IsActive == true).Take(5)
                                         .ToList(),
+                Payments = _context.Payments.ToList(),
+                Volunteers = _context.Volunteers.Include(x=>x.AppUser).Take(3).ToList(),
+                Events = _context.Events.ToList(),
         };
             return View(homeVM);
         }
@@ -55,10 +58,6 @@ namespace Nasarna.Controllers
             return View();
         }
 
-        public IActionResult Volunteer()
-        {
-            return View();
-        }
         /*
                 public async Task<IActionResult> Chat()
                 {

@@ -70,8 +70,24 @@ namespace Nasarna.Hubs
             }
             
         }
-/*
-        public async Task SendMessage(Message message) =>
-            await Clients.All.SendAsync("recieveMessage",message);*/
+
+        public async Task BlockedUser(string userId,bool isActive)
+        {
+            if (Context.User.Identity.IsAuthenticated)
+            {
+                var user = _userManager.FindByIdAsync(userId).Result;
+                if(user != null)
+                {
+                    user.ConnectionId = null;
+                    user.ConnectedAt = DateTime.Now;
+
+                    var result = await _userManager.UpdateAsync(user);
+                }
+            }
+
+        }
+        /*
+                public async Task SendMessage(Message message) =>
+                    await Clients.All.SendAsync("recieveMessage",message);*/
     }
 }

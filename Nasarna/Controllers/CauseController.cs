@@ -111,7 +111,10 @@ namespace Nasarna.Controllers
             if (cause == null)
                 return RedirectToAction("error", "home");
 
-            AppUser user = await _context.Users.FirstOrDefaultAsync(x => !x.IsAdmin && x.NormalizedUserName == User.Identity.Name.ToUpper());
+            AppUser user = await _context.Users.FirstOrDefaultAsync(x => !x.IsAdmin && x.IsStatus && x.NormalizedUserName == User.Identity.Name.ToUpper());
+
+            if (user == null)
+                return RedirectToAction("error", "home");
 
             CauseComment comment = new CauseComment
             {
@@ -150,7 +153,7 @@ namespace Nasarna.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
+                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.IsStatus && x.UserName == User.Identity.Name);
                 cause.AppUserId = loggedUser.Id;
             }
 
@@ -234,7 +237,7 @@ namespace Nasarna.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
+                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.IsStatus && x.UserName == User.Identity.Name);
             }
 
             if (cause == null || (cause.AmountPercent != 100 && cause.AmountPercent != 0) || cause?.AppUserId != loggedUser.Id)
@@ -258,7 +261,7 @@ namespace Nasarna.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
+                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.IsStatus && x.UserName == User.Identity.Name);
             }
 
             if (existCause == null || (existCause.AmountPercent != 100 && existCause.AmountPercent != 0) || existCause?.AppUserId != loggedUser.Id)
@@ -354,7 +357,7 @@ namespace Nasarna.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
+                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.IsStatus && x.UserName == User.Identity.Name);
             }
 
             if (cause == null || (cause.AmountPercent != 100 && cause.AmountPercent != 0) || cause?.AppUserId != loggedUser.Id)
@@ -371,38 +374,6 @@ namespace Nasarna.Controllers
         }
 
 
-        /*
-                [HttpPost]
-                public IActionResult Donate(CauseDetailViewModel detailVM)
-                {
-                    var donatedCause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.Donations).FirstOrDefault(x=>x.Id == detailVM.Cause.Id);
-
-                    if (donatedCause == null)
-                        return RedirectToAction("error", "home");
-
-                    detailVM.Donation.CauseId = donatedCause.Id;
-
-                    if((detailVM.Donation.Amount > detailVM.Cause.NeedAmount) || (detailVM.Cause.CurrentAmount >= detailVM.Cause.NeedAmount))
-                    {
-                        ModelState.AddModelError("Amount", "Your amount more than need amount!");
-                        return RedirectToAction("detail", new { detailVM.Cause.Id });
-                    }
-                    else
-                    {
-                        donatedCause.CurrentAmount += detailVM.Donation.Amount;
-                    }
-
-                    if (!ModelState.IsValid)
-                        return RedirectToAction("detail", new { detailVM.Cause.Id });
-
-                    _context.Donations.Add(detailVM.Donation);
-                    _context.SaveChanges();
-                    return RedirectToAction("detail", new { detailVM.Cause.Id });
-                }
-
-        */
-
-
         [Authorize(Roles = "Member")]
         public async Task<IActionResult> Payment(Payment payment)
         {
@@ -413,7 +384,7 @@ namespace Nasarna.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
+                loggedUser = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.IsStatus && x.UserName == User.Identity.Name);
                 payment.AppUserId = loggedUser.Id;
             }
 
@@ -457,23 +428,5 @@ namespace Nasarna.Controllers
                 return RedirectToAction("detail", new { id = donatedCause.Id }) ;
             }
         }
-
-/*        [Route("pay")]
-        public async Task<dynamic> Pay(Models.Payment pm)
-        {
-            var result = await MakePayment.PayAsync(pm.CardNumber, pm.Month, pm.Year, pm.Cvc, pm.Value);
-
-            if (result == "Success")
-            {
-                return RedirectToAction("detail", new { id = pm.CauseId });
-            }
-            else
-            {
-                return RedirectToAction("error", "home");
-            }
-
-            *//*            return await MakePayment.PayAsync(pm.CardNumber, pm.Month, pm.Year, pm.Cvc, pm.Value);
-            *//*
-        }*/
     }
 }

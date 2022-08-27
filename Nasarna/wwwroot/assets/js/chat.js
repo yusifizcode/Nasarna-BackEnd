@@ -81,12 +81,10 @@ $(document).ready(function () {
     })
 
     connection.on("causeAccepted", function () {
-        console.log("salamaaa")
         toastr["success"]("Your cause post is accepted!");
     })
 
     connection.on("causeRejected", function () {
-        console.log("salamaaa")
         toastr["error"]("Your cause post is rejected!");
     })
 

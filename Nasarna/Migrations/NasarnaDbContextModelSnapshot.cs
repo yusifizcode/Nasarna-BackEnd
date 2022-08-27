@@ -564,13 +564,17 @@ namespace Nasarna.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CardNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(16)")
+                        .HasMaxLength(16);
 
                     b.Property<int>("CauseId")
                         .HasColumnType("int");
 
                     b.Property<string>("Cvc")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(3)")
+                        .HasMaxLength(3);
 
                     b.Property<int>("Month")
                         .HasColumnType("int");
@@ -607,6 +611,43 @@ namespace Nasarna.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("Nasarna.Models.Volunteer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FacebookUrl")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("InstagramUrl")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("TwitterUrl")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Volunteers");
+                });
+
             modelBuilder.Entity("Nasarna.Models.AppUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -624,6 +665,9 @@ namespace Nasarna.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsStatus")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVolunteer")
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfileImg")
@@ -799,6 +843,13 @@ namespace Nasarna.Migrations
                         .HasForeignKey("CauseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Nasarna.Models.Volunteer", b =>
+                {
+                    b.HasOne("Nasarna.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
                 });
 #pragma warning restore 612, 618
         }

@@ -85,48 +85,53 @@
                                     <div class="form-group form-style">
                                         <label asp-for="FullName" class="fw-bold mb-1">Full Name</label>
                                         <input asp-for="FullName">
+                                        <span asp-validation-for="FullName" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group form-style">
                                         <label asp-for="UserName" class="fw-bold mb-1">UserName</label>
                                         <input asp-for="UserName">
+                                        <span asp-validation-for="UserName" class="text-danger"></span>
+
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div class="form-group form-style">
+                                    <div class="d-flex flex-column mb-4">
                                         <label asp-for="ImageFile" class="fw-bold mb-1">Profile Image</label>
                                         <input asp-for="ImageFile">
+                                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group form-style">
                                         <label asp-for="Email" class="fw-bold mb-1">Email</label>
                                         <input asp-for="Email" placeholder="example@gmail.com">
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-12 form-style">
-                                    <div class="form-group">
+                                    <div class="form-group position-relative">
                                         <label asp-for="Password" class="fw-bold mb-1">Password</label>
-                                        <input class="pwd6" asp-for="Password">
+                                        <input class="pwd6" data-id="1" asp-for="Password">
+                                        <span class="position-absolute fs-5 toggle-pass-span" data-target="1" style="right:2%;top:41%;cursor:pointer"><i class="fa-solid fa-eye toggle-password"></i></span>
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+
                                     </div>
                                 </div>
                                 <div class="col-12 form-style">
-                                    <div class="form-group">
+                                    <div class="form-group position-relative">
                                         <label asp-for="ConfirmPassword" class="fw-bold mb-1">Confirm Password</label>
-                                        <input class="pwd6" asp-for="ConfirmPassword">
+                                        <input class="pwd6" data-id="2" asp-for="ConfirmPassword">
+                                        <span class="position-absolute fs-5 toggle-pass-span" data-target="2" style="right:2%;top:41%;cursor:pointer"><i class="fa-solid fa-eye toggle-password"></i></span>
+
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
                                     </div>
                                 </div>
-                                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-                                <div class="col-12">
-                                    <div class="d-flex justify-content-between align-items-center mb-5">
-                                        <div class="checkbox-wrap d-flex align-items-center">
-                                            <input type="checkbox">
-                                            <label for="" class="ms-2">Remember Me</label>
-                                        </div>
-                                        <a href="" class="btn border-0 text-warning">Forgot Password?</a>
-                                    </div>
-                                </div>
+                                
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-warning text-white rounded-0 w-100 p-2">Sign
                                         up</button>

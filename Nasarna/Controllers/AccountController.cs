@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Nasarna.DAL;
+using Nasarna.Helpers;
 using Nasarna.Models;
 using Nasarna.ViewModels;
 using Pustok.Helpers;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -47,16 +50,6 @@ namespace Nasarna.Controllers
             return View(accountVM);
         }
 
-        public IActionResult CreatePost()
-        {
-            return View();
-        }
-
-        public IActionResult EditPost(int id)
-        {
-            return View();
-        }
-
         public IActionResult Login()
         {
             return View();
@@ -76,7 +69,13 @@ namespace Nasarna.Controllers
                 return View();
             }
 
-            var result = await _signInManager.PasswordSignInAsync(user, member.Password, false, false);
+            if (user.IsStatus == false)
+            {
+                ModelState.AddModelError("", "Your account has been blocked!");
+                return View();
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(user, member.Password, member.RememberMe, false);
 
             if (!result.Succeeded)
             {
@@ -106,13 +105,17 @@ namespace Nasarna.Controllers
             {
                 if (member.ImageFile.ContentType != "image/png" && member.ImageFile.ContentType != "image/jpeg")
                 {
-                    ModelState.AddModelError("ImageFiles", "File format must be image/png or image/jpeg");
+                    ModelState.AddModelError("ImageFile", "File format must be image/png or image/jpeg");
                 }
 
                 if (member.ImageFile.Length > 2097152)
                 {
-                    ModelState.AddModelError("ImageFiles", "File size must be less than 2MB");
+                    ModelState.AddModelError("ImageFile", "File size must be less than 2MB");
                 }
+            }
+            else
+            {
+                ModelState.AddModelError("ImageFile", "Profile image is required!");
             }
 
             if (!ModelState.IsValid)
@@ -127,7 +130,9 @@ namespace Nasarna.Controllers
                 UserName = member.UserName,
                 ProfileImg = newFileName,
                 ImageFile = member.ImageFile,
-                IsAdmin = false
+                IsAdmin = false,
+                IsStatus = true,
+                IsVolunteer = false,
             };
 
             var result = await _userManager.CreateAsync(user, member.Password);
@@ -141,19 +146,104 @@ namespace Nasarna.Controllers
                 return View();
             }
 
+            if (!ModelState.IsValid)
+                return View();
+
+/*
+            await _roleManager.CreateAsync(new IdentityRole("Member"));
+*/
+            await _userManager.AddToRoleAsync(user, "Member");
+
+
+            return RedirectToAction("login","account");
+            
+        }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            if(string.IsNullOrEmpty(email))
+                return BadRequest();
+
+            var dbUser = await _userManager.FindByEmailAsync(email);
+
+            if(dbUser == null)
+                return RedirectToAction("error","home");
+
+            if (!dbUser.IsStatus)
+            {
+                ModelState.AddModelError("", "Your account has been blocked!");
+                return View();
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(dbUser);
+
+            var link = Url.Action("ResetPassword", "Account", new { dbUser.Id,token },protocol:HttpContext.Request.Scheme);
+
+            var message = $"<a href='{link}'>reset password</a>";
+
+            await EmailManager.SendEmailAsync(email, "Reset Password", message);
+
+            return RedirectToAction("Login");
+        }
+
+        public async Task<IActionResult> ResetPassword(string id, string token)
+        {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(token))
+                return BadRequest();
+
+            var dbUser = await _userManager.FindByIdAsync(id);
+
+            if (dbUser == null)
+                return RedirectToAction("error", "home");
+
+            ResetPasswordViewModel resetVM = new ResetPasswordViewModel
+            {
+                Token = token,
+            };
+
+            return View(resetVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]  
+        public async Task<IActionResult> ResetPassword(string id, ResetPasswordViewModel resetPasswordVM)
+        {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(resetPasswordVM.Token))
+                return BadRequest();
 
             if (!ModelState.IsValid)
                 return View();
-            /*
-                        string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var url = Url.Action("ConfirmEmail", "Account", new { email = user.Email, token = token }, Request.Scheme);*/
 
-            /*            await _roleManager.CreateAsync(new IdentityRole("Member"));*/
+            var dbUser = await _userManager.FindByIdAsync(id);
+            if (dbUser == null)
+                return RedirectToAction("error", "home");
 
-            await _userManager.AddToRoleAsync(user, "Member");
+            if (!dbUser.IsStatus)
+            {
+                ModelState.AddModelError("", "Your account has been blocked!");
+                return View();
+            }
 
-/*            return Ok(new { URL = url });
-*/            return RedirectToAction("login","account");
+            var result = await _userManager.ResetPasswordAsync(dbUser,resetPasswordVM.Token,resetPasswordVM.NewPassword);
+
+
+            if(result.Errors == null)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View();
+            }
+
+            return RedirectToAction("Login");
         }
 
         public async Task<IActionResult> SignOut()
