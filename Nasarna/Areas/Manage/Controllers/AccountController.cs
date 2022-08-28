@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -29,16 +30,21 @@ namespace Nasarna.Areas.Manage.Controllers
             _context = context;
             _hubContext = hubContext;
         }
+        [Authorize(Roles ="SuperAdmin")]
         public IActionResult Index(int page = 1)
         {
             ViewBag.Page = page;
             ViewBag.TotalPages = (int)Math.Ceiling(_userManager.Users.Where(x => !x.IsAdmin).Count() / 10d);
 
-            if (page < 1 || page > (int)Math.Ceiling(_userManager.Users.Where(x => !x.IsAdmin).Count() / 10d))
-                return RedirectToAction("error", "home");
+            var users = _userManager.Users.Where(x=>!x.IsAdmin).ToList();
 
-            var users = _userManager.Users.Where(x=>!x.IsAdmin).Skip((page - 1) * 10).Take(10).ToList();
-            return View(users);
+            if(users.Count > 0)
+            {
+                if (page < 1 || page > (int)Math.Ceiling(_userManager.Users.Where(x => !x.IsAdmin).Count() / 10d))
+                    return RedirectToAction("error", "dashboard");
+            }
+
+            return View(users.Skip((page - 1) * 10).Take(10).ToList());
         }
 
         public IActionResult ActivateStatus(string id, bool isActive)

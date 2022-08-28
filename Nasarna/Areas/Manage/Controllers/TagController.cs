@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Nasarna.DAL;
 using Nasarna.Models;
@@ -8,6 +9,7 @@ using System.Linq;
 namespace Nasarna.Areas.Manage.Controllers
 {
     [Area("manage")]
+    [Authorize(Roles ="SuperAdmin")]
     public class TagController : Controller
     {
         private readonly NasarnaDbContext _context;
@@ -22,11 +24,15 @@ namespace Nasarna.Areas.Manage.Controllers
             ViewBag.Page = page;
             ViewBag.TotalPages = (int)Math.Ceiling(_context.Tags.Count() / 10d);
 
-            if (page < 1 || page > (int)Math.Ceiling(_context.Tags.Count() / 10d))
-                return RedirectToAction("error", "home");
+            var tags = _context.Tags.Include(x => x.BlogTags).ToList();
 
-            var tags = _context.Tags.Include(x => x.BlogTags).Skip((page - 1) * 10).Take(10).ToList();
-            return View(tags);
+            if(tags.Count > 0)
+            {
+                if (page < 1 || page > (int)Math.Ceiling(_context.Tags.Count() / 10d))
+                    return RedirectToAction("error", "dashboard");
+            }
+
+            return View(tags.Skip((page - 1) * 10).Take(10).ToList());
         }
 
         public IActionResult Create()

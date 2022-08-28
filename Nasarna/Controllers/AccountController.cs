@@ -32,20 +32,35 @@ namespace Nasarna.Controllers
             _context = context;
             _env = env;
         }
-        public IActionResult Index(string id,int page = 1)
+        public IActionResult Index(string id, string username,int page = 1)
         {
+            var member = _context.Users.FirstOrDefault(x => x.NormalizedUserName == username);
+
+            if(member != null)
+                id = member.Id;
+
             ViewBag.Page = page;
             ViewBag.TotalPages = (int)Math.Ceiling(_context.Causes.Where(x => x.AppUserId == id).Count() / 6d);
             ViewBag.Messages = _context.Messages.Include(x => x.FromUser).Include(x => x.ToUser).ToList();
 
+            var user = _context.Users.FirstOrDefault(x => x.Id == id);
 
-            if (page < 1 || page > (int)Math.Ceiling(_context.Causes.Where(x => x.AppUserId == id).Count() / 6d))
-                return RedirectToAction("error", "home");
+            if (username != null && _context.Users.Any(x => x.NormalizedUserName == username.ToUpper()))
+                user = _context.Users.FirstOrDefault(x => x.NormalizedUserName == username.ToUpper());
+
+
+            var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.AppUser).Where(x => x.AppUserId == id).ToList();
+
+            if(causes.Count > 0)
+            {
+                if (page < 1 || page > (int)Math.Ceiling(_context.Causes.Where(x => x.AppUserId == id).Count() / 6d))
+                    return RedirectToAction("error", "home");
+            }
 
             AccountViewModel accountVM = new AccountViewModel
             {
-                Causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.AppUser).Where(x => x.AppUserId == id).Skip((page - 1) * 6).Take(6).ToList(),
-                User = _context.Users.FirstOrDefault(x => x.Id == id),
+                Causes = causes.Skip((page - 1) * 6).Take(6).ToList(),
+                User = user,
             };
 
             foreach (var cause in accountVM.Causes)

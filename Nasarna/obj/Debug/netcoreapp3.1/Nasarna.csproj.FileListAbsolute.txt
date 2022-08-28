@@ -153,10 +153,13 @@ C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreap
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Dashboard\Contact.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Dashboard\Error.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Dashboard\Index.cshtml.g.cs
+C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Dashboard\Subscribes.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Dashboard\Volunteer.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Event\Create.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Event\Edit.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Event\Index.cshtml.g.cs
+C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Setting\Edit.cshtml.g.cs
+C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Setting\Index.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Tag\Create.cshtml.g.cs
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Tag\Edit.cshtml.g.cs
@@ -193,3 +196,6 @@ C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreap
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Nasarna.dll
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Nasarna.pdb
 C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Nasarna.genruntimeconfig.cache
+C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Mission\Index.cshtml.g.cs
+C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Mission\Create.cshtml.g.cs
+C:\Users\yusifizcode\Desktop\Nasarna-Backend\Nasarna\Nasarna\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Mission\Edit.cshtml.g.cs

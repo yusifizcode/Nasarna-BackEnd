@@ -1,0 +1,98 @@
+﻿@model List<Subscribe>
+@{
+    ViewData["Title"] = "Contact";
+    int page = ViewBag.Page;
+    int totalPages = ViewBag.TotalPages;
+    int count = 0;
+}
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Subscribers Table</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                            <th>#</th>
+                            <th>
+                                FullName
+                            </th>
+                            <th>
+                                UserName
+                            </th>
+                              <th>
+                                Email
+                            </th>
+                            </thead>
+                            <tbody>
+                                @foreach (var contact in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <td>@count</td>
+                                        <td>
+                                            @contact.AppUser?.FullName
+                                        </td>
+                                        <td>
+                                            @contact.AppUser?.UserName
+                                        </td>
+                                        <td>
+                                           @contact.Email
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                                                  <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item @(page==1?"d-none":"")">
+                                    <a asp-action="Subscribes" asp-route-page="@(page-1)" class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                @if(page == 1){
+                                    for(int i = page; i <= totalPages; i++){
+                                        <li class="page-item @(page==i?"active":"")"><a asp-action="Subscribes" asp-route-page="@i" class="page-link">@i</a></li>
+
+                                    }
+                                }
+                                else if(page == totalPages){
+                                    if(totalPages > 2){
+                                        for(int i = page - 2; i <= page; i++){
+                                            <li class="page-item @(page==i?"active":"")"><a asp-action="Subscribes" asp-route-page="@i" class="page-link">@i</a></li>
+
+                                        }
+                                    }
+                                    else{
+                                        for(int i = 1; i <= page; i++){
+                                            <li class="page-item @(page==i?"active":"")"><a asp-action="Subscribes" asp-route-page="@i" class="page-link">@i</a></li>
+
+                                        }
+                                    }
+                                }
+                                else{
+                                    for(int i = page - 1; i <= page + 1; i++){
+                                            <li class="page-item @(page==i?"active":"")"><a asp-action="Subscribes" asp-route-page="@i" class="page-link">@i</a></li>
+
+                                    }
+                                }
+                                <li class="page-item @(page==totalPages?"d-none":"")">
+                                    <a asp-action="Subscribes" asp-route-page="@(page+1)" class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

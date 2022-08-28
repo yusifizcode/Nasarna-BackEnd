@@ -1,162 +1,131 @@
-﻿@model AboutViewModel
+﻿@using Nasarna.Services
+@model AboutViewModel
+@inject LayoutService layoutService
 @{
+    Dictionary<string, string> settings = layoutService.GetSettings();
     ViewData["Title"] = "About";
 }
 
-   <main>
-        <!-- Start of Breadcrumb -->
-        <section class="breadcrumb section-padding">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="breadcrumb-wrap">
-                            <h2>About Us</h2>
-                            <ul class="breadcrumb-list">
-                                <li class="breadcrumb-list-item">
-                                    <a href="index.html">Home</a>
-                                </li>
-                                <li class="breadcrumb-list-item">
-                                    <a href="about.html">About</a>
-                                </li>
-                            </ul>
-                        </div>
+<main>
+    <!-- Start of Breadcrumb -->
+    <section class="breadcrumb section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <h2>About Us</h2>
+                        <ul class="breadcrumb-list">
+                            <li class="breadcrumb-list-item">
+                                <a asp-action="index">Home</a>
+                            </li>
+                            <li class="breadcrumb-list-item">
+                                <a asp-action="about">About</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
 
-        </section>
-        <!-- End of Breadcrumb -->
-
-
-        <!-- Strart of About video -->
-        <section id="about-video">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="about-video">
-                            <div class="about-video-img">
-                                <img src="~/assets/images/about-vedio.jpg" alt="">
-                                <div class="entry-media video-holder">
-                                    <a href="https://www.youtube.com/embed/iSbzh0r9IV4?autoplay=1" class="video-btn"
-                                        data-type="iframe">
-                                        <i class=""></i>
-                                    </a>
-                                </div>
+    </section>
+    <!-- End of Breadcrumb -->
+    <!-- Strart of About video -->
+    <section id="about-video">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="about-video">
+                        <div class="about-video-img">
+                            <img src="~/assets/images/@settings["aboutVideoImg"]" alt="">
+                            <div class="entry-media video-holder">
+                                <a href="@settings["aboutVideoUrl"]" class="video-btn"
+                                   data-type="iframe">
+                                    <i class=""></i>
+                                </a>
                             </div>
-                            <h2>See what we do for the <span>poor people and the children</span></h2>
                         </div>
+                        <h2>See what we do for the <span>poor people and the children</span></h2>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- End of About video -->
-
-
-        <!-- Start of About Mission -->
-        <section id="mission" class="section-padding text-center about-mission">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="section-title">
+        </div>
+    </section>
+    <!-- End of About video -->
+    <!-- Start of About Mission -->
+    <section id="mission" class="section-padding text-center about-mission">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <span>What We Do?</span>
+                        <h2>We Are In A Mission To Help The Helpless</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var mission in Model.Missions)
+                {
+                    <div class="col-lg-3 col-md-6 mb-sm-3">
+                        <div class="mission-card text-center">
+                            <div class="mission-img">
+                                <img src="~/uploads/missions/@mission.Image" alt="">
+                            </div>
+                            <div class="mission-content">
+                                <h2>@mission.Title</h2>
+                                <p>@mission.Desc</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+    <!-- End of About Mission -->
+    <!-- Start of About -->
+    <section id="about" class="section-padding about-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-12">
+                    <div class="about-content">
+                        <div class="section-title m-0 mb-4">
                             <span>What We Do?</span>
                             <h2>We Are In A Mission To Help The Helpless</h2>
                         </div>
+                        <p class="mb-4">
+                            There are many variations of passages of Lorem Ipsum available, but the
+                            majority have suffered alteration in some form, by injected humour, or randomised words
+                            which don't look even slightly believable. If you are going to use a passage of Lorem
+                            Ipsum, you need to be sure there.
+                        </p>
+                        <p>
+                            Thing embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the
+                            Internet tend to repeat predefined chunks as necessary,
+                        </p>
+                        <div class="site-btns">
+                            <a href="about.html" class="btn btn-warning">Know More</a>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 mb-sm-3">
-                        <div class="mission-card text-center">
-                            <div class="mission-img">
-                                <img src="~/assets/images/mission/img-8.png" alt="">
-                            </div>
-                            <div class="mission-content">
-                                <h2>Clean Water</h2>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem, explicabo?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-sm-3">
-                        <div class="mission-card text-center">
-                            <div class="mission-img">
-                                <img src="~/assets/images/mission/img-5.png" alt="">
-                            </div>
-                            <div class="mission-content">
-                                <h2>Clean Water</h2>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem, explicabo?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-sm-3">
-                        <div class="mission-card text-center">
-                            <div class="mission-img">
-                                <img src="~/assets/images/mission/img-6.png" alt="">
-                            </div>
-                            <div class="mission-content">
-                                <h2>Clean Water</h2>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem, explicabo?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-sm-3">
-                        <div class="mission-card text-center">
-                            <div class="mission-img">
-                                <img src="~/assets/images/mission/img-7.png" alt="">
-                            </div>
-                            <div class="mission-content">
-                                <h2>Clean Water</h2>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem, explicabo?</p>
-                            </div>
-                        </div>
+                <div class="col-lg-6 col-12">
+                    <div class="about-img">
+                        <img src="~/assets/images/about.png" alt="">
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- End of About Mission -->
-
-
-        <!-- Start of About -->
-        <section id="about" class="section-padding about-bg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-12">
-                        <div class="about-content">
-                            <div class="section-title m-0 mb-4">
-                                <span>What We Do?</span>
-                                <h2>We Are In A Mission To Help The Helpless</h2>
-                            </div>
-                            <p class="mb-4">There are many variations of passages of Lorem Ipsum available, but the
-                                majority have suffered alteration in some form, by injected humour, or randomised words
-                                which don't look even slightly believable. If you are going to use a passage of Lorem
-                                Ipsum, you need to be sure there.</p>
-                            <p>Thing embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the
-                                Internet tend to repeat predefined chunks as necessary, </p>
-                            <div class="site-btns">
-                                <a href="about.html" class="btn btn-warning">Know More</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-12">
-                        <div class="about-img">
-                            <img src="~/assets/images/about.png" alt="">
-                        </div>
-                    </div>
+        </div>
+    </section>
+    <!-- End of About -->
+    <!-- Start of Causes -->
+    <section id="causes" class="section-padding bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="section-title text-center">
+                    <span>Our Causes</span>
+                    <h2>Popular Causes What You Should Know</h2>
                 </div>
             </div>
-        </section>
-        <!-- End of About -->
-
-
-        <!-- Start of Causes -->
-        <section id="causes" class="section-padding bg-white">
-            <div class="container">
-                <div class="row">
-                    <div class="section-title text-center">
-                        <span>Our Causes</span>
-                        <h2>Popular Causes What You Should Know</h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="owl-carousel owl-theme owl-index">
+            <div class="row">
+                <div class="owl-carousel owl-theme owl-index">
                     @foreach (var cause in Model.Causes)
                     {
                         <div class="item">
@@ -207,62 +176,58 @@
                         </div>
                     }
 
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End of Causes -->
+    <!-- Start of Counter -->
+    <section id="counter" class="section-padding about-counter">
+        <div class="container">
+            <div class="row justify-content-between text-center">
+
+                <div class="donation counter col-lg-3 col-md-6">
+                    <h2 class="text-white">
+                        <span class="odometer odometer-theme-default" data-count="@Model.Payments?.Count"></span>+
+                    </h2>
+                    <p class="text-white">Donation</p>
+                </div>
+                <div class="fund-raise counter col-lg-3 col-md-6">
+                    <h2 class="text-white">
+                        <span class="odometer odometer-theme-default" data-count="@Model.Causes.Where(x=>x.AmountPercent == 100).Count()"></span>+
+                    </h2>
+                    <p class="text-white">Fund Raised</p>
+                </div>
+                <div class="volunteers counter col-lg-3 col-md-6">
+                    <h2 class="text-white">
+                        <span class="odometer odometer-theme-default" data-count="@Model.Volunteers?.Count"></span>+
+                    </h2>
+                    <p class="text-white">Volunteers</p>
+                </div>
+                <div class="projects counter col-lg-3 col-md-6">
+                    <h2 class="text-white">
+                        <span class="odometer odometer-theme-default" data-count="@Model.Causes.Count"></span>+
+                    </h2>
+                    <p class="text-white">Projects</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- End of Counter -->
+    <!-- Start of About Team -->
+    <!-- Start of Team -->
+    <section id="team" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <div class="section-title">
+                        <span>Meet Our Team</span>
+                        <h2>Our Expert Volunteer</h2>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- End of Causes -->
-
-
-        <!-- Start of Counter -->
-        <section id="counter" class="section-padding about-counter">
-            <div class="container">
-                <div class="row justify-content-between text-center">
-
-                    <div class="donation counter col-lg-3 col-md-6">
-                        <h2 class="text-white">
-                            <span class="odometer odometer-theme-default" data-count="@Model.Payments?.Count"></span>+
-                        </h2>
-                        <p class="text-white">Donation</p>
-                    </div>
-                    <div class="fund-raise counter col-lg-3 col-md-6">
-                        <h2 class="text-white">
-                            <span class="odometer odometer-theme-default" data-count="@Model.Causes.Where(x=>x.AmountPercent == 100).Count()"></span>+
-                        </h2>
-                        <p class="text-white">Fund Raised</p>
-                    </div>
-                    <div class="volunteers counter col-lg-3 col-md-6">
-                        <h2 class="text-white">
-                            <span class="odometer odometer-theme-default" data-count="@Model.Volunteers?.Count"></span>+
-                        </h2>
-                        <p class="text-white">Volunteers</p>
-                    </div>
-                    <div class="projects counter col-lg-3 col-md-6">
-                        <h2 class="text-white">
-                            <span class="odometer odometer-theme-default" data-count="@Model.Causes.Count"></span>+
-                        </h2>
-                        <p class="text-white">Projects</p>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-        <!-- End of Counter -->
-
-
-        <!-- Start of About Team -->
-        <!-- Start of Team -->
-        <section id="team" class="section-padding">
-            <div class="container">
-                <div class="row">
-                    <div class="col text-center">
-                        <div class="section-title">
-                            <span>Meet Our Team</span>
-                            <h2>Our Expert Volunteer</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
+            <div class="row">
                 @foreach (var volunteer in Model.Volunteers)
                 {
                     <div class="col-lg-4 col-md-6 col-12 mb-5">
@@ -293,10 +258,10 @@
                         </div>
                     </div>
                 }
-                </div>
             </div>
-        </section>
-        <!-- End of Team -->
-        <!-- End of About Team -->
-    </main>
+        </div>
+    </section>
+    <!-- End of Team -->
+    <!-- End of About Team -->
+</main>
 

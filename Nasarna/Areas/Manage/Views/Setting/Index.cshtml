@@ -1,0 +1,45 @@
+﻿@using Nasarna.Services
+@inject LayoutService layoutService
+@{
+    ViewData["Title"] = "Volunteer";
+    Dictionary<string, string> settings = layoutService.GetSettings();
+}
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Volunteers Table</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                            <th>Key</th>
+                            <th>
+                                Value
+                            </th>
+                            <th class="text-right">Action</th>
+                            </thead>
+                            <tbody>
+                                @foreach (var setting in settings)
+                                {
+                                    <tr><td>@setting.Key </td>
+                                        <td>@setting.Value </td>
+                                        <td class="text-right"><a asp-action="edit" asp-route-id="@setting.Key" class="btn btn-warning">Edit</a></td>
+                                    </tr>
+                                }
+
+                            @*    @foreach (var setting in settings)
+                                {
+                                    <tr></tr>
+                                }*@
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

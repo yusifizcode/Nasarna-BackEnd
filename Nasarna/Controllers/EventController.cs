@@ -20,16 +20,18 @@ namespace Nasarna.Controllers
             ViewBag.Page = page;
             ViewBag.TotalPages = (int)Math.Ceiling(_context.Events.Count() / 6d);
 
-            if (page < 1 || page > (int)Math.Ceiling(_context.Events.Count() / 6d))
-                return RedirectToAction("error", "home");
+            var events = _context.Events.ToList();
 
-
-            var events = _context.Events.Skip((page - 1) * 6).Take(6).ToList();
+            if(events.Count > 0)
+            {
+                if (page < 1 || page > (int)Math.Ceiling(_context.Events.Count() / 6d))
+                    return RedirectToAction("error", "home");
+            }
 
             if(title != null)
                 events = events.Where(x => x.Title.Contains(title)).Skip((page - 1) * 6).Take(6).ToList();
 
-            return View(events);
+            return View(events.Skip((page - 1) * 6).Take(6).ToList()) ;
         }
 
         public IActionResult Detail(int id,string title)

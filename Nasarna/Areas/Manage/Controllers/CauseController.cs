@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Linq;
 namespace Nasarna.Areas.Manage.Controllers
 {
     [Area("manage")]
+    [Authorize(Roles ="SuperAdmin")]
     public class CauseController : Controller
     {
         private readonly NasarnaDbContext _context;
@@ -28,16 +30,19 @@ namespace Nasarna.Areas.Manage.Controllers
             ViewBag.Page = page;
             ViewBag.TotalPages = (int)Math.Ceiling(_context.Causes.Count() / 10d);
 
-            if (page < 1 || page > (int)Math.Ceiling(_context.Causes.Count() / 10d))
-                return RedirectToAction("error", "home");
-
             var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag)
                                        .Include(x => x.Category)
                                        .Include(x => x.CauseImages)
-                                       .Include(x => x.AppUser).Skip((page - 1) * 10).Take(10)
+                                       .Include(x => x.AppUser)
                                        .ToList();
 
-            return View(causes);
+            if(causes.Count > 0)
+            {
+                if (page < 1 || page > (int)Math.Ceiling(_context.Causes.Count() / 10d))
+                    return RedirectToAction("error", "dashboard");
+            }
+
+            return View(causes.Skip((page - 1) * 10).Take(10).ToList());
         }
 
         public IActionResult Detail(int id)

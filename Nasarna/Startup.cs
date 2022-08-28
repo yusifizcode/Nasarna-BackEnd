@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Nasarna.DAL;
 using Nasarna.Hubs;
 using Nasarna.Models;
+using Nasarna.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,8 @@ namespace Nasarna
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
 
+            services.AddScoped<LayoutService>();
+
             services.AddSignalR();
 
             services.AddIdentity<AppUser, IdentityRole>(opt =>
@@ -45,6 +48,12 @@ namespace Nasarna
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequiredLength = 8;
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<NasarnaDbContext>();
+/*
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/account/login";
+                options.AccessDeniedPath = "/account/login";
+            });*/
 
     }
 

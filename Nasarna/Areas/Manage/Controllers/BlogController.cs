@@ -34,15 +34,19 @@ namespace Nasarna.Areas.Manage.Controllers
             ViewBag.Page = page;
             ViewBag.TotalPages = (int)Math.Ceiling(_context.Blogs.Count() / 10d);
 
-            if (page < 1 || page > (int)Math.Ceiling(_context.Blogs.Count() / 10d))
-                return RedirectToAction("error", "home");
-
             ViewBag.Tags = _context.Tags.Where(x => x.BlogTags.Any());
             var blogs = _context.Blogs.Include(x=>x.BlogTags).ThenInclude(e=>e.Tag)
                                       .Include(x=>x.BlogImages)
-                                      .Include(x=>x.AppUser).Skip((page - 1) * 10).Take(10)
+                                      .Include(x=>x.AppUser)
                                       .ToList();
-            return View(blogs);
+
+            if(blogs.Count > 0)
+            {
+                if (page < 1 || page > (int)Math.Ceiling(_context.Blogs.Count() / 10d))
+                    return RedirectToAction("error", "dashboard");
+            }
+
+            return View(blogs.Skip((page - 1) * 10).Take(10).ToList());
         }
 
 

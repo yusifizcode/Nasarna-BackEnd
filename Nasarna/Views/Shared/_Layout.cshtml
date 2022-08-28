@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Nasarna.Services
 @inject UserManager<AppUser> _userManager
-
+@inject LayoutService layoutService
 @{
     AppUser member = null;
-
+    Dictionary<string, string> settings = layoutService.GetSettings();
+    List<Blog> blogs = layoutService.GetBlogs();
     if (User.Identity.IsAuthenticated)
     {
         member = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
@@ -83,11 +85,11 @@
                         <div class="contact-intro d-flex justify-content-center">
                             <div class="intro-phone border-end d-flex align-items-center p-3 ps-0">
                                 <span class="text-secondary d-sm-flex align-items-center"><i
-                                        class="fa-solid fa-phone text-warning me-1"></i> +000123456789</span>
+                                        class="fa-solid fa-phone text-warning me-1"></i> @settings["phone"]</span>
                             </div>
                             <div class="intro-mail d-flex align-items-center p-3">
                                 <span class="text-secondary d-sm-flex align-items-center"><i
-                                        class="fa-solid fa-envelope text-warning me-1"></i> nasarna@gmail.com</span>
+                                        class="fa-solid fa-envelope text-warning me-1"></i> @settings["email"]</span>
                             </div>
                         </div>
                     </div>
@@ -154,9 +156,9 @@
                         }
                         <button class="search-toggle-btn"><i class="fa-solid fa-magnifying-glass text-secondary"></i></button>
                         <div class="header-search-form">
-                            <form>
+                            <form asp-action="index" asp-controller="account">
                                 <div class="d-flex">
-                                    <input type="text" class="form-control" placeholder="Search here...">
+                                    <input type="text" class="form-control" name="username" placeholder="Search User...">
                                     <button class="search-toggle-btn" type="submit"><i
                                             class="fa-solid fa-magnifying-glass text-secondary"></i></button>
                                 </div>
@@ -212,9 +214,10 @@
                     <div class="col">
                         <h3>Follow us For ferther information</h3>
                         <div class="subscribe-form">
-                            <form action="">
+                            <form asp-action="Subscribe" asp-controller="home">
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Enter Your Email" class="form-control">
+                                    <input type="hidden" name="AppUserId" value="@member?.Id"/>
+                                    <input type="email" placeholder="Enter Your Email" class="form-control" name="Email">
                                     <button type="submit">Subscribe</button>
                                 </div>
                             </form>
@@ -239,22 +242,22 @@
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In, minima!</p>
                                 <ul class="about-widget-social-list">
                                     <li class="about-widget-social-list-item">
-                                        <a href="#">
+                                        <a href="@settings["siteFB"]">
                                             <i class="fa-brands fa-facebook-f"></i>
                                         </a>
                                     </li>
                                     <li class="about-widget-social-list-item">
-                                        <a href="#">
+                                        <a href="@settings["siteTW"]">
                                             <i class="fa-brands fa-twitter"></i>
                                         </a>
                                     </li>
                                     <li class="about-widget-social-list-item">
-                                        <a href="#">
+                                        <a href="@settings["siteIG"]">
                                             <i class="fa-brands fa-instagram"></i>
                                         </a>
                                     </li>
                                     <li class="about-widget-social-list-item">
-                                        <a href="#">
+                                        <a href="@settings["siteGM"]">
                                             <i class="fa-solid fa-envelope"></i>
                                         </a>
                                     </li>
@@ -267,24 +270,19 @@
                                 <div class="widget-title">
                                     <h3>Top News</h3>
                                 </div>
-                                <div class="news-wrap d-flex">
-                                    <div class="news-img">
-                                        <img src="~/assets/images/footer/img-1.jpg" alt="">
+
+                                @foreach(var blog in blogs)
+                                {
+                                    <div class="news-wrap d-flex">
+                                        <div class="news-img">
+                                            <img src="~/uploads/blogs/@blog.BlogImages[0]?.Name" width="100" height="50" alt="">
+                                        </div>
+                                        <div class="news-content">
+                                            <a asp-action="detail" asp-controller="blog" asp-route-id="@blog.Id" class="text-decoration-none"><h3>@blog.Title</h3></a>
+                                            <span>@blog.CreatedAt.ToString("dddd MMM, yyyy")</span>
+                                        </div>
                                     </div>
-                                    <div class="news-content">
-                                        <h3>Education for all poor children</h3>
-                                        <span>12 Nov, 2020</span>
-                                    </div>
-                                </div>
-                                <div class="news-wrap d-flex">
-                                    <div class="news-img">
-                                        <img src="~/assets/images/footer/img-2.jpg" alt="">
-                                    </div>
-                                    <div class="news-content">
-                                        <h3>Education for all poor children</h3>
-                                        <span>12 Nov, 2020</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
 
@@ -324,14 +322,13 @@
                                 <p class="text-light fs-6">online store with lots of cool and exclusive wpo-features</p>
                                 <ul class="widget-list">
                                     <li class="widget-list-item d-flex align-items-center mb-2">
-                                        <i class="fa-solid fa-location-dot me-3"></i> <span>28 Street, New York City,
-                                            USA</span>
+                                        <i class="fa-solid fa-location-dot me-3"></i> <span>@settings["address"]</span>
                                     </li>
                                     <li class="widget-list-item d-flex align-items-center mb-2">
-                                        <i class="fa-solid fa-phone me-3"></i> <span>+994 55 555 55 55</span>
+                                        <i class="fa-solid fa-phone me-3"></i> <span>@settings["phone"]</span>
                                     </li>
                                     <li class="widget-list-item d-flex align-items-center mb-2">
-                                        <i class="fa-solid fa-envelope me-3"></i> <span>example@gmail.com</span>
+                                        <i class="fa-solid fa-envelope me-3"></i> <span>@settings["email"]</span>
                                     </li>
                                 </ul>
                             </div>

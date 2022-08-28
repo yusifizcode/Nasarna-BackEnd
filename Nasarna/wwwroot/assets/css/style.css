@@ -2266,7 +2266,7 @@ form .form-btn button {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background: #062265;
-  z-index: 2;
+  z-index: 999;
 }
 
 .floating-chat.enter {
@@ -2661,6 +2661,7 @@ form .form-btn button {
     text-align: center;
     padding: 20px 0;
     z-index:3 !important;
+    background:white;
   }
   .topbar .intro-phone, .topbar .top-login-register {
     border: none !important;

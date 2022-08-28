@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Nasarna.DAL;
 using Nasarna.Models;
@@ -10,6 +11,7 @@ using System.Linq;
 namespace Nasarna.Areas.Manage.Controllers
 {
     [Area("manage")]
+    [Authorize(Roles ="SuperAdmin")]
     public class EventController : Controller
     {
         private readonly NasarnaDbContext _context;
@@ -26,11 +28,15 @@ namespace Nasarna.Areas.Manage.Controllers
             ViewBag.Page = page;
             ViewBag.TotalPages = (int)Math.Ceiling(_context.Events.Count() / 10d);
 
-            if (page < 1 || page > (int)Math.Ceiling(_context.Events.Count() / 10d))
-                return RedirectToAction("error", "home");
+            List<Event> events = _context.Events.ToList();
 
-            List<Event> events = _context.Events.Skip((page - 1) * 10).Take(10).ToList();
-            return View(events);
+            if(events.Count > 0)
+            {
+                if (page < 1 || page > (int)Math.Ceiling(_context.Events.Count() / 10d))
+                    return RedirectToAction("error", "dashboard");
+            }
+
+            return View(events.Skip((page - 1) * 10).Take(10).ToList());
         }
 
         public IActionResult Create()

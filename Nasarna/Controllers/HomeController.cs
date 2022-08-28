@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -38,8 +39,9 @@ namespace Nasarna.Controllers
                                         .ToList(),
                 Payments = _context.Payments.ToList(),
                 Volunteers = _context.Volunteers.Include(x=>x.AppUser).Take(3).ToList(),
-                Events = _context.Events.ToList(),
+                Events = _context.Events.Take(3).ToList(),
                 Blogs = _context.Blogs.Include(x=>x.BlogImages).OrderByDescending(x=>x.CreatedAt).Take(3).ToList(),
+                Missions = _context.Missions.Take(4).ToList()
         };
             return View(homeVM);
         }
@@ -57,6 +59,8 @@ namespace Nasarna.Controllers
                 Volunteers = _context.Volunteers.Include(x => x.AppUser).Take(3).ToList(),
                 Events = _context.Events.ToList(),
                 Payments = _context.Payments.ToList(),
+                Missions = _context.Missions.Take(4).ToList()
+
             };
             return View(aboutVM);
         }
@@ -103,6 +107,18 @@ namespace Nasarna.Controllers
             await _context.Messages.AddAsync(message);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpPost]
+        [Authorize(Roles ="Member")]
+        public IActionResult Subscribe(Subscribe subscribe)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            _context.Subscribes.Add(subscribe);
+            _context.SaveChanges();
+            return RedirectToAction("index");
         }
     }
 }

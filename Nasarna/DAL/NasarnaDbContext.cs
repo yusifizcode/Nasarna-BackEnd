@@ -27,5 +27,8 @@ namespace Nasarna.DAL
         public DbSet<Message> Messages { get; set; }
         public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Subscribe> Subscribes { get; set; }
+        public DbSet<Setting> Settings { get; set; }
+        public DbSet<Mission> Missions { get; set; }
     }
 }

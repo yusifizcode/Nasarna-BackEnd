@@ -14,6 +14,7 @@ namespace Nasarna.Models
         public string ProfileImg { get; set; }
         public string ConnectionId { get; set; }
         public DateTime ConnectedAt { get; set; }
+        public List<Payment> Payments { get; set; }
 /*        public List<Message> Messages { get; set; }
 */        [NotMapped]
         public IFormFile ImageFile { get; set; }

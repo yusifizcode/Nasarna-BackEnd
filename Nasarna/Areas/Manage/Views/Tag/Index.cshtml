@@ -22,8 +22,8 @@
                             <th>
                                 Name
                             </th>
-   
-   
+
+
                             <th class="text-right">
                                 Actions
                             </th>
@@ -46,48 +46,60 @@
                                 }
                             </tbody>
                         </table>
-                                                  <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item @(page==1?"d-none":"")">
-                                    <a asp-action="index" asp-route-page="@(page-1)" class="page-link" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                @if(page == 1){
-                                    for(int i = page; i <= totalPages; i++){
-                                        <li class="page-item @(page==i?"active":"")"><a asp-action="index" asp-route-page="@i" class="page-link">@i</a></li>
-
-                                    }
-                                }
-                                else if(page == totalPages){
-                                    if(totalPages > 2){
-                                        for(int i = page - 2; i <= page; i++){
+                        @if (Model.Count > 0)
+                        {
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item @(page==1?"d-none":"")">
+                                        <a asp-action="index" asp-route-page="@(page-1)" class="page-link" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                    @if (page == 1)
+                                    {
+                                        for (int i = page; i <= totalPages; i++)
+                                        {
                                             <li class="page-item @(page==i?"active":"")"><a asp-action="index" asp-route-page="@i" class="page-link">@i</a></li>
 
                                         }
                                     }
-                                    else{
-                                        for(int i = 1; i <= page; i++){
+                                    else if (page == totalPages)
+                                    {
+                                        if (totalPages > 2)
+                                        {
+                                            for (int i = page - 2; i <= page; i++)
+                                            {
+                                                <li class="page-item @(page==i?"active":"")"><a asp-action="index" asp-route-page="@i" class="page-link">@i</a></li>
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            for (int i = 1; i <= page; i++)
+                                            {
+                                                <li class="page-item @(page==i?"active":"")"><a asp-action="index" asp-route-page="@i" class="page-link">@i</a></li>
+
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        for (int i = page - 1; i <= page + 1; i++)
+                                        {
                                             <li class="page-item @(page==i?"active":"")"><a asp-action="index" asp-route-page="@i" class="page-link">@i</a></li>
 
                                         }
                                     }
-                                }
-                                else{
-                                    for(int i = page - 1; i <= page + 1; i++){
-                                            <li class="page-item @(page==i?"active":"")"><a asp-action="index" asp-route-page="@i" class="page-link">@i</a></li>
-
-                                    }
-                                }
-                                <li class="page-item @(page==totalPages?"d-none":"")">
-                                    <a asp-action="index" asp-route-page="@(page+1)" class="page-link" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                                    <li class="page-item @(page==totalPages?"d-none":"")">
+                                        <a asp-action="index" asp-route-page="@(page+1)" class="page-link" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        }
                     </div>
                 </div>
             </div>

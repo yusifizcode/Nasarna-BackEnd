@@ -31,15 +31,19 @@ namespace Nasarna.Controllers
             ViewBag.Page = page;
             ViewBag.TotalPages = (int)Math.Ceiling(_context.Causes.Where(x=>x.IsActive == true).Count() / 6d);
 
-            if (page < 1 || page > (int)Math.Ceiling(_context.Causes.Where(x => x.IsActive == true).Count() / 6d))
-                return RedirectToAction("error", "home");
-
             var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag)
                                         .Include(x => x.Category)
                                         .Include(x => x.CauseImages)
                                         .Include(x=>x.AppUser)
-                                        .Where(x=>x.IsActive == true).Skip((page - 1) * 6).Take(6)
+                                        .Where(x=>x.IsActive == true)
                                         .ToList() ;
+
+            if(causes.Count > 0)
+            {
+                if (page < 1 || page > (int)Math.Ceiling(_context.Causes.Where(x => x.IsActive == true).Count() / 6d))
+                    return RedirectToAction("error", "home");
+            }
+
             var causeTags = _context.Tags.Where(x => x.CauseTags.Any()).ToList();
             var causeCats = _context.Categories.Where(x => x.Causes.Any()).ToList();
 
@@ -54,7 +58,7 @@ namespace Nasarna.Controllers
 
             CauseViewModel causeVM = new CauseViewModel
             {
-                Causes = causes,
+                Causes = causes.Skip((page - 1) * 6).Take(6).ToList(),
                 Tags = causeTags,
                 RecentlyCauses = _context.Causes.Include(x => x.CauseImages).OrderByDescending(x => x.Id).Take(3).ToList(),
                 Categories = causeCats,

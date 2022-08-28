@@ -23,17 +23,20 @@ namespace Nasarna.Controllers
             ViewBag.Page = page;
             ViewBag.TotalPages = (int)Math.Ceiling(_context.Blogs.Count() / 6d);
 
-            if (page < 1 || page > (int)Math.Ceiling(_context.Blogs.Count() / 6d))
-                return RedirectToAction("error", "home");
-
             var blogs = _context.Blogs.Include(x => x.BlogTags).ThenInclude(e => e.Tag)
                                       .Include(x => x.BlogImages)
-                                      .Include(x => x.AppUser).Skip((page - 1) * 6).Take(6)
+                                      .Include(x => x.AppUser)
                                       .ToList();
 
             /*            var causeCategories = _context.Categories.Where(x => x.Causes.Any()).ToList();
                         if (categoryId != null)
                             causeCategories = causeCategories.Where(x=>x.Id == categoryId).ToList();*/
+
+            if(blogs.Count > 0)
+            {
+                if (page < 1 || page > (int)Math.Ceiling(_context.Blogs.Count() / 6d))
+                    return RedirectToAction("error", "home");
+            }
 
             var blogTags = _context.Tags.Where(x => x.BlogTags.Any()).ToList();
 
@@ -47,7 +50,7 @@ namespace Nasarna.Controllers
             {
                 Tags = blogTags,
                 RecentlyBlogs = _context.Blogs.Include(x => x.BlogImages).OrderByDescending(x => x.Id).Take(3).ToList(),
-                Blogs = blogs,
+                Blogs = blogs.Skip((page - 1) * 6).Take(6).ToList(),
             };
             return View(blogVM);
         }

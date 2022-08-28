@@ -20,6 +20,7 @@
     <Folder Include="wwwroot\uploads\events\" />
     <Folder Include="wwwroot\uploads\blogs\" />
     <Folder Include="wwwroot\uploads\causes\" />
+    <Folder Include="wwwroot\uploads\missions\" />
     <Folder Include="wwwroot\uploads\users\" />
   </ItemGroup>
 
