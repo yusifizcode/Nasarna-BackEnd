@@ -395,7 +395,7 @@ namespace Nasarna.Controllers
             existCause.NeedAmount = cause.NeedAmount;
 
             _context.SaveChanges();
-            return RedirectToAction("index");
+            return RedirectToAction("index","account",new {id = existCause.AppUserId});
         }
 
 

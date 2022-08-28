@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Nasarna.DAL;
 using Nasarna.Models;
+using System;
 using System.Linq;
 
 namespace Nasarna.Areas.Manage.Controllers
@@ -15,9 +16,15 @@ namespace Nasarna.Areas.Manage.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            var categories = _context.Categories.Include(x=>x.Causes).ToList();
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(_context.Categories.Count() / 10d);
+
+            if (page < 1 || page > (int)Math.Ceiling(_context.Categories.Count() / 10d))
+                return RedirectToAction("error", "home");
+
+            var categories = _context.Categories.Include(x=>x.Causes).Skip((page - 1) * 10).Take(10).ToList();
             return View(categories);
         }
 

@@ -8,6 +8,7 @@ using Nasarna.Helpers;
 using Nasarna.Models;
 using Nasarna.ViewModels;
 using Pustok.Helpers;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,12 +32,19 @@ namespace Nasarna.Controllers
             _context = context;
             _env = env;
         }
-        public IActionResult Index(string id)
+        public IActionResult Index(string id,int page = 1)
         {
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(_context.Causes.Where(x => x.AppUserId == id).Count() / 6d);
+            ViewBag.Messages = _context.Messages.Include(x => x.FromUser).Include(x => x.ToUser).ToList();
+
+
+            if (page < 1 || page > (int)Math.Ceiling(_context.Causes.Where(x => x.AppUserId == id).Count() / 6d))
+                return RedirectToAction("error", "home");
 
             AccountViewModel accountVM = new AccountViewModel
             {
-                Causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.AppUser).Where(x => x.AppUserId == id).ToList(),
+                Causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag).Include(x => x.Category).Include(x => x.CauseImages).Include(x => x.AppUser).Where(x => x.AppUserId == id).Skip((page - 1) * 6).Take(6).ToList(),
                 User = _context.Users.FirstOrDefault(x => x.Id == id),
             };
 

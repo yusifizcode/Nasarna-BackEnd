@@ -6,6 +6,7 @@ using Nasarna.Areas.Manage.ViewModels;
 using Nasarna.DAL;
 using Nasarna.Hubs;
 using Nasarna.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,9 +29,15 @@ namespace Nasarna.Areas.Manage.Controllers
             _context = context;
             _hubContext = hubContext;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            var users = _userManager.Users.Where(x=>!x.IsAdmin).ToList();
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(_userManager.Users.Where(x => !x.IsAdmin).Count() / 10d);
+
+            if (page < 1 || page > (int)Math.Ceiling(_userManager.Users.Where(x => !x.IsAdmin).Count() / 10d))
+                return RedirectToAction("error", "home");
+
+            var users = _userManager.Users.Where(x=>!x.IsAdmin).Skip((page - 1) * 10).Take(10).ToList();
             return View(users);
         }
 

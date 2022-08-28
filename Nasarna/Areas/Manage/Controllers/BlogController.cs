@@ -7,6 +7,7 @@ using Nasarna.DAL;
 using Nasarna.Models;
 using Nasarna.ViewModels;
 using Pustok.Helpers;
+using System;
 using System.Linq;
 
 namespace Nasarna.Areas.Manage.Controllers
@@ -28,12 +29,18 @@ namespace Nasarna.Areas.Manage.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(_context.Blogs.Count() / 10d);
+
+            if (page < 1 || page > (int)Math.Ceiling(_context.Blogs.Count() / 10d))
+                return RedirectToAction("error", "home");
+
             ViewBag.Tags = _context.Tags.Where(x => x.BlogTags.Any());
             var blogs = _context.Blogs.Include(x=>x.BlogTags).ThenInclude(e=>e.Tag)
                                       .Include(x=>x.BlogImages)
-                                      .Include(x=>x.AppUser)
+                                      .Include(x=>x.AppUser).Skip((page - 1) * 10).Take(10)
                                       .ToList();
             return View(blogs);
         }

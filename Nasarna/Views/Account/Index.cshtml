@@ -8,7 +8,8 @@
     {
         member = _userManager.Users.FirstOrDefault(x => !x.IsAdmin && x.UserName == User.Identity.Name);
     }
-
+    int page = ViewBag.Page;
+    int totalPages = ViewBag.TotalPages;
 }
 
 <main>
@@ -39,7 +40,7 @@
         <div class="container">
             <div class="row donate">
                 <h2 class="fs-3 mb-4 d-flex justify-content-between mb-5">@(Model.User.UserName + "'s") Posts
-                    @if(Model.User.Id == member.Id)
+                    @if(member != null &&  Model.User.Id == member?.Id)
                     {
                         <a asp-action="create" asp-controller="cause" class="text-decoration-none fs-4 text-warning">Add +</a>
                     }
@@ -50,7 +51,7 @@
                     {
                         @if(cause.AppUserId == member?.Id)
                         {
-                           <div class="col-lg-6 col-md-8 col-md-10 mb-3">
+                           <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
                             <div class="cause-card post shadow-sm p-0">
                                 <div class="owl-carousel owl-theme owl-post">
                                     @foreach (var causeImg in cause.CauseImages)
@@ -131,7 +132,7 @@
                         }
                         else if(cause.IsActive == true)
                         {
-                            <div class="col-lg-6 col-md-8 col-md-10 mb-3">
+                            <div class="col-lg-4 col-md-6 col-md-12 mb-3">
                             <div class="cause-card post shadow-sm p-0">
                                 <div class="owl-carousel owl-theme owl-post">
                                     @foreach (var causeImg in cause.CauseImages)
@@ -191,25 +192,37 @@
                        
                 @if(Model.Causes.Count != 0)
                 {
-                         <div class="pagination-wrapper mb-3">
+
+                          <div class="pagination-wrapper mb-3">
                             <ul class="pg-pagination">
-                                <li>
-                                    <a href=""><i class="fa-solid fa-angle-left"></i></a>
+                                <li class="@(page==1?"d-none":"")">
+                                    <a asp-action="index" asp-route-page="@(page-1)"><i class="fa-solid fa-angle-left"></i></a>
                                 </li>
-                                <li class="active">
-                                    <a href="">1</a>
-                                </li>
-                                <li>
-                                    <a href="">2</a>
-                                </li>
-                                <li>
-                                    <a href="">3</a>
-                                </li>
-                                <li>
-                                    <a href="">4</a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="fa-solid fa-angle-right"></i></a>
+                                @if(page == 1){
+                                    for(int i = page; i <= totalPages; i++){
+                                        <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                    }
+                                }
+                                else if(page == totalPages){
+                                    if(totalPages > 2){
+                                        for(int i = page - 2; i <= page; i++){
+                                            <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                        }
+                                    }
+                                    else{
+                                        for(int i = 1; i <= page; i++){
+                                            <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                        }
+                                    }
+                                }
+                                else{
+                                    for(int i = page - 1; i <= page + 1; i++){
+                                            <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                    }
+                                }
+                                
+                                <li class="@(page==totalPages?"d-none":"")">
+                                    <a asp-action="index" asp-route-page="@(page+1)"><i class="fa-solid fa-angle-right"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -222,7 +235,7 @@
 
     @if(member != null && member.Id != Model.User.Id)
     {
-                    <!-- Start of Chat -->
+        <!-- Start of Chat -->
         <div class="container">
             <div class="row">
                 <div class="floating-chat">
@@ -238,13 +251,26 @@
                             </button>
                         </div>
                         <ul class="messages">
-@*                            <li class="other"><span>Y</span>Salam</li>
-                            <li class="self"><span>A</span>Salam</li>*@
+                            @*                            <li class="other"><span>Y</span>Salam</li>
+                                <li class="self"><span>A</span>Salam</li>*@
+
+                            @foreach (var msg in ViewBag.Messages)
+                            {
+                                if (member.Id == msg.FromUserId)
+                                {
+                                    <li class="other">@msg.Text</li>
+                                }
+                                else
+                                {
+                                    <li class="self">@msg.Text</li>
+                                }
+                            }
+
                         </ul>
                         <div class="footer">
-                            <input type="hidden" value="@Model.User.Id" id="chatIdInput" />
-                            <input class="text-box" id="messageInput" placeholder="Write.." />
-                            <button id="sendMessage">Send</button>
+                            <input type="hidden" asp-for="@Model.Message.ToUserId" value="@Model.User.Id" id="chatIdInput" />
+                            <input class="text-box" asp-for="@Model.Message.Text" id="messageInput" placeholder="Write.." />
+                            <a asp-action="CreateMessage" asp-controller="home" id="sendMessage">Send</a>
                         </div>
                     </div>
                 </div>

@@ -7,5 +7,6 @@ namespace Nasarna.ViewModels
     {
         public List<Cause> Causes { get; set; } = new List<Cause>();
         public AppUser User { get; set; }
+        public Message Message { get; set; }
     }
 }

@@ -21,9 +21,15 @@ namespace Nasarna.Areas.Manage.Controllers
             _env = env;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            List<Event> events = _context.Events.ToList();
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(_context.Events.Count() / 10d);
+
+            if (page < 1 || page > (int)Math.Ceiling(_context.Events.Count() / 10d))
+                return RedirectToAction("error", "home");
+
+            List<Event> events = _context.Events.Skip((page - 1) * 10).Take(10).ToList();
             return View(events);
         }
 

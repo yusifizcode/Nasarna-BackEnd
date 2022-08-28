@@ -21,10 +21,10 @@
                             <h2>Cause Single</h2>
                             <ul class="breadcrumb-list">
                                 <li class="breadcrumb-list-item">
-                                    <a href="index.html">Home</a>
+                                    <a asp-action="index" asp-controller="home">Home</a>
                                 </li>
                                 <li class="breadcrumb-list-item">
-                                    <a href="cause.html">Cause Single</a>
+                                    <a asp-action="detail" asp-route-id="@Model.Cause?.Id">Cause Single</a>
                                 </li>
                             </ul>
                         </div>
@@ -64,7 +64,7 @@
                                             <img src="~/uploads/users/@Model.Cause.AppUser?.ProfileImg" alt="">
                                         </div>
                                         <div class="user-name ms-2">
-                                            <a href="">By @Model.Cause.AppUser.UserName</a>
+                                            <a asp-action="index" asp-controller="account" asp-route-id="@Model.Cause?.AppUserId">By @Model.Cause.AppUser?.UserName</a>
                                         </div>
                                     </div>
                                     <div class="post-date ms-3 d-flex align-items-center justify-content-between">
@@ -392,7 +392,8 @@
         </section>
 
 
-
+    @if (loggedUser != null && loggedUser.Id != Model.Cause.AppUserId)
+    {
         <!-- Start of Chat -->
         <div class="container">
             <div class="row">
@@ -409,32 +410,32 @@
                             </button>
                         </div>
                         <ul class="messages">
-@*                            <li class="other"><span>Y</span>Salam</li>
-                            <li class="self"><span>A</span>Salam</li>*@
+                            @*                            <li class="other"><span>Y</span>Salam</li>
+                                <li class="self"><span>A</span>Salam</li>*@
 
-                        @foreach(var msg in ViewBag.Messages)
-                        {
-                            if(loggedUser.Id == msg.FromUserId)
+                            @foreach (var msg in ViewBag.Messages)
                             {
-                                <li class="other">@msg.Text</li>
+                                if (loggedUser.Id == msg.FromUserId)
+                                {
+                                    <li class="other">@msg.Text</li>
+                                }
+                                else
+                                {
+                                    <li class="self">@msg.Text</li>
+                                }
                             }
-                            else
-                            {
-                                 <li class="self">@msg.Text</li>
-                            }
-                        }
 
                         </ul>
                         <div class="footer">
-                                <input type="hidden" asp-for="@Model.Message.ToUserId" value="@Model.Cause.AppUserId" id="chatIdInput" />
-                                <input class="text-box" asp-for="@Model.Message.Text" id="messageInput" placeholder="Write.." />
-                                <a asp-action="CreateMessage" asp-controller="home" id="sendMessage">Send</a>
+                            <input type="hidden" asp-for="@Model.Message.ToUserId" value="@Model.Cause.AppUserId" id="chatIdInput" />
+                            <input class="text-box" asp-for="@Model.Message.Text" id="messageInput" placeholder="Write.." />
+                            <a asp-action="CreateMessage" asp-controller="home" id="sendMessage">Send</a>
                         </div>
                     </div>
                 </div>
             </div>           
         </div>
         <!-- End of Chat -->
-    
+    }
 
     </main>

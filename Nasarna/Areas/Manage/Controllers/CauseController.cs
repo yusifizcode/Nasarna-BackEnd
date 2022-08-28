@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Nasarna.DAL;
 using Nasarna.Hubs;
 using Nasarna.Models;
+using System;
 using System.Linq;
 
 namespace Nasarna.Areas.Manage.Controllers
@@ -22,12 +23,18 @@ namespace Nasarna.Areas.Manage.Controllers
             _hubContext = hubContext;
             _userManager = userManager;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(_context.Causes.Count() / 10d);
+
+            if (page < 1 || page > (int)Math.Ceiling(_context.Causes.Count() / 10d))
+                return RedirectToAction("error", "home");
+
             var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag)
                                        .Include(x => x.Category)
                                        .Include(x => x.CauseImages)
-                                       .Include(x => x.AppUser)
+                                       .Include(x => x.AppUser).Skip((page - 1) * 10).Take(10)
                                        .ToList();
 
             return View(causes);
