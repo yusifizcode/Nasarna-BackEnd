@@ -1,406 +1,186 @@
-﻿
+﻿@model BlogViewModel
 @{
     ViewData["Title"] = "Index";
+    int page = ViewBag.Page;
+    int totalPages = ViewBag.TotalPages;
 }
 
-    <main>
-        <!-- Start of Breadcrumb -->
-        <section class="breadcrumb section-padding">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="breadcrumb-wrap">
-                            <h2>Blog</h2>
-                            <ul class="breadcrumb-list">
-                                <li class="breadcrumb-list-item">
-                                    <a href="index.html">Home</a>
+<main>
+    <!-- Start of Breadcrumb -->
+    <section class="breadcrumb section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <h2>Blog</h2>
+                        <ul class="breadcrumb-list">
+                            <li class="breadcrumb-list-item">
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li class="breadcrumb-list-item">
+                                <a href="cause.html">Blog</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- End of Breadcrumb -->
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row donate">
+                        @foreach (var blog in Model.Blogs)
+                        {
+                            <div class="col-lg-6 col-md-8 col-md-10 mb-3">
+                                <div class="post">
+                                    <div class="owl-carousel owl-theme owl-post">
+                                        @foreach(var img in blog.BlogImages)
+                                        {
+                                            <div class="item">
+                                            <div class="post-img">
+                                                <img src="~/uploads/blogs/@img.Name" alt="">
+                                            </div>
+                                        </div>
+                                        }
+                                    </div>
+
+                                    <div class="post-info d-flex w-100 justify-content-between">
+                                        <div class="d-flex">
+                                            <div class="post-info-user d-flex">
+                                                <div class="user-img">
+                                                    <img src="~/uploads/users/@blog.AppUser?.ProfileImg" alt="">
+                                                </div>
+                                                <div class="user-name ms-2">
+                                                    <a href="">By Admin</a>
+                                                </div>
+                                            </div>
+                                            <div class="post-date ms-3 d-flex align-items-center justify-content-between">
+                                                <span><i class="fa-solid fa-calendar-days me-1"></i> @blog.CreatedAt.ToString("MMM dddd, yyyy")</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="post-content">
+                                        <h3>@blog.Title</h3>
+                                        <p>
+                                            @blog.Desc
+                                        </p>
+                                        <a asp-action="detail" asp-controller="blog" asp-route-id="@blog.Id" class="btn border-0 text-warning ps-0">Read More..</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if(Model.Blogs.Count != 0)
+                        {
+                          <div class="pagination-wrapper mb-3">
+                            <ul class="pg-pagination">
+                                <li class="@(page==1?"d-none":"")">
+                                    <a asp-action="index" asp-route-page="@(page-1)"><i class="fa-solid fa-angle-left"></i></a>
                                 </li>
-                                <li class="breadcrumb-list-item">
-                                    <a href="cause.html">Blog</a>
+                                @if(page == 1){
+                                    for(int i = page; i <= totalPages; i++){
+                                        <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                    }
+                                }
+                                else if(page == totalPages){
+                                    if(totalPages > 2){
+                                        for(int i = page - 2; i <= page; i++){
+                                            <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                        }
+                                    }
+                                    else{
+                                        for(int i = 1; i <= page; i++){
+                                            <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                        }
+                                    }
+                                }
+                                else{
+                                    for(int i = page - 1; i <= page + 1; i++){
+                                            <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                    }
+                                }
+                                
+                                <li class="@(page==totalPages?"d-none":"")">
+                                    <a asp-action="index" asp-route-page="@(page+1)"><i class="fa-solid fa-angle-right"></i></a>
                                 </li>
+                            </ul>
+                        </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="site-sidebar">
+                        <div class="sidebar-item sidebar-search">
+                            <h3>Search Here</h3>
+                            <form action="" class="sidebar-form position-relative">
+                                <input type="text" class="form-control" name="title" placeholder="Search Post..">
+                                <button type="submit">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </form>
+                        </div>
+@*                        <div class="sidebar-item sidebar-categories">
+                            <h3>Categories</h3>
+                            <ul class="sidebar-category-list">
+                                @foreach(var ctg in Model.Categories)
+                                {
+                                    <form>
+                                    <li class="sidebar-category-list-item">
+                                        <input type="hidden" name="categoryId" value="@ctg.Id" />
+                                        <button type="submit" class="btn">@ctg?.Name</button>
+                                    </li>
+                                    </form>
+                                }
+                            </ul>
+                        </div>*@
+                        <div class="sidebar-item sidebar-recents">
+                            <h3>Recent Posts</h3>
+                            <div class="recent-posts">
+                                @foreach(var recentlyPost in Model.RecentlyBlogs)
+                                {
+                                    <div class="recent-post mt-3">
+                                    <div class="recent-post-img">
+                                        <img src="~/uploads/blogs/@recentlyPost.BlogImages[0].Name" alt="">
+                                    </div>
+                                    <div class="recent-post-detail">
+                                        <h4>
+                                            <a asp-action="detail" asp-controller="blog" asp-route-id="@recentlyPost.Id">@recentlyPost.Title</a>
+                                        </h4>
+                                        <span class="date">
+                                            @recentlyPost.CreatedAt.ToString("dddd mm yyyy")
+                                        </span>
+                                    </div>
+                                </div>
+                                }
+                                
+                            </div>
+                        </div>
+                        <div class="sidebar-item sidebar-tags">
+                            <h3>Tags</h3>
+                            <ul class="sidebar-tag-list">
+                                @foreach(var tag in Model.Tags)
+                                {
+                                    <form>
+                                    <li class="sidebar-tag-list-item">
+                                        <button type="submit" name="tagId" value="@tag.Id" class="btn">@tag.Name</button>
+                                    </li>
+                                    </form>
+                                }
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
-        </section>
-        <!-- End of Breadcrumb -->
-
-        <section class="section-padding">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="row donate">
-                            <div class="col-lg-6 col-md-8 col-md-10 mb-3">
-                                <div class="post">
-                                    <div class="owl-carousel owl-theme owl-post">
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-1.jpg" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-2.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="post-info d-flex w-100 justify-content-between">
-                                        <div class="d-flex">
-                                            <div class="post-info-user d-flex">
-                                                <div class="user-img">
-                                                    <img src="~/assets/images/blog/admin.jpg" alt="">
-                                                </div>
-                                                <div class="user-name ms-2">
-                                                    <a href="">By Admin</a>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="post-date ms-3 d-flex align-items-center justify-content-between">
-                                                <span><i class="fa-solid fa-calendar-days me-1"></i> Sep 25,2020</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="post-content">
-                                        <h3>They are waiting for your help.</h3>
-                                        <p>It is a long established fact that a reader will be distracted by the
-                                            readable content of a page when looking at its layout. </p>
-                                        <a href="" class="btn border-0 text-warning ps-0">Read More..</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-8 col-md-10 mb-3">
-                                <div class="post">
-                                    <div class="owl-carousel owl-theme owl-post">
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-1.jpg" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-2.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="post-info d-flex w-100 justify-content-between">
-                                        <div class="d-flex">
-                                            <div class="post-info-user d-flex">
-                                                <div class="user-img">
-                                                    <img src="~/assets/images/blog/admin.jpg" alt="">
-                                                </div>
-                                                <div class="user-name ms-2">
-                                                    <a href="">By Admin</a>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="post-date ms-3 d-flex align-items-center justify-content-between">
-                                                <span><i class="fa-solid fa-calendar-days me-1"></i> Sep 25,2020</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="post-content">
-                                        <h3>They are waiting for your help.</h3>
-                                        <p>It is a long established fact that a reader will be distracted by the
-                                            readable content of a page when looking at its layout. </p>
-                                        <a href="" class="btn border-0 text-warning ps-0">Read More..</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-8 col-md-10 mb-3">
-                                <div class="post">
-                                    <div class="owl-carousel owl-theme owl-post">
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-1.jpg" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-2.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="post-info d-flex w-100 justify-content-between">
-                                        <div class="d-flex">
-                                            <div class="post-info-user d-flex">
-                                                <div class="user-img">
-                                                    <img src="~/assets/images/blog/admin.jpg" alt="">
-                                                </div>
-                                                <div class="user-name ms-2">
-                                                    <a href="">By Admin</a>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="post-date ms-3 d-flex align-items-center justify-content-between">
-                                                <span><i class="fa-solid fa-calendar-days me-1"></i> Sep 25,2020</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="post-content">
-                                        <h3>They are waiting for your help.</h3>
-                                        <p>It is a long established fact that a reader will be distracted by the
-                                            readable content of a page when looking at its layout. </p>
-                                        <a href="" class="btn border-0 text-warning ps-0">Read More..</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-8 col-md-10 mb-3">
-                                <div class="post">
-                                    <div class="owl-carousel owl-theme owl-post">
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-1.jpg" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-2.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="post-info d-flex w-100 justify-content-between">
-                                        <div class="d-flex">
-                                            <div class="post-info-user d-flex">
-                                                <div class="user-img">
-                                                    <img src="~/assets/images/blog/admin.jpg" alt="">
-                                                </div>
-                                                <div class="user-name ms-2">
-                                                    <a href="">By Admin</a>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="post-date ms-3 d-flex align-items-center justify-content-between">
-                                                <span><i class="fa-solid fa-calendar-days me-1"></i> Sep 25,2020</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="post-content">
-                                        <h3>They are waiting for your help.</h3>
-                                        <p>It is a long established fact that a reader will be distracted by the
-                                            readable content of a page when looking at its layout. </p>
-                                        <a href="" class="btn border-0 text-warning ps-0">Read More..</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-8 col-md-10 mb-3">
-                                <div class="post">
-                                    <div class="owl-carousel owl-theme owl-post">
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-1.jpg" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-2.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="post-info d-flex w-100 justify-content-between">
-                                        <div class="d-flex">
-                                            <div class="post-info-user d-flex">
-                                                <div class="user-img">
-                                                    <img src="~/assets/images/blog/admin.jpg" alt="">
-                                                </div>
-                                                <div class="user-name ms-2">
-                                                    <a href="">By Admin</a>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="post-date ms-3 d-flex align-items-center justify-content-between">
-                                                <span><i class="fa-solid fa-calendar-days me-1"></i> Sep 25,2020</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="post-content">
-                                        <h3>They are waiting for your help.</h3>
-                                        <p>It is a long established fact that a reader will be distracted by the
-                                            readable content of a page when looking at its layout. </p>
-                                        <a href="" class="btn border-0 text-warning ps-0">Read More..</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-8 col-md-10 mb-3">
-                                <div class="post">
-                                    <div class="owl-carousel owl-theme owl-post">
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-1.jpg" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="post-img">
-                                                <img src="~/assets/images/blog/img-2.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="post-info d-flex w-100 justify-content-between">
-                                        <div class="d-flex">
-                                            <div class="post-info-user d-flex">
-                                                <div class="user-img">
-                                                    <img src="~/assets/images/blog/admin.jpg" alt="">
-                                                </div>
-                                                <div class="user-name ms-2">
-                                                    <a href="">By Admin</a>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="post-date ms-3 d-flex align-items-center justify-content-between">
-                                                <span><i class="fa-solid fa-calendar-days me-1"></i> Sep 25,2020</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="post-content">
-                                        <h3>They are waiting for your help.</h3>
-                                        <p>It is a long established fact that a reader will be distracted by the
-                                            readable content of a page when looking at its layout. </p>
-                                        <a href="" class="btn border-0 text-warning ps-0">Read More..</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="pagination-wrapper mb-3">
-                                <ul class="pg-pagination">
-                                    <li>
-                                        <a href=""><i class="fa-solid fa-angle-left"></i></a>
-                                    </li>
-                                    <li class="active">
-                                        <a href="">1</a>
-                                    </li>
-                                    <li>
-                                        <a href="">2</a>
-                                    </li>
-                                    <li>
-                                        <a href="">3</a>
-                                    </li>
-                                    <li>
-                                        <a href="">4</a>
-                                    </li>
-                                    <li>
-                                        <a href=""><i class="fa-solid fa-angle-right"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="site-sidebar">
-                            <div class="sidebar-item sidebar-search">
-                                <h3>Search Here</h3>
-                                <form action="" class="sidebar-form position-relative">
-                                    <input type="text" class="form-control" placeholder="Search Post..">
-                                    <button type="submit">
-                                        <i class="fa-solid fa-magnifying-glass"></i>
-                                    </button>
-                                </form>
-                            </div>
-                            <div class="sidebar-item sidebar-categories">
-                                <h3>Categories</h3>
-                                <ul class="sidebar-category-list">
-                                    <li class="sidebar-category-list-item">
-                                        <a href="">Helping Poor</a>
-                                    </li>
-                                    <li class="sidebar-category-list-item">
-                                        <a href="">Water Problem</a>
-                                    </li>
-                                    <li class="sidebar-category-list-item">
-                                        <a href="">Charity</a>
-                                    </li>
-                                    <li class="sidebar-category-list-item">
-                                        <a href="">Medical Compain</a>
-                                    </li>
-                                    <li class="sidebar-category-list-item">
-                                        <a href="">Free Food</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="sidebar-item sidebar-recents">
-                                <h3>Recent Posts</h3>
-                                <div class="recent-posts">
-                                    <div class="recent-post">
-                                        <div class="recent-post-img">
-                                            <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
-                                        </div>
-                                        <div class="recent-post-detail">
-                                            <h4>
-                                                <a href="">Many Children are suffering a lot for food.</a>
-                                            </h4>
-                                            <span class="date">
-                                                22 Sep 2020
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="recent-post mt-3">
-                                        <div class="recent-post-img">
-                                            <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
-                                        </div>
-                                        <div class="recent-post-detail">
-                                            <h4>
-                                                <a href="">Many Children are suffering a lot for food.</a>
-                                            </h4>
-                                            <span class="date">
-                                                22 Sep 2020
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="recent-post mt-3">
-                                        <div class="recent-post-img">
-                                            <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
-                                        </div>
-                                        <div class="recent-post-detail">
-                                            <h4>
-                                                <a href="">Many Children are suffering a lot for food.</a>
-                                            </h4>
-                                            <span class="date">
-                                                22 Sep 2020
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sidebar-item sidebar-tags">
-                                <h3>Tags</h3>
-                                <ul class="sidebar-tag-list">
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Donations</a>
-                                    </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Charity</a>
-                                    </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Help</a>
-                                    </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Non Profit</a>
-                                    </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Poor People</a>
-                                    </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Helping Hand</a>
-                                    </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Video</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- End of Causes -->
+        </div>
+    </section>
+    <!-- End of Causes -->
 
 
 
 
 
-    </main>
+</main>

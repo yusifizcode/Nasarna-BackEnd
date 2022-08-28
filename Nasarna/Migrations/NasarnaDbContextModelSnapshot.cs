@@ -221,26 +221,6 @@ namespace Nasarna.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Nasarna.Models.Author", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Authors");
-                });
-
             modelBuilder.Entity("Nasarna.Models.Blog", b =>
                 {
                     b.Property<int>("Id")
@@ -248,8 +228,8 @@ namespace Nasarna.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AuthorId")
-                        .HasColumnType("int");
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -265,7 +245,7 @@ namespace Nasarna.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Blogs");
                 });
@@ -277,10 +257,7 @@ namespace Nasarna.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AppUserId1")
+                    b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("BlogId")
@@ -296,7 +273,7 @@ namespace Nasarna.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId1");
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("BlogId");
 
@@ -489,6 +466,33 @@ namespace Nasarna.Migrations
                     b.ToTable("CauseTags");
                 });
 
+            modelBuilder.Entity("Nasarna.Models.Contact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Desciption")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Contacts");
+                });
+
             modelBuilder.Entity("Nasarna.Models.Event", b =>
                 {
                     b.Property<int>("Id")
@@ -667,9 +671,6 @@ namespace Nasarna.Migrations
                     b.Property<bool>("IsStatus")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsVolunteer")
-                        .HasColumnType("bit");
-
                     b.Property<string>("ProfileImg")
                         .HasColumnType("nvarchar(max)");
 
@@ -729,19 +730,19 @@ namespace Nasarna.Migrations
 
             modelBuilder.Entity("Nasarna.Models.Blog", b =>
                 {
-                    b.HasOne("Nasarna.Models.Author", null)
-                        .WithMany("Blogs")
-                        .HasForeignKey("AuthorId");
+                    b.HasOne("Nasarna.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("Nasarna.Models.BlogComment", b =>
                 {
                     b.HasOne("Nasarna.Models.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId1");
+                        .HasForeignKey("AppUserId");
 
                     b.HasOne("Nasarna.Models.Blog", "Blog")
-                        .WithMany()
+                        .WithMany("BlogComments")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -819,6 +820,13 @@ namespace Nasarna.Migrations
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Nasarna.Models.Contact", b =>
+                {
+                    b.HasOne("Nasarna.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("Nasarna.Models.Message", b =>

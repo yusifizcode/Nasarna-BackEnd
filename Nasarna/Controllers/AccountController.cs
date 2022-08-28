@@ -132,7 +132,6 @@ namespace Nasarna.Controllers
                 ImageFile = member.ImageFile,
                 IsAdmin = false,
                 IsStatus = true,
-                IsVolunteer = false,
             };
 
             var result = await _userManager.CreateAsync(user, member.Password);

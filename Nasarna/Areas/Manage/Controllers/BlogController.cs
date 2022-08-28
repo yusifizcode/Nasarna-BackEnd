@@ -1,46 +1,75 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Nasarna.DAL;
 using Nasarna.Models;
+using Nasarna.ViewModels;
 using Pustok.Helpers;
 using System.Linq;
 
 namespace Nasarna.Areas.Manage.Controllers
 {
     [Area("manage")]
+        [Authorize(Roles = "SuperAdmin")]
+
     public class BlogController : Controller
     {
         private readonly IWebHostEnvironment _env;
+        private readonly UserManager<AppUser> _userManager;
         private readonly NasarnaDbContext _context;
 
-        public BlogController(NasarnaDbContext context, IWebHostEnvironment env)
+        public BlogController(NasarnaDbContext context, IWebHostEnvironment env, UserManager<AppUser> userManager)
         {
             
             _env = env;
+            _userManager = userManager;
             _context = context;
         }
 
         public IActionResult Index()
         {
-/*            var blogs = _context.Blogs.Include(x=>x.Author).ToList();
-*/            var blogs = _context.Blogs.Include(x=>x.BlogTags).ThenInclude(e=>e.Tag).Include(x=>x.BlogImages).ToList();
+            ViewBag.Tags = _context.Tags.Where(x => x.BlogTags.Any());
+            var blogs = _context.Blogs.Include(x=>x.BlogTags).ThenInclude(e=>e.Tag)
+                                      .Include(x=>x.BlogImages)
+                                      .Include(x=>x.AppUser)
+                                      .ToList();
             return View(blogs);
+        }
+
+
+        public IActionResult Detail(int id)
+        {
+            ViewBag.Tags = _context.Tags.Where(x => x.BlogTags.Any());
+
+            var blog = _context.Blogs.Include(x => x.BlogTags).ThenInclude(e => e.Tag)
+                                      .Include(x => x.BlogImages)
+                                      .Include(x => x.AppUser)
+                                      .FirstOrDefault(x => x.Id == id);
+
+            if (blog == null)
+                return RedirectToAction("error", "dashboard");
+
+            return View(blog);
         }
 
         public IActionResult Create()
         {
-/*            ViewBag.Authors = _context.Authors.ToList();
-*/            ViewBag.Tags = _context.Tags.ToList();
+            ViewBag.Tags = _context.Tags.ToList();
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(Blog blog)
         {
-/*            if (!_context.Authors.Any(x => x.Id == blog.Id))
-                ModelState.AddModelError("AuthorId", "Author not found!");
-*/
+            AppUser loggedUser = null;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                loggedUser = _userManager.Users.FirstOrDefault(x => x.IsAdmin && x.NormalizedUserName == "SUPERADMIN");
+                blog.AppUserId = loggedUser.Id;
+            }
 
             if (blog.ImageFiles != null)
             {

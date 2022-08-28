@@ -1,0 +1,55 @@
+﻿@model List<Volunteer>
+@{
+    ViewData["Title"] = "Volunteer";
+}
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Volunteers Table</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                            <th>
+                                FullName
+                            </th>
+                            <th>
+                                UserName
+                            </th>
+                              <th>
+                                Subject
+                            </th>
+                            <th>
+                                Desc
+                            </th>
+                            </thead>
+                            <tbody>
+                                @foreach (var ev in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @ev.AppUser?.FullName
+                                        </td>
+                                        <td>
+                                            @ev.AppUser?.UserName
+                                        </td>
+                                        <td>
+                                           @ev.Subject
+                                        </td>
+                                        <td>
+                                            @ev.Description
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

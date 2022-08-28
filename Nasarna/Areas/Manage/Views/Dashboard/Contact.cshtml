@@ -1,0 +1,56 @@
+﻿@model List<Contact>
+@{
+    ViewData["Title"] = "Contact";
+}
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Volunteers Table</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                            <th>
+                                FullName
+                            </th>
+                            <th>
+                                UserName
+                            </th>
+                              <th>
+                                Subject
+                            </th>
+                            <th>
+                                Desc
+                            </th>
+                            </thead>
+                            <tbody>
+                                @foreach (var contact in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @contact.AppUser?.FullName
+                                        </td>
+                                        <td>
+                                            @contact.AppUser?.UserName
+                                        </td>
+                                        <td>
+                                           @contact.Subject
+                                        </td>
+                                        <td>
+                                            @contact.Desciption
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

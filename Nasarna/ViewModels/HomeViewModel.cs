@@ -9,5 +9,6 @@ namespace Nasarna.ViewModels
         public List<Payment> Payments { get; set; }
         public List<Volunteer> Volunteers { get; set; }
         public List<Event> Events { get; set; }
+        public List<Blog> Blogs { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿
+﻿@model BlogDetailViewModel
 @{
     ViewData["Title"] = "Detail";
 }
@@ -10,13 +10,13 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="breadcrumb-wrap">
-                            <h2>Blog Single</h2>
+                            <h2>@Model.Blog.Title</h2>
                             <ul class="breadcrumb-list">
                                 <li class="breadcrumb-list-item">
-                                    <a href="index.html">Home</a>
+                                    <a asp-action="index" asp-controller="home">Home</a>
                                 </li>
                                 <li class="breadcrumb-list-item">
-                                    <a href="cause.html">Blog</a>
+                                    <a asp-action="index" asp-controller="blog">Blog</a>
                                 </li>
                             </ul>
                         </div>
@@ -33,53 +33,45 @@
                     <div class="col-md-8">
                         <div class="post">
                             <div class="owl-carousel owl-theme owl-post">
+
+                            @foreach(var blogImg in Model.Blog.BlogImages)
+                            {
                                 <div class="item">
                                     <div class="post-img">
-                                        <img src="~/assets/images/blog/img-1.jpg" alt="">
+                                        <img src="~/uploads/blogs/@blogImg?.Name" alt="">
                                     </div>
                                 </div>
-                                <div class="item">
-                                    <div class="post-img">
-                                        <img src="~/assets/images/blog/img-2.jpg" alt="">
-                                    </div>
-                                </div>
-                            </div>
+                            }
+                        </div>
 
                             <div class="post-info d-flex w-100 justify-content-between">
                                 <div class="d-flex">
                                     <div class="post-info-user d-flex">
                                         <div class="user-img">
-                                            <img src="~/assets/images/blog/admin.jpg" alt="">
+                                            <img src="~/uploads/blogs/@Model.Blog.AppUser?.ProfileImg" alt="">
                                         </div>
                                         <div class="user-name ms-2">
                                             <a href="">By Admin</a>
                                         </div>
                                     </div>
                                     <div class="post-date ms-3 d-flex align-items-center justify-content-between">
-                                        <span><i class="fa-solid fa-calendar-days me-1"></i> Sep 25,2020</span>
+                                        <span><i class="fa-solid fa-calendar-days me-1"></i> @Model.Blog.CreatedAt.ToString("MMM dddd, yyyy")</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="post-content">
-                                <h3>They are waiting for your help.</h3>
-                                <p>It is a long established fact that a reader will be distracted by the readable
-                                    content of a page when looking at its layout. The point of using Lorem Ipsum is that
-                                    it has a more-or-less normal distribution of letters, as opposed to using 'Content
-                                    here, content here', making it look like readable English. Many desktop publishing
-                                    packages and web page editors now.</p>
-                                <p>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of
-                                    letters, as opposed to using 'Content here, content here', making it look like
-                                    readable English. Many desktop publishing packages and web page editors now.</p>
+                                <h3>@Model.Blog.Title</h3>
+                                <p>@Model.Blog.Desc</p>
 
                                 <div class="tag-share shadow p-4 mt-5">
                                     <div class="d-flex flex-wrap">
+                                    @foreach(var tag in Model.Blog.BlogTags)
+                                    {
                                         <a href=""
-                                            class="rounded-pill px-5 py-3 bg-light text-decoration-none text-dark me-3 mb-2">Business</a>
-                                        <a href=""
-                                            class="rounded-pill px-5 py-3 bg-light text-decoration-none text-dark me-3 mb-2">Marketing</a>
-                                        <a href=""
-                                            class="rounded-pill px-5 py-3 bg-light text-decoration-none text-dark me-3 mb-2">SEO</a>
-                                    </div>
+                                            class="rounded-pill px-5 py-3 bg-light text-decoration-none text-dark me-3 mb-2">@tag.Tag?.Name</a>
+                                        
+                                    }
+                                </div>
                                 </div>
 
                             </div>
@@ -87,64 +79,33 @@
 
                         <div id="Comments" class="mt-5">
                             <div class="comments">
-                                <h3 class="comments-title">Comments</h3>
-                                <ol class="comment-list">
-                                    <li class="comment d-flex mb-3">
-                                        <div class="comment-img">
-                                            <img src="~/assets/images/blog-details/comments-author/img-1.jpg" alt="">
-                                        </div>
-                                        <div class="comment-wrap">
-                                            <div class="comment-header">
-                                                <h4>John Abraham
-                                                    <span class="comment-date">Octobor 28,2018 At 9.00am</span>
-                                                </h4>
-                                            </div>
-                                            <div class="comment-content">
-                                                <p>I will give you a complete account of the system, and expound the
-                                                    actual teachings of the great explorer of the truth,</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="comment d-flex mb-3">
-                                        <div class="comment-img">
-                                            <img src="~/assets/images/blog-details/comments-author/img-1.jpg" alt="">
-                                        </div>
-                                        <div class="comment-wrap">
-                                            <div class="comment-header">
-                                                <h4>John Abraham
-                                                    <span class="comment-date">Octobor 28,2018 At 9.00am</span>
-                                                </h4>
-                                            </div>
-                                            <div class="comment-content">
-                                                <p>I will give you a complete account of the system, and expound the
-                                                    actual teachings of the great explorer of the truth,</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="comment d-flex mb-3">
-                                        <div class="comment-img">
-                                            <img src="~/assets/images/blog-details/comments-author/img-1.jpg" alt="">
-                                        </div>
-                                        <div class="comment-wrap">
-                                            <div class="comment-header">
-                                                <h4>John Abraham
-                                                    <span class="comment-date">Octobor 28,2018 At 9.00am</span>
-                                                </h4>
-                                            </div>
-                                            <div class="comment-content">
-                                                <p>I will give you a complete account of the system, and expound the
-                                                    actual teachings of the great explorer of the truth,</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ol>
-                                <div class="comment-respond">
-                                    <h3>Leave a Comment</h3>
-                                    <form action="" method="post" class="comment-form mb-3">
-                                        <textarea placeholder="Write Your Comments..." rows="6"></textarea>
-                                        <button type="submit" class="">Send</button>
-                                    </form>
-                                </div>
+                                @if (Model.Blog.BlogComments.Count > 0)
+                                    {
+                                            <h3 class="comments-title mt-3">Comments</h3>
+                                            <ol class="comment-list">
+                                            @foreach(var comment in Model.Blog.BlogComments)
+                                            {
+                                                <li class="comment d-flex mb-3">
+                                                    <div class="comment-img">
+                                                        <img src="~/uploads/users/@comment.AppUser?.ProfileImg" style="width:75px;height:75px"
+                                                            alt="">
+                                                    </div>
+                                                    <div class="comment-wrap">
+                                                        <div class="comment-header">
+                                                            <h4>@comment.AppUser?.FullName
+                                                                <span class="comment-date">@comment.CreatedAt.ToString("MMM d, yyyy - h:mm")</span>
+                                                            </h4>
+                                                        </div>
+                                                        <div class="comment-content">
+                                                            <p>@comment.Text</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ol>
+                                    }
+
+                                    @await Html.PartialAsync("_BlogCommentFormPartialView",Model.BlogComment)
                             </div>
                         </div>
 
@@ -154,101 +115,59 @@
                             <div class="sidebar-item sidebar-search">
                                 <h3>Search Here</h3>
                                 <form action="" class="sidebar-form position-relative">
-                                    <input type="text" class="form-control" placeholder="Search Post..">
+                                    <input type="text" class="form-control" name="title" placeholder="Search Post..">
                                     <button type="submit">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </button>
                                 </form>
                             </div>
-                            <div class="sidebar-item sidebar-categories">
+@*                            <div class="sidebar-item sidebar-categories">
                                 <h3>Categories</h3>
                                 <ul class="sidebar-category-list">
+                                @foreach(var cat in ViewBag.Categories)
+                                {
                                     <li class="sidebar-category-list-item">
-                                        <a href="">Helping Poor</a>
+                                        <a href="">@cat?.Name</a>
                                     </li>
-                                    <li class="sidebar-category-list-item">
-                                        <a href="">Water Problem</a>
-                                    </li>
-                                    <li class="sidebar-category-list-item">
-                                        <a href="">Charity</a>
-                                    </li>
-                                    <li class="sidebar-category-list-item">
-                                        <a href="">Medical Compain</a>
-                                    </li>
-                                    <li class="sidebar-category-list-item">
-                                        <a href="">Free Food</a>
-                                    </li>
+                                }
+
                                 </ul>
-                            </div>
+                            </div>*@
                             <div class="sidebar-item sidebar-recents">
                                 <h3>Recent Posts</h3>
                                 <div class="recent-posts">
-                                    <div class="recent-post">
+                                @foreach(var post in Model.RecentlyBlogs)
+                                {
+                                <div class="recent-post mt-3">
                                         <div class="recent-post-img">
-                                            <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
+                                            <img src="~/uploads/blogs/@post.BlogImages[0]?.Name" alt="">
                                         </div>
                                         <div class="recent-post-detail">
                                             <h4>
-                                                <a href="">Many Children are suffering a lot for food.</a>
+                                                <a asp-action="detail" asp-controller="blog" asp-route-id="@post.Id">@post.Title</a>
                                             </h4>
                                             <span class="date">
-                                                22 Sep 2020
+                                                @post.CreatedAt.ToString("dddd MMM yyyy")
                                             </span>
                                         </div>
-                                    </div>
-                                    <div class="recent-post mt-3">
-                                        <div class="recent-post-img">
-                                            <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
-                                        </div>
-                                        <div class="recent-post-detail">
-                                            <h4>
-                                                <a href="">Many Children are suffering a lot for food.</a>
-                                            </h4>
-                                            <span class="date">
-                                                22 Sep 2020
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="recent-post mt-3">
-                                        <div class="recent-post-img">
-                                            <img src="~/assets/images/recent-posts/img-1.jpg" alt="">
-                                        </div>
-                                        <div class="recent-post-detail">
-                                            <h4>
-                                                <a href="">Many Children are suffering a lot for food.</a>
-                                            </h4>
-                                            <span class="date">
-                                                22 Sep 2020
-                                            </span>
-                                        </div>
-                                    </div>
+                                    </div>    
+                                }
+                                
                                 </div>
                             </div>
                             <div class="sidebar-item sidebar-tags">
                                 <h3>Tags</h3>
                                 <ul class="sidebar-tag-list">
+
+                                @foreach(var tag in Model.Tags)
+                                {
+                                    <form>
                                     <li class="sidebar-tag-list-item">
-                                        <a href="">Donations</a>
+                                        <button type="submit" name="tagId" value="@tag.Id" class="btn">@tag.Name</button>
                                     </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Charity</a>
-                                    </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Help</a>
-                                    </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Non Profit</a>
-                                    </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Poor People</a>
-                                    </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Helping Hand</a>
-                                    </li>
-                                    <li class="sidebar-tag-list-item">
-                                        <a href="">Video</a>
-                                    </li>
-                                </ul>
+                                    </form>
+                                }
+                            </ul>
                             </div>
                         </div>
                     </div>

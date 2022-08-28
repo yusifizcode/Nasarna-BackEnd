@@ -39,18 +39,26 @@ namespace Nasarna.Controllers
                 Payments = _context.Payments.ToList(),
                 Volunteers = _context.Volunteers.Include(x=>x.AppUser).Take(3).ToList(),
                 Events = _context.Events.ToList(),
+                Blogs = _context.Blogs.Include(x=>x.BlogImages).OrderByDescending(x=>x.CreatedAt).Take(3).ToList(),
         };
             return View(homeVM);
         }
 
         public IActionResult About()
         {
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            return View();
+            AboutViewModel aboutVM = new AboutViewModel
+            {
+                Causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag)
+                                        .Include(x => x.Category)
+                                        .Include(x => x.CauseImages)
+                                        .Include(x => x.AppUser)
+                                        .Where(x => x.IsActive == true).Take(5)
+                                        .ToList(),
+                Volunteers = _context.Volunteers.Include(x => x.AppUser).Take(3).ToList(),
+                Events = _context.Events.ToList(),
+                Payments = _context.Payments.ToList(),
+            };
+            return View(aboutVM);
         }
 
         public IActionResult Error()

@@ -286,12 +286,12 @@
                                             {
                                                 <li class="comment d-flex mb-3">
                                                     <div class="comment-img">
-                                                        <img src="~/assets/images/blog-details/comments-author/img-1.jpg"
+                                                        <img src="~/uploads/users/@comment.AppUser?.ProfileImg" style="width:75px;height:75px"
                                                             alt="">
                                                     </div>
                                                     <div class="comment-wrap">
                                                         <div class="comment-header">
-                                                            <h4>@comment.AppUser.FullName
+                                                            <h4>@comment.AppUser?.FullName
                                                                 <span class="comment-date">@comment.CreatedAt.ToString("MMM d, yyyy - h:mm")</span>
                                                             </h4>
                                                         </div>
@@ -331,7 +331,7 @@
                             <div class="sidebar-item sidebar-search">
                                 <h3>Search Here</h3>
                                 <form action="" class="sidebar-form position-relative">
-                                    <input type="text" class="form-control" placeholder="Search Post..">
+                                    <input type="text" name="title" class="form-control" placeholder="Search Post..">
                                     <button type="submit">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </button>
@@ -340,11 +340,13 @@
                             <div class="sidebar-item sidebar-categories">
                                 <h3>Categories</h3>
                                 <ul class="sidebar-category-list">
-                                @foreach(var category in ViewBag.Categories)
+                                @foreach(var category in Model.Categories)
                                 {
+                                    <form>
                                     <li class="sidebar-category-list-item">
-                                        <a href="">@category.Name</a>
+                                        <button type="submit" name="categoryId" value="@category.Id" class="btn">@category.Name</button>
                                     </li>
+                                    </form>
                                 }
                             </ul>
                             </div>
@@ -373,11 +375,13 @@
                             <div class="sidebar-item sidebar-tags">
                                 <h3>Tags</h3>
                                 <ul class="sidebar-tag-list">
-                                @foreach(var tag in ViewBag.Tags)
+                                @foreach(var tag in Model.Tags)
                                 {
+                                    <form>
                                     <li class="sidebar-tag-list-item">
-                                        <a href="">@tag.Name</a>
+                                        <button type="submit" name="tagId" value="@tag.Id" class="btn">@tag.Name</button>
                                     </li>
+                                    </form>
                                 }
                             </ul>
                             </div>

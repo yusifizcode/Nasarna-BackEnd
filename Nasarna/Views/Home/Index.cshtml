@@ -213,7 +213,7 @@
                 </div>
                 <div class="volunteers counter col-lg-3 col-md-6">
                     <h2>
-                        <span class="odometer odometer-theme-default" data-count="245"></span>+
+                        <span class="odometer odometer-theme-default" data-count="@Model.Volunteers?.Count"></span>+
                     </h2>
                     <p class="text-secondary fs-5 pt-1 mb-0">Volunteers</p>
                 </div>
@@ -355,8 +355,8 @@
                             distinctio. Corrupti ea explicabo accusamus officia minima iusto eligendi.
                         </p>
                         <div class="site-btns d-flex justify-content-center">
-                            <a href="#" class="btn bg-white me-2 donate-btn">Donate Now</a>
-                            <a href="#" class="btn join-us-btn">Join Us</a>
+                            <a asp-action="index" asp-controller="cause" class="btn bg-white me-2 donate-btn">Donate Now</a>
+                            <a asp-action="index" asp-controller="volunteer" class="btn join-us-btn">Join Us</a>
                         </div>
                     </div>
                 </div>
@@ -376,39 +376,24 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                @foreach(var blog in Model.Blogs)
+                {
+                       <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
                     <div class="blog">
                         <div class="blog-img">
-                            <img src="~/assets/images/blog/img-1.jpg" alt="">
+                           <a asp-action="detail" asp-controller="blog" asp-route-id="@blog.Id">
+                               <img src="~/uploads//blogs/@blog.BlogImages[0]?.Name" alt="">
+                               </a>
                         </div>
                         <div class="blog-content shadow-sm">
-                            <span>Nov 24, 2020</span>
-                            <h2>Help The Helpless</h2>
+                            <span>@blog.CreatedAt.ToString("MMM dddd, yyyy")</span>
+                            <a asp-action="detail" asp-controller="blog" asp-route-id="@blog.Id" class="text-decoration-none">
+                                <h2>@blog.Title</h2>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
-                    <div class="blog">
-                        <div class="blog-img">
-                            <img src="~/assets/images/blog/img-1.jpg" alt="">
-                        </div>
-                        <div class="blog-content shadow-sm">
-                            <span>Nov 24, 2020</span>
-                            <h2>Help The Helpless</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
-                    <div class="blog">
-                        <div class="blog-img">
-                            <img src="~/assets/images/blog/img-1.jpg" alt="">
-                        </div>
-                        <div class="blog-content shadow-sm">
-                            <span>Nov 24, 2020</span>
-                            <h2>Help The Helpless</h2>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </section>

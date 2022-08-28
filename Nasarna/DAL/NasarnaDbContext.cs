@@ -13,7 +13,6 @@ namespace Nasarna.DAL
         }
         public DbSet<AppUser> Users { get; set; }
         public DbSet<Event> Events { get; set; }
-        public DbSet<Author> Authors { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<BlogTag> BlogTags { get; set; }
@@ -27,5 +26,6 @@ namespace Nasarna.DAL
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Volunteer> Volunteers { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
     }
 }

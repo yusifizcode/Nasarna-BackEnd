@@ -1,6 +1,8 @@
-﻿@model List<Cause>
+﻿@model CauseViewModel
 @{
     ViewData["Title"] = "Index";
+    int page = ViewBag.Page;
+    int totalPages = ViewBag.TotalPages;
 }
 
 <main>
@@ -39,7 +41,7 @@
                 <div class="col-md-8">
                     <div class="row">
 
-                        @foreach (var cause in Model)
+                        @foreach (var cause in Model.Causes)
                         {
                             <div class="col-lg-6 mb-5">
                                 <div class="cause-card post shadow-sm p-0">
@@ -99,27 +101,38 @@
                             </div>
                         }
 
-                        @if(Model.Count != 0)
+                        @if(Model.Causes.Count != 0)
                         {
                           <div class="pagination-wrapper mb-3">
                             <ul class="pg-pagination">
-                                <li>
-                                    <a href=""><i class="fa-solid fa-angle-left"></i></a>
+                                <li class="@(page==1?"d-none":"")">
+                                    <a asp-action="index" asp-route-page="@(page-1)"><i class="fa-solid fa-angle-left"></i></a>
                                 </li>
-                                <li class="active">
-                                    <a href="">1</a>
-                                </li>
-                                <li>
-                                    <a href="">2</a>
-                                </li>
-                                <li>
-                                    <a href="">3</a>
-                                </li>
-                                <li>
-                                    <a href="">4</a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="fa-solid fa-angle-right"></i></a>
+                                @if(page == 1){
+                                    for(int i = page; i <= totalPages; i++){
+                                        <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                    }
+                                }
+                                else if(page == totalPages){
+                                    if(totalPages > 2){
+                                        for(int i = page - 2; i <= page; i++){
+                                            <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                        }
+                                    }
+                                    else{
+                                        for(int i = 1; i <= page; i++){
+                                            <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                        }
+                                    }
+                                }
+                                else{
+                                    for(int i = page - 1; i <= page + 1; i++){
+                                            <li class="@(page==i?"active":"")"><a asp-action="index" asp-route-page="@i">@i</a></li>
+                                    }
+                                }
+                                
+                                <li class="@(page==totalPages?"d-none":"")">
+                                    <a asp-action="index" asp-route-page="@(page+1)"><i class="fa-solid fa-angle-right"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -131,7 +144,7 @@
                             <div class="sidebar-item sidebar-search">
                                 <h3>Search Here</h3>
                                 <form action="" class="sidebar-form position-relative">
-                                    <input type="text" class="form-control" placeholder="Search Post..">
+                                    <input type="text" name="title" class="form-control" placeholder="Search Post..">
                                     <button type="submit">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </button>
@@ -140,18 +153,20 @@
                             <div class="sidebar-item sidebar-categories">
                                 <h3>Categories</h3>
                                 <ul class="sidebar-category-list">
-                                @foreach(var category in ViewBag.Categories)
+                                @foreach(var category in Model.Categories)
                                 {
+                                    <form>
                                     <li class="sidebar-category-list-item">
-                                        <a href="">@category.Name</a>
+                                        <button type="submit" name="categoryId" class="btn" value="@category.Id">@category.Name</button>
                                     </li>
+                                    </form>
                                 }
                             </ul>
                             </div>
                             <div class="sidebar-item sidebar-recents">
                                 <h3>Recently Posts</h3>
                                 <div class="recent-posts">
-                                @foreach(var recentlyPost in ViewBag.RecentlyCauses)
+                                @foreach(var recentlyPost in Model.RecentlyCauses)
                                 {
                                      <div class="recent-post mt-3">
                                         <div class="recent-post-img">
@@ -162,7 +177,7 @@
                                                 <a asp-action="detail" asp-controller="cause" asp-route-id="@recentlyPost.Id">@recentlyPost.Title</a>
                                             </h4>
                                             <span class="date">
-                                                @recentlyPost.CreatedAt
+                                                @recentlyPost.CreatedAt.ToString("dddd MMM yyyy")
                                             </span>
                                         </div>
                                     </div>
@@ -173,11 +188,13 @@
                             <div class="sidebar-item sidebar-tags">
                                 <h3>Tags</h3>
                                 <ul class="sidebar-tag-list">
-                                @foreach(var tag in ViewBag.Tags)
+                                @foreach(var tag in Model.Tags)
                                 {
+                                    <form>
                                     <li class="sidebar-tag-list-item">
-                                        <a href="">@tag.Name</a>
+                                        <button type="submit" name="tagId" class="btn" value="@tag.Id">@tag?.Name</button>
                                     </li>
+                                    </form>
                                 }
                             </ul>
                             </div>

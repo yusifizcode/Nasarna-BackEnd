@@ -26,31 +26,58 @@ namespace Nasarna.Controllers
             _env = env;
             _userManager = userManager;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? categoryId, int? tagId, string title, int page = 1)
         {
-            ViewBag.Categories = _context.Categories.Where(x => x.Causes.Any());
-            ViewBag.Tags = _context.Tags.Where(x => x.CauseTags.Any());
-            ViewBag.RecentlyCauses = _context.Causes.Include(x => x.CauseImages).OrderByDescending(x => x.Id).Take(3).ToList();
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(_context.Causes.Where(x=>x.IsActive == true).Count() / 6d);
+
+            if (page < 1 || page > (int)Math.Ceiling(_context.Causes.Where(x => x.IsActive == true).Count() / 6d))
+                return RedirectToAction("error", "home");
 
             var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag)
                                         .Include(x => x.Category)
                                         .Include(x => x.CauseImages)
                                         .Include(x=>x.AppUser)
-                                        .Where(x=>x.IsActive == true)
+                                        .Where(x=>x.IsActive == true).Skip((page - 1) * 6).Take(6)
                                         .ToList() ;
+            var causeTags = _context.Tags.Where(x => x.CauseTags.Any()).ToList();
+            var causeCats = _context.Categories.Where(x => x.Causes.Any()).ToList();
 
+            if (tagId != null)
+                causes = causes.Where(x => x.CauseTags.Any(ct => ct.TagId == tagId)).ToList();
 
-            return View(causes);
+            if (title != null)
+                causes = causes.Where(x => x.Title.Contains(title)).ToList();
+
+            if(categoryId != null)
+                causes = causes.Where(x=>x.CategoryId == categoryId).ToList();
+
+            CauseViewModel causeVM = new CauseViewModel
+            {
+                Causes = causes,
+                Tags = causeTags,
+                RecentlyCauses = _context.Causes.Include(x => x.CauseImages).OrderByDescending(x => x.Id).Take(3).ToList(),
+                Categories = causeCats,
+            };
+
+            return View(causeVM);
         }
 
-        public IActionResult Detail(int id)
+        public IActionResult Detail(int id, int? tagId, int? categoryId, string title)
         
         {
-            ViewBag.Categories = _context.Categories.Where(x=>x.Causes.Any());
-            ViewBag.Tags = _context.Tags.Where(x => x.CauseTags.Any());
             ViewBag.Messages = _context.Messages.Include(x => x.FromUser).Include(x => x.ToUser).ToList();
 
-            CauseDetailViewModel detailVM = GetCauseDetailVM(id);
+            CauseDetailViewModel detailVM = GetCauseDetailVM(id,tagId,categoryId,title);
+
+            if (tagId != null)
+                return RedirectToAction("index", new { tagId = tagId });
+
+            if (categoryId != null)
+                return RedirectToAction("index", new { categoryId = categoryId });
+
+            if (title != null)
+                return RedirectToAction("index", new { title = title });
 
             if (detailVM == null)
                 return RedirectToAction("error", "home");
@@ -63,8 +90,15 @@ namespace Nasarna.Controllers
         }
 
 
-        private CauseDetailViewModel GetCauseDetailVM(int id)
+        private CauseDetailViewModel GetCauseDetailVM(int id,int? tagId, int? categoryId, string title)
         {
+            var causes = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag)
+                                        .Include(x => x.Category)
+                                        .Include(x => x.CauseImages)
+                                        .Include(x => x.AppUser)
+                                        .Where(x => x.IsActive == true)
+                                        .ToList();
+
             Cause cause = _context.Causes.Include(x => x.CauseTags).ThenInclude(t => t.Tag)
                                          .Include(x => x.Category)
                                          .Include(x => x.CauseImages)
@@ -73,6 +107,19 @@ namespace Nasarna.Controllers
                                          .Include(x=>x.AppUser)
                                          .Where(x=>x.IsActive == true)
                                          .FirstOrDefault(x => x.Id == id);
+
+            var causeTags = _context.Tags.Where(x => x.CauseTags.Any()).ToList();
+            var causeCats = _context.Categories.Where(x => x.Causes.Any()).ToList();
+
+
+            if (tagId != null)
+                causes = causes.Where(x => x.CauseTags.Any(ct => ct.TagId == tagId)).ToList();
+
+            if (title != null)
+                causes = causes.Where(x => x.Title.Contains(title)).ToList();
+
+            if (categoryId != null)
+                causes = causes.Where(x => x.CategoryId == categoryId).ToList();
 
             if (cause == null)
                 return null;
@@ -83,7 +130,10 @@ namespace Nasarna.Controllers
                 RecentlyCauses = _context.Causes.Include(x => x.CauseImages).OrderByDescending(x => x.Id).Take(3).ToList(),
                 CauseComment = new CauseCommentPostViewModel { CauseId = id },
                 Payment = _context.Payments.Include(x => x.Cause).FirstOrDefault(x => x.CauseId == id),
+                Categories = causeCats,
+                Tags = causeTags,
 /*                Message = _context.Messages.Include(x=>x.AppUser).FirstOrDefault(x=>x.AppUserId == cause.AppUserId),
+ *              
 */            };
 
             return causeVM;
@@ -92,11 +142,11 @@ namespace Nasarna.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Member")]
-        public async Task<IActionResult> Comment(CauseCommentPostViewModel commentVM)
+        public async Task<IActionResult> Comment(CauseCommentPostViewModel commentVM, int? tagId, int? categoryId, string title)
         {
             if (!ModelState.IsValid)
             {
-                var model = GetCauseDetailVM(commentVM.CauseId);
+                var model = GetCauseDetailVM(commentVM.CauseId, tagId, categoryId, title);
 
                 if (model == null) return RedirectToAction("error", "home");
                 else

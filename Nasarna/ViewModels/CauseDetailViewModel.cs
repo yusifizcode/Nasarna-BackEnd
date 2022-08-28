@@ -10,5 +10,7 @@ namespace Nasarna.ViewModels
         public List<Cause> RecentlyCauses { get; set; }
         public CauseCommentPostViewModel CauseComment { get; set; }
         public Message Message { get; set; }
+        public List<Category> Categories { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }

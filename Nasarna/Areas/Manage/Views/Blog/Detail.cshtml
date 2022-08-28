@@ -1,0 +1,32 @@
+﻿@model Blog
+@{
+    ViewData["Title"] = "Detail";
+}
+
+
+    <div class="content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-6">
+                <div class="card">
+                    <img src="~/uploads/blogs/@Model.BlogImages[0]?.Name" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <p>Tags:
+                       @foreach(var tag in Model.BlogTags)
+                        {
+                            <span class=""> @tag.Tag?.Name</span>
+                        }
+                        </p>
+
+                        <h3 class="card-title">@Model.Title</h3>
+                        <p class="card-text">@Model.Desc</p>
+                        
+                        <p>Created At: @Model.CreatedAt</p>
+                        
+                        <a class="btn btn-outline-info" asp-action="index" asp-controller="blog">Go Back</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
