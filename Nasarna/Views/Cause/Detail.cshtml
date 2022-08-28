@@ -157,7 +157,7 @@
                                     @if(loggedUser?.Id != Model.Cause.AppUserId)
                                     {
                                         <form asp-action="payment" asp-controller="cause" method="post">
-                                            <input asp-for="Payment.CauseId" value="@Model.Cause.Id" readonly>
+                                            <input asp-for="Payment.CauseId" value="@Model.Cause.Id" type="hidden" />
                                             @*<input asp-for="Cause.Title" readonly>
                                             <input asp-for="Cause.Desc" readonly>*@
                                   @*          <input asp-for="Cause.NeedAmount" readonly>

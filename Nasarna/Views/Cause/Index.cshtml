@@ -15,10 +15,10 @@
                         <h2>Our Causes</h2>
                         <ul class="breadcrumb-list">
                             <li class="breadcrumb-list-item">
-                                <a href="index.html">Home</a>
+                                <a asp-action="index" asp-controller="home">Home</a>
                             </li>
                             <li class="breadcrumb-list-item">
-                                <a href="cause.html">Causes</a>
+                                <a asp-action="index">Causes</a>
                             </li>
                         </ul>
                     </div>
@@ -67,7 +67,7 @@
                                         <div class="d-flex">
                                             <div class="post-info-user d-flex">
                                                 <div class="user-img">
-                                                    <img src="~/assets/images/blog/admin.jpg" alt="">
+                                                    <img src="~/uploads/users/@cause.AppUser?.ProfileImg" alt="">
                                                 </div>
                                                 <div class="user-name ms-2">
                                                     <a asp-action="index" asp-controller="account" asp-route-id="@cause.AppUserId">By @cause.AppUser.UserName</a>

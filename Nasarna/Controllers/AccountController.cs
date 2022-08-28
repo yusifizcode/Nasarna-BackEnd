@@ -83,6 +83,9 @@ namespace Nasarna.Controllers
         public async Task<IActionResult> Login(MemberLoginViewModel member)
         {
 
+            if (!ModelState.IsValid)
+                return View();
+
             AppUser user = await _userManager.Users.FirstOrDefaultAsync(x => !x.IsAdmin && x.UserName == member.UserName);
 
 
@@ -106,8 +109,7 @@ namespace Nasarna.Controllers
                 return View();
             }
 
-            if (!ModelState.IsValid)
-                return View();
+
 
             return RedirectToAction("index","home");
         }

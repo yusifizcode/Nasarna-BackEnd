@@ -60,10 +60,10 @@
             <div class="row account-wrapper justify-content-center shadow">
                 <div class="col-lg-6 account-info">
                     <div class="account-info-header d-flex justify-content-between">
-                        <a href="">
+                        <a asp-action="index" asp-controller="home">
                             <img src="~/assets/images/logo.png" alt="">
                         </a>
-                        <a href="" class="account-btn">Create Account</a>
+                        <a asp-action="register" class="account-btn">Create Account</a>
                     </div>
 
                     <div class="account-img">
@@ -71,7 +71,7 @@
                     </div>
 
                     <div class="back-home">
-                        <a href="" class="account-btn">Back To Home</a>
+                        <a asp-action="index" asp-controller="home" class="account-btn">Back To Home</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -140,6 +140,9 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <!-- Custom script for this template -->
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.4/jquery.validate.min.js" integrity="sha512-FOhq9HThdn7ltbK8abmGn60A/EMtEzIzv1rvuh+DqzJtSGq8BRdEN0U+j0iKEIffiw/yEtVuladk6rsG4X6Uqg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>    <!-- Bootstrap core JavaScript-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js" integrity="sha512-o6XqxgrUsKmchwy9G5VRNWSSxTS4Urr4loO6/0hYdpWmFUfHqGzawGxeQGMDqYzxjY9sbktPbNlkIQJWagVZQg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Script JS -->
     <script src="~/assets/js/script.js"></script>
