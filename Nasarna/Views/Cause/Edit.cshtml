@@ -44,11 +44,11 @@
                                         <input asp-for="SubTitle" class="form-control" placeholder="SubTitle">
                                         <span class="text-danger" asp-validation-for="SubTitle"></span>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                                    <div class="col-lg-12 col-12 form-group">
                                         <input asp-for="NeedAmount" type="number" class="form-control" placeholder="Amount Needed">
                                         <span class="text-danger" asp-validation-for="NeedAmount"></span>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                                    <div class="col-lg-12 col-12 form-group">
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                                                 <div class="dropdown">
@@ -60,18 +60,6 @@
                                                         </select>
                                                         <span class="text-danger" asp-validation-for="TagIds"></span>
                                                     </button>
-                                                    @*                                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                                        <li>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                        </li>
-                                                        <li>
-                                                        <a class="dropdown-item" href="#">
-                                                        Something else
-                                                        here
-                                                        </a>
-                                                        </li>
-                                                        </ul>*@
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
@@ -84,18 +72,6 @@
                                                         </select>
                                                         <span class="text-danger" asp-validation-for="CategoryId"></span>
                                                     </button>
-                                                 @*   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#">Another action</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#">
-                                                                Something else
-                                                                here
-                                                            </a>
-                                                        </li>
-                                                    </ul>*@
                                                 </div>
                                             </div>
                                         </div>
@@ -105,7 +81,7 @@
                                                placeholder="Adress">
                                         <span class="text-danger" asp-validation-for="Address"></span>
                                     </div>
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 form-group">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                                         <input asp-for="ImageFiles" class="form-control border-0" multiple
                                                placeholder="File">
                                         <span class="text-danger" asp-validation-for="ImageFiles"></span>

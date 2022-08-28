@@ -229,6 +229,10 @@ namespace Nasarna.Controllers
                     }
                 }
             }
+            else
+            {
+                ModelState.AddModelError("ImageFiles", "Image file is required!");
+            }
 
             if (cause.TagIds != null)
             {
